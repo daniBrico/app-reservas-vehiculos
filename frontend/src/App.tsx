@@ -1,11 +1,7 @@
 import './App.css'
 
 function App() {
-  return (
-    <>
-      <h1 className="px-2 text-4xl">Hola trolos</h1>
-    </>
-  )
+  return <h1 className="text-6xl text-red-900">Hola mundo</h1>
 }
 
 export default App
