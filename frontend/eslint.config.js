@@ -19,5 +19,24 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      '@typescript-eslint/explicit-function-return-type': 'error',
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-expressions': 'error',
+      'react-hooks/exhaustive-deps': 'off',
+      // '@typescript-eslint/no-explicit-any': 'off'
+      // '@typescript-eslint/strict-boolean-expressions': 'error'
+    },
+    ignores: ['node_modules/', 'dist/', '*.test.tsx'],
   },
 ])
