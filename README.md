@@ -1,5 +1,25 @@
 ## Readme para github
 
+En primer instancia es necesario tener instalado NVM (Node Versión Manager), el cual gestiona las diferentes versiones de Node. La versión de Node que necesitamos para correr el proyecto será la última LTS.
+
+Aclarado esto, debemos clonar el repositorio de github para tenerlo de forma local. Luego de esto, abrir la carpeta del mismo y posicionarnos, ya sea en la parte de backend o frontend y ejecutar en consola `npm install`, para instalar todos los paquetes necesarios para que la aplicación funcione.
+
+Para iniciar el servidor del proyecto y realizar modificaciones ejecutar `npm run dev`. Esto abrirá un servidor local para ver en tiempo real los cambios realizados.
+
+### Frontend
+
+Para el frontend vamos a utilizar React con TypeScript, acompañando los estilos con Tailwindcss, y una librería de componentes para no tener que hacer todo desde cero.
+
+La librería que vamos a utilizar es shadcdn (https://ui.shadcn.com/).
+
+Cómo la aplicación va a tener diferentes links, vamos a necesitar utilizar react-router para gestionar las diferentes url's.
+
+### Backend
+
+En el lado del backend utilizaremos Node junto con TypeScript. Para el desarrollo de la API utilizaremos Express y Mongoose, que es el ODM para realizar la gestión de la base de datos MongoDB.
+
+## Readme para github
+
 Para corre la aplicación:
 
 - Clonar el repositorio:
@@ -8,7 +28,9 @@ Para corre la aplicación:
 
 **Aclaración**: Si o si, para poder trabajar en el repositorio, GitHub les va a pedir que configuren el SSH. Les dejo un [link](https://www.youtube.com/watch?v=akuG7eRtaXc) a un video para que sepan como hacerlo.
 
-Una vez clonado el repositorio, simplemente abren Visual Studio Code en la carpeta del proyecto, ingresan, tanto a backend, como frontend, y ejecutan `npm install` para que se instalen todas las dependencias que se necesitan y puedan trabajar sin problemas.
+Una vez clonado el repositorio, abren Visual Studio Code en la carpeta raíz del proyecto. Tanto dentro de la carpeta backend, como de la carpeta frontend, deberán ejecutar el comando `npm install`, para que se instalen todos los paquetes necesarios para que la aplicación funcione.
+
+Para lanzar la aplicación, tanto frontend como backend de forma local, ejecutar `npm run dev`.
 
 ### Tecnologías, extensiones, librerías
 
