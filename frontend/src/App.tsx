@@ -1,7 +1,9 @@
+import type { JSX } from 'react'
 import './App.css'
+import Header from './components/Header'
 
-function App() {
-  return <h1 className="text-6xl text-red-900">Hola mundo</h1>
+function App(): JSX.Element {
+  return <Header />
 }
 
 export default App
