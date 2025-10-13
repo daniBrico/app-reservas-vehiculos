@@ -26,7 +26,7 @@ Para corre la aplicación:
   - Descargarlo presionando en la parte superior donde dice `< > Code` y `Download ZIP`, extraerlo en su equipo y trabajar.
   - Si ya han configurado el SSH de de GitHub, simplemente posicionarse en una carpeta de su equipo, abrir la terminal en esa misma carpeta, y copiar y pegar el comando de SSH que aparece en `< > Code`. Eso clona el repositorio directamente.
 
-**Aclaración**: Si o si, para poder trabajar en el repositorio, GitHub les va a pedir que configuren el SSH. Les dejo un [link](https://www.youtube.com/watch?v=akuG7eRtaXc) a un video para que sepan como hacerlo.
+**Aclaración**: Si o si, para poder trabajar en el repositorio, GitHub les va a pedir que configuren el SSH. Les dejo un [link](https://www.youtube.com/watch?v=akuG7eRtaXc) a un video para que sepan como hacerlo. O tambien este [link](https://www.youtube.com/watch?v=_2Hih_XylUA).
 
 Una vez clonado el repositorio, abren Visual Studio Code en la carpeta raíz del proyecto. Tanto dentro de la carpeta backend, como de la carpeta frontend, deberán ejecutar el comando `npm install`, para que se instalen todos los paquetes necesarios para que la aplicación funcione.
 
