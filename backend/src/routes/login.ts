@@ -7,6 +7,7 @@ const router = express.Router();
 const SECRET = process.env.JWT_SECRET!;
 
 router.post("/login", async (req, res) => {
+    console.log("Petición recibida en /api/auth/login:", req.body);
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });

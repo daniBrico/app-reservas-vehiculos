@@ -8,18 +8,24 @@ const Login = ({ onClose }: { onClose?: () => void }) => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
+      // Enviar email y contraseña al backend
       const res = await axios.post("http://localhost:3000/api/auth/login", {
         email,
-        password,
+        password, // aquí va la contraseña en texto plano
       });
 
       console.log("Token recibido:", res.data.token);
       localStorage.setItem("token", res.data.token);
+
       setError("");
-      if (onClose) onClose(); // cerrar modal si se pasa función
+      if (onClose) onClose(); // cerrar modal si se pasó función
+      alert("Login correcto!"); // opcional, para feedback
     } catch (err: any) {
+      console.error("Error completo:", err.response?.data || err.message);
       setError(err.response?.data?.error || "Error al iniciar sesión");
+      alert(err.response?.data?.error || "Error al iniciar sesión");
     }
   };
 

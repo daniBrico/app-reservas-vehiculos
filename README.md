@@ -44,3 +44,53 @@ Tecnologías utilizadas en el proyecto:
 
 - Frontend: React, TypeScript, Tailwind, librería de componentes shadcdn.
 - Backend: Node (v22.18.0), TypeScript, MongoDB (pueden instalar MongoDBCompass para tener una interfaz con la cual interactuar sobre la base de datos de MongoDB).
+
+### Como correr la web:
+
+1- Instalar la extensión MongoDB en VS Code, conectarse entre si:
+
+Desde la web MongoDB conectando:
+
+Overview (Menu lado izquierdo) -> Connect (Contenido del medio)-> MongoDB for VS Code -> copiar el link del paso 3 (pero en "<db_password>" sobreescribirlo por la contraseña de tu usuario de MongoDB). Luego ese link copiarlo cuando en la extensión MongoDB pide que se conecte.
+
+2- Crear el la carpeta "backend" el archivo ".env":
+
+Ir a la extensión de MongoDB (icono hoja): Ver en el primer menu (icono hoja verde) que en mi caso dice "poo-iii.u6lodlt.mongodb.net", tocar click derecho y darle en "Edit connection...".
+
+Se dirige a "MongoDB" desde VS Code, tocar en donde dice "URL" y tildar la opción "Edit Connection String", para copiarlo en:
+
+MONGO_URI= **"PEGAR"**/"**nombre_base_de_datos"**?retryWrites=true&w=majority
+
+JWT_SECRET=clave_super_secreta
+
+PORT=3000
+
+Ejemplo: MONGO_URI=mongodb+srv://leonardogomez_db_user:pooiii@poo-iii.u6lodlt.mongodb.net/app_reservas?retryWrites=true&w=majority
+
+**"PEGAR"**: mongodb+srv://leonardogomez_db_user:pooiii@poo-iii.u6lodlt.mongodb.net
+
+**"nombre_base_de_datos"**: app_reservas.
+
+3- Abrir la terminal en la carpeta "backend" para instalar las dependencias:
+
+npm install
+
+4- Abrir la terminal en la carpeta "frontend": para instalar las dependencias:
+
+npm install
+
+5- Abir la terminal en la carpeta "backend" para escribir datos de creacion de usuarios (es para probar que si funciona la conexion entre MongoDB y VS Code):
+
+npx tsx src/seed.ts
+
+6- Abir la terminal en la carpeta "backend" para conectarse a MongoDB:
+
+npm run dev
+
+7- Abir la terminal en la carpeta "frontend" para conectarse al servidor de la web y probar la misma:
+
+npm run dev
+
+8- En el apartado de "Iniciar sesión" es para probar que hace bien el "Login":
+
+Escribir correo y contraseña escrita en el paso 4, que dará correcta (no la hasheada que arroja en MongoDB).
