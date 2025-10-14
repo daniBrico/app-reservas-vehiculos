@@ -3,6 +3,7 @@ import BurgerMenu from './svg-components/BurgerMenu'
 import logo from '../assets/the-be-sharps.png'
 import WorldSVG from './svg-components/WorldSVG'
 import classNames from 'classnames'
+import { Link } from "react-router-dom";
 
 const Header = (): JSX.Element => {
   const [menuIsOpen, setMenuIsOpen] = useState(false)
@@ -33,6 +34,9 @@ const Header = (): JSX.Element => {
           }
         )}
       >
+        <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
+          <Link to="/login">Iniciar sesión</Link>
+        </li>
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
           Rentar un auto
         </li>
