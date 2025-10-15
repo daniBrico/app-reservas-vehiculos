@@ -1,14 +1,31 @@
-import { useState, type JSX } from 'react'
+import { useRef, useState, type JSX } from 'react'
 import BurgerMenu from './svg-components/BurgerMenu'
 import logo from '../assets/the-be-sharps.png'
 import WorldSVG from './svg-components/WorldSVG'
 import classNames from 'classnames'
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
+import useCloseOnScrollOrClickOutside from '../hooks/useCloseOnScrollOrClickOutside'
 
 const Header = (): JSX.Element => {
-  const [menuIsOpen, setMenuIsOpen] = useState(false)
+  const [isMenuOpen, setMenuIsOpen] = useState(false)
 
-  const handleOpenCloseMenu = (): void => setMenuIsOpen(!menuIsOpen)
+  const menuRef = useRef<HTMLOListElement>(null)
+  const burgerDivRef = useRef<HTMLDivElement>(null)
+
+  const handleOpenCloseMenu = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void => {
+    e.preventDefault()
+
+    setMenuIsOpen(!isMenuOpen)
+  }
+
+  useCloseOnScrollOrClickOutside({
+    isOpen: isMenuOpen,
+    onClose: () => setMenuIsOpen(false),
+    ref: menuRef,
+    isThisRef: burgerDivRef
+  })
 
   return (
     <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-lg shadow-amber-600">
@@ -21,7 +38,8 @@ const Header = (): JSX.Element => {
       </div>
       <div
         className="w-10 cursor-pointer text-white"
-        onClick={handleOpenCloseMenu}
+        onClick={(e) => handleOpenCloseMenu(e)}
+        ref={burgerDivRef}
       >
         <BurgerMenu />
       </div>
@@ -29,10 +47,11 @@ const Header = (): JSX.Element => {
         className={classNames(
           'absolute top-full right-0 h-dvh w-62 bg-amber-900 text-white transition-all duration-300 ease-in-out',
           {
-            'translate-x-full': menuIsOpen,
-            'translate-x-0': !menuIsOpen
+            'invisible translate-x-full opacity-0': !isMenuOpen,
+            'translate-x-0': isMenuOpen
           }
         )}
+        ref={menuRef}
       >
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
           <Link to="/login">Iniciar sesión</Link>
