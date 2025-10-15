@@ -1,10 +1,10 @@
-## Readme para github
+## Readme
 
-En primer instancia es necesario tener instalado NVM (Node Versión Manager), el cual gestiona las diferentes versiones de Node. La versión de Node que necesitamos para correr el proyecto será la última LTS.
+En primer instancia es necesario tener instalado NVM (Node Versión Manager), el cual gestiona las diferentes versiones de Node. La versión que necesitamos para correr el proyecto será la última LTS.
 
-Aclarado esto, debemos clonar el repositorio de github para tenerlo de forma local. Luego de esto, abrir la carpeta del mismo y posicionarnos, ya sea en la parte de backend o frontend y ejecutar en consola `npm install`, para instalar todos los paquetes necesarios para que la aplicación funcione.
+Aclarado esto, debemos clonar el repositorio de github para tenerlo de forma local. Luego, abrir la carpeta del mismo y posicionarnos, ya sea en la parte de backend o frontend y ejecutar en consola `npm install`, para instalar todos los paquetes necesarios para que la aplicación funcione.
 
-Para iniciar el servidor del proyecto y realizar modificaciones ejecutar `npm run dev`. Esto abrirá un servidor local para ver en tiempo real los cambios realizados.
+Para iniciar el servidor del proyecto y realizar modificaciones ejecutar `npm run dev`, tanto en el backend, como en el frontend. Esto abrirá un servidor local para ver en tiempo real los cambios realizados.
 
 ### Frontend
 
@@ -18,19 +18,14 @@ Cómo la aplicación va a tener diferentes links, vamos a necesitar utilizar rea
 
 En el lado del backend utilizaremos Node junto con TypeScript. Para el desarrollo de la API utilizaremos Express y Mongoose, que es el ODM para realizar la gestión de la base de datos MongoDB.
 
-## Readme para github
+## Clonar el repositorio
 
-Para corre la aplicación:
+Clonar el repositorio:
 
-- Clonar el repositorio:
-  - Descargarlo presionando en la parte superior donde dice `< > Code` y `Download ZIP`, extraerlo en su equipo y trabajar.
-  - Si ya han configurado el SSH de de GitHub, simplemente posicionarse en una carpeta de su equipo, abrir la terminal en esa misma carpeta, y copiar y pegar el comando de SSH que aparece en `< > Code`. Eso clona el repositorio directamente.
+- Descargarlo presionando en la parte superior donde dice `< > Code` y `Download ZIP`.
+- Si ya han configurado el SSH de de GitHub, simplemente posicionarse en una carpeta de su equipo, abrir la terminal en esa misma carpeta, y copiar y pegar el comando de SSH que aparece en `< > Code`. Eso clona el repositorio directamente.
 
 **Aclaración**: Si o si, para poder trabajar en el repositorio, GitHub les va a pedir que configuren el SSH. En YouTube hay un montón de tutoriales, o pueden buscarlo en la misma documentación de GitHub.
-
-Una vez clonado el repositorio, abren Visual Studio Code en la carpeta raíz del proyecto. Tanto dentro de la carpeta backend, como de la carpeta frontend, deberán ejecutar el comando `npm install`, para que se instalen todos los paquetes necesarios para que la aplicación funcione.
-
-Para lanzar la aplicación, tanto frontend como backend de forma local, ejecutar `npm run dev`.
 
 ### Tecnologías, extensiones, librerías
 
