@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import loginRoutes from './routes/login.js'
+import vehicleRoutes from './routes/vehicle.routes'
+// import loginRoutes from './routes/login.js'
 
 const app = express()
 
@@ -19,7 +20,10 @@ app.use(express.json())
 app.use('/ping', (_req, res) => {
   res.send('pong')
 })
-app.use('/api/auth', loginRoutes)
+
+app.use('/vehicles', vehicleRoutes)
+
+// app.use('/api/auth', loginRoutes)
 //app.use('/api/login', loginRoutes); //nuevo commit 10
 
 export { app }

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { type IVehicle } from '../../../types/types'
+import type { IVehicle } from '../../../types/types'
 
 const VehicleSchema = new Schema<IVehicle>({
   make: {
