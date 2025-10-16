@@ -4,40 +4,40 @@ import { type IVehicle } from '../../../types/types'
 const VehicleSchema = new Schema<IVehicle>({
   make: {
     type: String,
-    required: true,
+    required: true
   },
   model: {
     type: String,
-    required: true,
+    required: true
   },
   year: {
     type: Number,
-    required: true,
+    required: true
   },
   licencePlate: {
     type: String,
-    required: true,
+    required: true
   },
   pricePerDay: {
     type: Number,
-    required: true,
+    required: true
   },
   status: {
     type: String,
-    required: true,
+    required: true
   },
   image: {
     type: String,
-    required: true,
+    required: true
   },
   warrantyCost: {
     type: Number,
-    required: true,
+    required: true
   },
   insurancePolicyID: {
     type: Schema.Types.ObjectId,
-    ref: 'InsurancePolicy',
-  },
+    ref: 'InsurancePolicy'
+  }
 })
 
 const VehicleModel = model<IVehicle>('Vehicle', VehicleSchema)

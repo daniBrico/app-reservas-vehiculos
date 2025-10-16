@@ -12,8 +12,15 @@ export interface IVehicle extends Document {
 }
 
 export interface IUser extends Document {
-  name: string
   email: string
   password: string
-  plainPassword?: string
+  full_name: string
+  last_name: string
+  country: string
+  address: string
+  address_number: number
+  phone_number: number
+  fiscal_condition: string
+  document_type: string
+  document_number: number
 }
