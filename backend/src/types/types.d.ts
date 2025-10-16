@@ -1,3 +1,4 @@
+// Modelos de MongoDB
 export interface IVehicle extends Document {
   make: string
   model: string
@@ -8,4 +9,11 @@ export interface IVehicle extends Document {
   image: string
   warrantyCost: number
   insurancePolicyID: Schema.Types.ObjectId[]
+}
+
+export interface IUser extends Document {
+  name: string
+  email: string
+  password: string
+  plainPassword?: string
 }

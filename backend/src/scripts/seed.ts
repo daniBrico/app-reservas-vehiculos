@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs'
-import { User } from '../models/user.js'
-import { connectDB } from './db.js'
 import readline from 'readline'
+import UserModel from '../models/mongodb/schemas/user.model'
+import { openDatabaseConnection } from '../models/mongodb/database.js'
 
-await connectDB()
+openDatabaseConnection()
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -22,7 +22,7 @@ rl.close()
 
 const hashedPassword = await bcrypt.hash(password, 10)
 
-await User.create({
+await UserModel.create({
   name,
   email,
   password: hashedPassword,
