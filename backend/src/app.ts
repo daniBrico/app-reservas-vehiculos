@@ -9,7 +9,7 @@ const { FRONTEND_URL } = process.env
 const corsOptions = {
   origin: [`${FRONTEND_URL}`],
   methods: 'GET',
-  credentials: true,
+  credentials: true
 }
 
 // Middlewares

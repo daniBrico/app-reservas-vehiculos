@@ -2,7 +2,7 @@ import { createServer } from 'node:http'
 import { app } from './app.js'
 import {
   closeDatabaseConnection,
-  openDatabaseConnection,
+  openDatabaseConnection
 } from './models/mongodb/database.js'
 
 const port = process.env.PORT ?? 3000
