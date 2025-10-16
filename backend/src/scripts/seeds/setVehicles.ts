@@ -1,0 +1,39 @@
+import {
+  closeDatabaseConnection,
+  openDatabaseConnection
+} from '../../models/mongodb/database'
+import VehicleModel from '../../models/mongodb/schemas/vehicle.model'
+import vehiclesData from '../data/vehiclesData.json'
+
+openDatabaseConnection()
+  .then(() => {
+    setVehicles()
+  })
+  .catch((err) => {
+    console.error('Error conectando a MongoDB: ', err)
+  })
+
+const setVehicles = async (): Promise<void> => {
+  try {
+    // Recorro todos los carreras del archivo .json (por ahora solo hay una)
+    for (const vehicle of vehiclesData) {
+      const newVehicle = new VehicleModel({
+        make: vehicle.make,
+        model: vehicle.model,
+        year: vehicle.year,
+        licencePlate: vehicle.licencePlate,
+        pricePerDay: vehicle.pricePerDay,
+        status: vehicle.status,
+        image: vehicle.image,
+        warrantyCost: vehicle.warrantyCost,
+        insurancePolicyID: vehicle.insurancePolicyID
+      })
+
+      await newVehicle.save()
+    }
+
+    await closeDatabaseConnection()
+  } catch (err) {
+    console.log('Error adding vehicles: ', err)
+  }
+}

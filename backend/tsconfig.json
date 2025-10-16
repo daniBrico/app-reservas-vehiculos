@@ -9,8 +9,9 @@
     // See also https://aka.ms/tsconfig/module
     "module": "esnext",
     "target": "es2022",
-     "moduleResolution": "node",
-     "esModuleInterop": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],
