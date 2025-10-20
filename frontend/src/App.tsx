@@ -1,33 +1,27 @@
-/* import type { JSX } from 'react'
-import './App.css'
-import Header from './components/Header'
-
-function App(): JSX.Element {
-  return <Header />
-}
-
-export default App 
-
-*/
-
 import type { JSX } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes
+} from 'react-router-dom'
 import Header from './components/Header'
-import Login from './pages/login'
 import Footer from './components/Footer'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
 
 function App(): JSX.Element {
   return (
     <Router>
       <Header />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        {/* Otras rutas */}
+        <Route index element={<Navigate to="/inicio" replace />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/inicio" element={<HomePage />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </Router>
   )
 }
 
 export default App
-
