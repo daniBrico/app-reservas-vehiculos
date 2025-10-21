@@ -45,7 +45,7 @@ const Header = (): JSX.Element => {
       </div>
       <ol
         className={classNames(
-          'absolute top-full right-0 h-dvh w-62 bg-amber-900 text-white transition-all duration-300 ease-in-out',
+          'absolute top-full right-0 h-[calc(100dvh-120px)] w-62 bg-amber-900 text-white transition-all duration-300 ease-in-out',
           {
             'invisible translate-x-full opacity-0': !isMenuOpen,
             'translate-x-0': isMenuOpen
