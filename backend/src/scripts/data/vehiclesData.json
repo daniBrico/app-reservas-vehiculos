@@ -8,7 +8,8 @@
     "status": "available",
     "image": "https://example.com/images/toyota_corolla.jpg",
     "warrantyCost": 500,
-    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67890"
+    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67890",
+    "description": "Comodidad y eficiencia en cada viaje, ideal para la ciudad."
   },
   {
     "make": "Ford",
@@ -19,7 +20,8 @@
     "status": "rented",
     "image": "https://example.com/images/ford_focus.jpg",
     "warrantyCost": 450,
-    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67891"
+    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67891",
+    "description": "Rendimiento fiable y estilo moderno, perfecto para viajes largos."
   },
   {
     "make": "Honda",
@@ -30,7 +32,8 @@
     "status": "available",
     "image": "https://example.com/images/honda_civic.jpg",
     "warrantyCost": 550,
-    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67892"
+    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67892",
+    "description": "Diseño deportivo y tecnología avanzada, para un manejo ágil y seguro."
   },
   {
     "make": "Chevrolet",
@@ -41,7 +44,8 @@
     "status": "maintenance",
     "image": "https://example.com/images/chevrolet_cruze.jpg",
     "warrantyCost": 480,
-    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67893"
+    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67893",
+    "description": "Confort y espacio para toda la familia, ideal para trayectos largos."
   },
   {
     "make": "Volkswagen",
@@ -52,6 +56,7 @@
     "status": "available",
     "image": "https://example.com/images/vw_golf.jpg",
     "warrantyCost": 600,
-    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67894"
+    "insurancePolicyID": "64e6e2f2a4b2c3d4e5f67894",
+    "description": "Estilo moderno, tecnología de punta y un manejo confortable y dinámico."
   }
 ]

@@ -15,7 +15,6 @@ openDatabaseConnection()
 
 const setVehicles = async (): Promise<void> => {
   try {
-    // Recorro todos los carreras del archivo .json (por ahora solo hay una)
     for (const vehicle of vehiclesData) {
       const newVehicle = new VehicleModel({
         make: vehicle.make,
@@ -26,11 +25,14 @@ const setVehicles = async (): Promise<void> => {
         status: vehicle.status,
         image: vehicle.image,
         warrantyCost: vehicle.warrantyCost,
-        insurancePolicyID: vehicle.insurancePolicyID
+        insurancePolicyID: vehicle.insurancePolicyID,
+        description: vehicle.description
       })
 
       await newVehicle.save()
     }
+
+    console.log('Vehicles loaded correctly')
 
     await closeDatabaseConnection()
   } catch (err) {

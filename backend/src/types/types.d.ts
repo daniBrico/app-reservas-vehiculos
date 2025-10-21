@@ -1,5 +1,6 @@
 // Modelos de MongoDB
 export interface IVehicle extends Document {
+  _id: Schema.Types.ObjectId
   make: string
   model: string
   year: number
@@ -9,6 +10,7 @@ export interface IVehicle extends Document {
   image: string
   warrantyCost: number
   insurancePolicyID: Schema.Types.ObjectId[]
+  description: string
 }
 
 export interface IUser extends Document {
