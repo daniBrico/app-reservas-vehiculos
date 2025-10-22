@@ -34,10 +34,6 @@ const VehicleSchema = new Schema<IVehicle>({
     type: Number,
     required: true
   },
-  insurancePolicyID: {
-    type: Schema.Types.ObjectId,
-    ref: 'InsurancePolicy'
-  },
   description: {
     type: String,
     required: true

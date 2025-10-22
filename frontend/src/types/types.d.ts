@@ -1,14 +1,17 @@
 // Modelos de MongoDB
 export interface IVehicle extends Document {
+  _id: Schema.Types.ObjectId
   make: string
   model: string
+  transmissionType: string
+  seatingCapacity: number
   year: number
   licencePlate: string
   pricePerDay: number
   status: string
   image: string
   warrantyCost: number
-  insurancePolicyID: Schema.Types.ObjectId[]
+  description: string
 }
 
 export interface IUser extends Document {

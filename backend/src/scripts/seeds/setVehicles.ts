@@ -19,13 +19,14 @@ const setVehicles = async (): Promise<void> => {
       const newVehicle = new VehicleModel({
         make: vehicle.make,
         model: vehicle.model,
+        transmissionType: vehicle.transmissionType,
+        seatingCapacity: vehicle.seatingCapacity,
         year: vehicle.year,
         licencePlate: vehicle.licencePlate,
         pricePerDay: vehicle.pricePerDay,
         status: vehicle.status,
         image: vehicle.image,
         warrantyCost: vehicle.warrantyCost,
-        insurancePolicyID: vehicle.insurancePolicyID,
         description: vehicle.description
       })
 
