@@ -31,11 +31,6 @@ const Footer = () => {
             </li>
             <li>
               <Link to="#" className="hover:text-amber-800 transition">
-                Sucursales
-              </Link>
-            </li>
-            <li>
-              <Link to="#" className="hover:text-amber-800 transition">
                 Beneficios
               </Link>
             </li>
