@@ -19,7 +19,7 @@ function App(): JSX.Element {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/inicio" element={<HomePage />} />
       </Routes>
-      <Footer /> 
+      <Footer />
     </Router>
   )
 }
