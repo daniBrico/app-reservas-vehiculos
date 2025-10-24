@@ -21,21 +21,19 @@ const Header = (): JSX.Element => {
     setMenuIsOpen(!isMenuOpen)
   }
 
-
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
     if (storedUser) setUser(JSON.parse(storedUser))
   }, [])
 
-
-
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     setUser(null)
     window.location.href = '/inicio'
   }
 
+  const olHandleClick = (): void => setMenuIsOpen(false)
 
   useCloseOnScrollOrClickOutside({
     isOpen: isMenuOpen,
@@ -43,9 +41,6 @@ const Header = (): JSX.Element => {
     ref: menuRef,
     isThisRef: burgerDivRef
   })
-
-
-  
 
   return (
     <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-lg shadow-amber-600">
@@ -74,11 +69,11 @@ const Header = (): JSX.Element => {
           }
         )}
         ref={menuRef}
+        onClick={olHandleClick}
       >
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
           <Link to="/inicio">Inicio</Link>
         </li>
-
         {!user ? (
           <>
             <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
@@ -101,8 +96,6 @@ const Header = (): JSX.Element => {
             </li>
           </>
         )}
-
-
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
           <Link to="/generar-reserva">Rentar vehículo</Link>
         </li>
