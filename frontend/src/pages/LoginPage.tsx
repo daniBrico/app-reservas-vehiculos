@@ -1,31 +1,38 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-const LoginPage = ({ onClose }: { onClose?: () => void }) => {
+const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/login', {
+      const res = await axios.post('http://localhost:3000/api/login', {
         email,
         password
       })
 
-      console.log('Token recibido:', res.data.token)
-      localStorage.setItem('token', res.data.token)
+      const user = res.data.user
+      const token = res.data.token
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+
+      //console.log('Token recibido:', res.data.token)
+      //localStorage.setItem('token', res.data.token)
 
       setError('')
-      if (onClose) onClose()
-    } catch (err: any) {
-      console.error('Error completo:', err.response?.data || err.message)
-      setError(err.response?.data?.error || 'Error al iniciar sesión')
-      alert(err.response?.data?.error || 'Error al iniciar sesión')
-    }
+      setMessage(`Bienvenido ${res.data.user.full_name}`)
+      
+    window.location.href = '/inicio'
+  } catch (err: any) {
+    setError(err.response?.data?.message || 'Error al iniciar sesión')
+    setMessage('')
   }
+}
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -71,6 +78,7 @@ const LoginPage = ({ onClose }: { onClose?: () => void }) => {
           </button>
 
           {error && <p className="text-center text-red-500">{error}</p>}
+          {message && <p className="text-center text-green-500">{message}</p>}
         </form>
       </div>
     </div>
