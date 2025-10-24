@@ -30,11 +30,13 @@ const Header = (): JSX.Element => {
   return (
     <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-lg shadow-amber-600">
       <div className="flex items-center justify-center gap-2">
-        <img
-          className="w-30 cursor-pointer"
-          src={logo}
-          alt="Los Borbotones logo"
-        />
+        <Link to="/inicio">
+          <img
+            className="w-30 cursor-pointer"
+            src={logo}
+            alt="Los Borbotones logo"
+          />
+        </Link>
       </div>
       <div
         className="w-10 cursor-pointer text-white"
@@ -54,13 +56,16 @@ const Header = (): JSX.Element => {
         ref={menuRef}
       >
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
+          <Link to="/inicio">Inicio</Link>
+        </li>
+        <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
           <Link to="/login">Iniciar sesión</Link>
         </li>
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-          Rentar un auto
+          <Link to="/generar-reserva">Rentar vehículo</Link>
         </li>
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-          Flota de autos
+          <Link to="/flota-vehiculos">Flota de vehículos</Link>
         </li>
         <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
           Sucursales
