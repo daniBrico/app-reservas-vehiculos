@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import { useState, type JSX } from 'react'
 import {
   Navigate,
   Route,
@@ -8,19 +8,20 @@ import {
 import Header from './components/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import MakeReservation from './pages/ReservationPage'
 import VehicleFleerPage from './pages/VehicleFleetPage'
+import LoginUser from './components/LoginUser'
 
 function App(): JSX.Element {
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+
   return (
     <Router>
-      <Header />
+      <Header onLoginClick={() => setIsLoginOpen(true)} />
       <main className="w-full flex-grow">
         <Routes>
           <Route index element={<Navigate to="/inicio" replace />} />
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/inicio" element={<HomePage />} />
           <Route path="/generar-reserva" element={<MakeReservation />} />
@@ -28,6 +29,12 @@ function App(): JSX.Element {
         </Routes>
       </main>
       <Footer />
+      {isLoginOpen && (
+        <LoginUser
+          onClose={() => setIsLoginOpen(false)}
+          isLoginOpen={isLoginOpen}
+        />
+      )}
     </Router>
   )
 }

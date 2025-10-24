@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, type JSX } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import BurgerMenu from './svg-components/BurgerMenu'
 import logo from '../assets/the-be-sharps.png'
 import WorldSVG from './svg-components/WorldSVG'
@@ -6,7 +6,11 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import useCloseOnScrollOrClickOutside from '../hooks/useCloseOnScrollOrClickOutside'
 
-const Header = (): JSX.Element => {
+interface HeaderProps {
+  onLoginClick: () => void
+}
+
+const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
   const [user, setUser] = useState<{ full_name: string } | null>(null)
 
@@ -76,8 +80,11 @@ const Header = (): JSX.Element => {
         </li>
         {!user ? (
           <>
-            <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-              <Link to="/login">Iniciar sesión</Link>
+            <li
+              className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800"
+              onClick={onLoginClick}
+            >
+              Iniciar sesión
             </li>
             <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
               <Link to="/register">Registrarse</Link>

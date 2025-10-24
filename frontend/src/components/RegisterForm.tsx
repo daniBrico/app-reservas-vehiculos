@@ -12,7 +12,7 @@ export default function RegisterForm() {
     phone_number: 0,
     fiscal_condition: '',
     document_type: '',
-    document_number: 0,
+    document_number: 0
   })
 
   const [message, setMessage] = useState('')
@@ -33,7 +33,9 @@ export default function RegisterForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       })
+
       const data = await res.json()
+
       if (res.ok) {
         setMessage(`Usuario ${data.user.full_name} registrado correctamente`)
       } else {
@@ -45,28 +47,28 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg bg-white p-8 rounded-xl shadow-lg space-y-4"
+        className="w-full max-w-lg space-y-4 rounded-xl bg-white p-8 shadow-lg"
       >
-        <h2 className="text-3xl font-bold text-center text-amber-800 mb-6">
+        <h2 className="mb-6 text-center text-3xl font-bold text-amber-800">
           Registro de Usuario
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <input
             name="full_name"
             placeholder="Nombre"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
             name="last_name"
             placeholder="Apellido"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
@@ -74,7 +76,7 @@ export default function RegisterForm() {
             type="email"
             placeholder="Correo"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400 col-span-2"
+            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
@@ -82,21 +84,21 @@ export default function RegisterForm() {
             type="password"
             placeholder="Contraseña"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400 col-span-2"
+            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
             name="country"
             placeholder="País"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
             name="address"
             placeholder="Dirección"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
@@ -104,7 +106,7 @@ export default function RegisterForm() {
             type="number"
             placeholder="Número"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
@@ -112,21 +114,21 @@ export default function RegisterForm() {
             type="number"
             placeholder="Teléfono"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
             name="fiscal_condition"
             placeholder="Condición fiscal"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400 col-span-2"
+            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
             name="document_type"
             placeholder="Tipo de documento"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
           <input
@@ -134,20 +136,22 @@ export default function RegisterForm() {
             type="number"
             placeholder="Número de documento"
             onChange={handleChange}
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 mt-4 bg-amber-800 text-white rounded-lg font-bold hover:bg-amber-900 transition"
+          className="mt-4 w-full rounded-lg bg-amber-800 py-3 font-bold text-white transition hover:bg-amber-900"
         >
           Registrarse
         </button>
 
         {message && (
-          <p className="mt-2 text-center text-green-600 font-medium">{message}</p>
+          <p className="mt-2 text-center font-medium text-green-600">
+            {message}
+          </p>
         )}
       </form>
     </div>
