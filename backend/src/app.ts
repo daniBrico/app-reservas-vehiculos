@@ -1,7 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import vehicleRoutes from './routes/vehicle.routes'
-// import loginRoutes from './routes/login.js'
+import userRoutes from './routes/user.routes'
+
 
 const app = express()
 
@@ -9,7 +10,7 @@ const { FRONTEND_URL } = process.env
 
 const corsOptions = {
   origin: [`${FRONTEND_URL}`],
-  methods: 'GET',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }
 
@@ -22,8 +23,6 @@ app.use('/ping', (_req, res) => {
 })
 
 app.use('/vehicles', vehicleRoutes)
-
-// app.use('/api/auth', loginRoutes)
-//app.use('/api/login', loginRoutes); //nuevo commit 10
+app.use('/api', userRoutes)
 
 export { app }
