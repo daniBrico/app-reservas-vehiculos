@@ -22,7 +22,7 @@ const HomePage = (): JSX.Element => {
   }, [vehicles])
 
   return (
-    <main className="w-full">
+    <>
       <section className="flex h-[calc(100dvh-120px)] w-full flex-col items-center justify-center bg-[url('./assets/driving-car.jpg')] bg-cover bg-center bg-no-repeat">
         <div className="w-4/5">
           <h1 className="mb-4 text-5xl font-bold text-white">
@@ -69,7 +69,7 @@ const HomePage = (): JSX.Element => {
           </>
         )}
       </section>
-    </main>
+    </>
   )
 }
 
