@@ -1,4 +1,4 @@
-import { useEffect, type JSX } from 'react'
+import { useEffect, useState, type JSX } from 'react'
 // Date Picker
 import {
   Select,
@@ -11,15 +11,18 @@ import { DatePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
 import CarouselVehicles from '@/components/CarouselVehicles'
 import useVehicle from '@/hooks/useVehicles'
+import CancelMarkSvg from '@/components/svg-components/CancelMarkSvg'
 
 const HomePage = (): JSX.Element => {
+  const [selectedCity, setSelectedCity] = useState<string>('')
+
   const { vehicles } = useVehicle()
 
-  useEffect(() => {
-    if (vehicles?.length === 0) return
+  const handleClearSelect = (): void => setSelectedCity('')
 
-    console.log(vehicles)
-  }, [vehicles])
+  useEffect(() => {
+    console.log('🚀 ~ HomePage ~ selectedCity: ', selectedCity)
+  }, [selectedCity])
 
   return (
     <>
@@ -30,16 +33,26 @@ const HomePage = (): JSX.Element => {
           </h1>
         </div>
         <div className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16">
-          <Select>
-            <SelectTrigger className="cursor-pointer bg-white">
-              <SelectValue placeholder="Seleccione lugar de entrega" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="bahia-blanca" className="cursor-pointer">
-                Bahía blanca
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="relative">
+            <Select value={selectedCity} onValueChange={setSelectedCity}>
+              <SelectTrigger className="w-64 cursor-pointer bg-white">
+                <SelectValue placeholder="Seleccione lugar de entrega" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bahia-blanca" className="cursor-pointer">
+                  Bahía blanca
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            {selectedCity !== '' && (
+              <button
+                className="absolute top-0 right-full z-1000 mt-0.5 mr-2 w-8 cursor-pointer rounded-full bg-white stroke-black/20 transition-all duration-300 ease-in-out hover:scale-110 hover:rotate-180 hover:bg-gray-400 hover:stroke-white"
+                onClick={handleClearSelect}
+              >
+                <CancelMarkSvg />
+              </button>
+            )}
+          </div>
 
           <DatePicker placeholder="Fecha de retiro" />
           <DatePicker placeholder="Fecha de devolución" />
