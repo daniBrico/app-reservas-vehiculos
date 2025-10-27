@@ -10,11 +10,6 @@ interface HeaderMenuProps {
   setMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   isMenuOpen: boolean
   user: { full_name: string } | null
-  setUser: React.Dispatch<
-    React.SetStateAction<{
-      full_name: string
-    } | null>
-  >
 }
 
 const HeaderMenu: React.FC<HeaderMenuProps> = ({
@@ -22,8 +17,7 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
   onLoginClick,
   setMenuIsOpen,
   isMenuOpen,
-  user,
-  setUser
+  user
 }) => {
   const menuRef = useRef<HTMLOListElement>(null)
 
@@ -35,13 +29,6 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
   })
 
   const olHandleClick = (): void => setMenuIsOpen(false)
-
-  const handleLogout = (): void => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    setUser(null)
-    window.location.href = '/inicio'
-  }
 
   return (
     <ol
@@ -71,17 +58,7 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
           </li>
         </>
       ) : (
-        <>
-          <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-            Bienvenido, {user.full_name}
-          </li>
-          <li
-            className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800"
-            onClick={handleLogout}
-          >
-            Salir
-          </li>
-        </>
+        <></>
       )}
       <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
         <Link to="/generar-reserva">Rentar vehículo</Link>
