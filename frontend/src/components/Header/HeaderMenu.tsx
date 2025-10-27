@@ -6,18 +6,14 @@ import WorldSVG from '../svg-components/WorldSVG'
 
 interface HeaderMenuProps {
   burgerDivRef: React.RefObject<HTMLDivElement | null>
-  onLoginClick: () => void
   setMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   isMenuOpen: boolean
-  user: { full_name: string } | null
 }
 
 const HeaderMenu: React.FC<HeaderMenuProps> = ({
   burgerDivRef,
-  onLoginClick,
   setMenuIsOpen,
-  isMenuOpen,
-  user
+  isMenuOpen
 }) => {
   const menuRef = useRef<HTMLOListElement>(null)
 
@@ -45,21 +41,6 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
       <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
         <Link to="/inicio">Inicio</Link>
       </li>
-      {!user ? (
-        <>
-          <li
-            className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800"
-            onClick={onLoginClick}
-          >
-            Iniciar sesión
-          </li>
-          <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-            <Link to="/register">Registrarse</Link>
-          </li>
-        </>
-      ) : (
-        <></>
-      )}
       <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
         <Link to="/generar-reserva">Rentar vehículo</Link>
       </li>

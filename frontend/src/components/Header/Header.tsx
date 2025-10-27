@@ -47,30 +47,43 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
         </Link>
       </div>
       <div className="flex items-center gap-4">
-        {user && (
-          <>
-            <ol className="flex items-center gap-2">
-              <li>
-                <Link className="flex items-center gap-2" to="/perfil">
-                  <div className="w-8 stroke-white">
-                    <UserSvg />
-                  </div>
-                  <div className="cursor-pointer text-xl font-medium tracking-wide text-white">
-                    {user.full_name}
-                  </div>
-                </Link>
-              </li>
-              <div className="px-2">
-                <div className="h-5 w-0.5 bg-white" />
-              </div>
-              <li
-                className="cursor-pointer text-xl font-medium tracking-wide text-white"
-                onClick={handleLogout}
-              >
-                Salir
-              </li>
-            </ol>
-          </>
+        {user === null ? (
+          <ol className="flex items-center gap-2">
+            <li
+              className="cursor-pointer text-xl font-medium tracking-wide text-white"
+              onClick={onLoginClick}
+            >
+              Iniciar sesión
+            </li>
+            <div className="px-2">
+              <div className="h-5 w-0.5 bg-white" />
+            </div>
+            <li className="cursor-pointer text-xl font-medium tracking-wide text-white">
+              <Link to="/register">Registrarse</Link>
+            </li>
+          </ol>
+        ) : (
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link className="flex items-center gap-2" to="/perfil">
+                <div className="w-8 stroke-white">
+                  <UserSvg />
+                </div>
+                <div className="cursor-pointer text-xl font-medium tracking-wide text-white">
+                  {user.full_name}
+                </div>
+              </Link>
+            </li>
+            <div className="px-2">
+              <div className="h-5 w-0.5 bg-white" />
+            </div>
+            <li
+              className="cursor-pointer text-xl font-medium tracking-wide text-white"
+              onClick={handleLogout}
+            >
+              Salir
+            </li>
+          </ol>
         )}
         <div
           className="w-10 cursor-pointer text-white"
@@ -82,10 +95,8 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
       </div>
       <HeaderMenu
         burgerDivRef={burgerDivRef}
-        onLoginClick={onLoginClick}
         setMenuIsOpen={setMenuIsOpen}
         isMenuOpen={isMenuOpen}
-        user={user}
       />
     </header>
   )
