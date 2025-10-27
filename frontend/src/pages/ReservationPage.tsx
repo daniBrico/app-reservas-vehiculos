@@ -1,5 +1,6 @@
 import CitySelect from '@/components/CitySelect'
 import { DatePicker } from '@/components/DatePicker'
+import TimeSelect from '@/components/TimeSelect'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
@@ -50,6 +51,11 @@ const MakeReservation: React.FC = () => {
             disabled={{ before: new Date() }}
             cssClasess="w-full"
           />
+
+          <div className="flex w-full gap-2">
+            <TimeSelect />
+            <TimeSelect />
+          </div>
 
           <input
             type="text"
