@@ -12,17 +12,16 @@ import { Button } from '@/components/ui/button'
 import CarouselVehicles from '@/components/CarouselVehicles'
 import useVehicle from '@/hooks/useVehicles'
 import CancelMarkSvg from '@/components/svg-components/CancelMarkSvg'
+import { format } from 'date-fns'
 
 const HomePage = (): JSX.Element => {
   const [selectedCity, setSelectedCity] = useState<string>('')
+  const [pickupDate, setPickupDate] = useState<Date | undefined>()
+  const [returnDate, setReturnDate] = useState<Date | undefined>()
 
   const { vehicles } = useVehicle()
 
   const handleClearSelect = (): void => setSelectedCity('')
-
-  useEffect(() => {
-    console.log('🚀 ~ HomePage ~ selectedCity: ', selectedCity)
-  }, [selectedCity])
 
   return (
     <>
@@ -54,8 +53,16 @@ const HomePage = (): JSX.Element => {
             )}
           </div>
 
-          <DatePicker placeholder="Fecha de retiro" />
-          <DatePicker placeholder="Fecha de devolución" />
+          <DatePicker
+            placeholder="Fecha de retiro"
+            onDateChange={setPickupDate}
+            disabled={{ before: new Date() }}
+          />
+          <DatePicker
+            placeholder="Fecha de devolución"
+            onDateChange={setReturnDate}
+            disabled={{ before: new Date() }}
+          />
 
           <input
             type="text"
