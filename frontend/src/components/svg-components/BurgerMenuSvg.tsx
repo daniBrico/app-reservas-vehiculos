@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
 
-const BurgerMenu = (): JSX.Element => {
+const BurgerMenuSvg = (): JSX.Element => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,4 +19,4 @@ const BurgerMenu = (): JSX.Element => {
   )
 }
 
-export default BurgerMenu
+export default BurgerMenuSvg
