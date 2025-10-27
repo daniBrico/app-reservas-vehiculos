@@ -36,16 +36,19 @@ const MakeReservation: React.FC = () => {
           <CitySelect
             selectedCity={selectedCity}
             setSelectedCity={setSelectedCity}
+            cssClasess="w-full"
           />
           <DatePicker
             placeholder="Fecha de retiro"
             onDateChange={setPickupDate}
             disabled={{ before: new Date() }}
+            cssClasess="w-full"
           />
           <DatePicker
             placeholder="Fecha de devolución"
             onDateChange={setReturnDate}
             disabled={{ before: new Date() }}
+            cssClasess="w-full"
           />
 
           <input
@@ -59,7 +62,7 @@ const MakeReservation: React.FC = () => {
           <Button
             disabled={selectedCity === ''}
             type="submit"
-            className="cursor-pointer border border-black/30 bg-white text-black/40 transition-colors duration-300 ease-in-out hover:bg-stone-300"
+            className="cursor-pointer border border-black/30 bg-white text-gray-400 shadow-md transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-white"
           >
             Continuar
           </Button>

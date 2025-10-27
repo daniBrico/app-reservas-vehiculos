@@ -43,6 +43,7 @@ const HomePageFormReservation: React.FC = () => {
         <CitySelect
           selectedCity={selectedCity}
           setSelectedCity={setSelectedCity}
+          cssClasess="min-w-56"
         />
         <DatePicker
           placeholder="Fecha de retiro"
@@ -66,7 +67,7 @@ const HomePageFormReservation: React.FC = () => {
         <Button
           disabled={selectedCity === ''}
           type="submit"
-          className="cursor-pointer bg-white text-black/40 transition-colors duration-300 ease-in-out hover:bg-stone-300"
+          className="cursor-pointer bg-white font-medium text-gray-400 shadow-md shadow-stone-600 transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-gray-200 disabled:cursor-not-allowed disabled:bg-white disabled:text-gray-300 disabled:opacity-100 disabled:shadow-none"
         >
           Continuar
         </Button>

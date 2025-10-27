@@ -11,16 +11,18 @@ import CancelMarkSvg from './svg-components/CancelMarkSvg'
 interface CitySelectProps {
   selectedCity: string
   setSelectedCity: React.Dispatch<React.SetStateAction<string>>
+  cssClasess?: string
 }
 
 const CitySelect: React.FC<CitySelectProps> = ({
   selectedCity,
-  setSelectedCity
+  setSelectedCity,
+  cssClasess
 }) => {
   const handleClearSelect = (): void => setSelectedCity('')
 
   return (
-    <div className="relative w-full">
+    <div className={`relative ${cssClasess}`}>
       <Select value={selectedCity} onValueChange={setSelectedCity}>
         <SelectTrigger className="w-full cursor-pointer bg-white text-gray-500">
           <SelectValue placeholder="Seleccione lugar de entrega" />
@@ -33,7 +35,7 @@ const CitySelect: React.FC<CitySelectProps> = ({
       </Select>
       {selectedCity !== '' && (
         <button
-          className="absolute top-0 right-full z-1000 mt-0.5 mr-2 w-8 cursor-pointer rounded-full border border-gray-200 bg-white stroke-gray-200 transition-all duration-300 ease-in-out hover:scale-110 hover:rotate-180 hover:bg-gray-200 hover:stroke-white"
+          className="absolute top-0 right-full z-1000 mt-0.5 mr-2 w-8 cursor-pointer rounded-full border border-gray-200 bg-white stroke-stone-300 transition-all duration-300 ease-in-out hover:scale-110 hover:rotate-180 hover:bg-stone-800 hover:stroke-white"
           onClick={handleClearSelect}
         >
           <CancelMarkSvg />
