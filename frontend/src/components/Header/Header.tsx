@@ -50,13 +50,15 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
         {user && (
           <>
             <ol className="flex items-center gap-2">
-              <li className="flex items-center gap-2">
-                <div className="w-8 stroke-white">
-                  <UserSvg />
-                </div>
-                <div className="cursor-pointer text-xl font-medium tracking-wide text-white">
-                  {user.full_name}
-                </div>
+              <li>
+                <Link className="flex items-center gap-2" to="/perfil">
+                  <div className="w-8 stroke-white">
+                    <UserSvg />
+                  </div>
+                  <div className="cursor-pointer text-xl font-medium tracking-wide text-white">
+                    {user.full_name}
+                  </div>
+                </Link>
               </li>
               <div className="px-2">
                 <div className="h-5 w-0.5 bg-white" />
