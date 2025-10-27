@@ -1,16 +1,7 @@
 import { useState } from 'react'
-
-// Date Picker
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { DatePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
-import CancelMarkSvg from '@/components/svg-components/CancelMarkSvg'
+import CitySelect from './CitySelect'
 // import { format } from 'date-fns'
 
 // interface HomePageFormReservationProps {}
@@ -20,8 +11,6 @@ const HomePageFormReservation: React.FC = () => {
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
   const [returnDate, setReturnDate] = useState<Date | undefined>()
   const [discountCode, setDiscountCode] = useState('')
-
-  const handleClearSelect = (): void => setSelectedCity('')
 
   const handleDiscountCodeChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -34,6 +23,12 @@ const HomePageFormReservation: React.FC = () => {
     setDiscountCode(value)
   }
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+
+    console.log('Se presionó el submit')
+  }
+
   return (
     <>
       <div className="w-4/5">
@@ -41,28 +36,14 @@ const HomePageFormReservation: React.FC = () => {
           Alquiler de autos en Argentina con Sharps
         </h1>
       </div>
-      <div className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16">
-        <div className="relative">
-          <Select value={selectedCity} onValueChange={setSelectedCity}>
-            <SelectTrigger className="w-64 cursor-pointer bg-white">
-              <SelectValue placeholder="Seleccione lugar de entrega" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="bahia-blanca" className="cursor-pointer">
-                Bahía blanca
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          {selectedCity !== '' && (
-            <button
-              className="absolute top-0 right-full z-1000 mt-0.5 mr-2 w-8 cursor-pointer rounded-full bg-white stroke-black/20 transition-all duration-300 ease-in-out hover:scale-110 hover:rotate-180 hover:bg-gray-400 hover:stroke-white"
-              onClick={handleClearSelect}
-            >
-              <CancelMarkSvg />
-            </button>
-          )}
-        </div>
-
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16"
+      >
+        <CitySelect
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
+        />
         <DatePicker
           placeholder="Fecha de retiro"
           onDateChange={setPickupDate}
@@ -84,11 +65,12 @@ const HomePageFormReservation: React.FC = () => {
 
         <Button
           disabled={selectedCity === ''}
+          type="submit"
           className="cursor-pointer bg-white text-black/40 transition-colors duration-300 ease-in-out hover:bg-stone-300"
         >
           Continuar
         </Button>
-      </div>
+      </form>
     </>
   )
 }
