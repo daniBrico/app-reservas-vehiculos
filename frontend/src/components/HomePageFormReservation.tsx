@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // Date Picker
 import {
@@ -11,16 +11,28 @@ import {
 import { DatePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
 import CancelMarkSvg from '@/components/svg-components/CancelMarkSvg'
-import { format } from 'date-fns'
+// import { format } from 'date-fns'
 
-interface HomePageFormReservationProps {}
+// interface HomePageFormReservationProps {}
 
-const HomePageFormReservation: React.FC<HomePageFormReservationProps> = () => {
+const HomePageFormReservation: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<string>('')
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
   const [returnDate, setReturnDate] = useState<Date | undefined>()
+  const [discountCode, setDiscountCode] = useState('')
 
   const handleClearSelect = (): void => setSelectedCity('')
+
+  const handleDiscountCodeChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const value = e.target.value.toUpperCase()
+
+    // Acepta letras y números, hasta 10 caracteres
+    if (!/^[A-Z0-9]{0,6}$/.test(value)) return
+
+    setDiscountCode(value)
+  }
 
   return (
     <>
@@ -66,9 +78,14 @@ const HomePageFormReservation: React.FC<HomePageFormReservationProps> = () => {
           type="text"
           placeholder="Código de descuento"
           className="h-9 rounded-sm bg-white pl-2"
+          onChange={handleDiscountCodeChange}
+          value={discountCode}
         />
 
-        <Button className="cursor-pointer bg-white text-black/40 transition-colors duration-300 ease-in-out hover:bg-stone-300">
+        <Button
+          disabled={selectedCity === ''}
+          className="cursor-pointer bg-white text-black/40 transition-colors duration-300 ease-in-out hover:bg-stone-300"
+        >
           Continuar
         </Button>
       </div>
