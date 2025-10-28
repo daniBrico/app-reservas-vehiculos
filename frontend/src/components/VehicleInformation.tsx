@@ -6,12 +6,14 @@ interface VehicleInformationProps {
   makeAndModel: string
   transmissionType: string
   pricePerDay: number
+  warrantyCost: number
 }
 
 const VehicleInformation: React.FC<VehicleInformationProps> = ({
   makeAndModel,
   transmissionType,
-  pricePerDay
+  pricePerDay,
+  warrantyCost
 }) => {
   return (
     <div className="flex w-full items-center rounded-md border py-4 shadow-md">
@@ -38,6 +40,7 @@ const VehicleInformation: React.FC<VehicleInformationProps> = ({
             </div>
           </div>
           <p className="mt-2 text-xl font-bold">Kilometraje Limitado</p>
+          <p className="mt-2 text-xl">{`Garantia: $ ${warrantyCost}`}</p>
         </div>
         <div className="flex w-1/2 flex-col items-center justify-center">
           <p className="font-bold text-gray-900">Costo de alquiler por día</p>

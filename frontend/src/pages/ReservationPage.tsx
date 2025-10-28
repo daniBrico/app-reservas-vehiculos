@@ -90,6 +90,7 @@ const MakeReservation: React.FC = () => {
                 makeAndModel={makeAndModel}
                 transmissionType={vehicle.transmissionType}
                 pricePerDay={vehicle.pricePerDay}
+                warrantyCost={vehicle.warrantyCost}
               />
             )
           })}
