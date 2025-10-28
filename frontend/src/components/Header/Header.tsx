@@ -21,11 +21,7 @@ const Header: React.FC<HeaderProps> = ({
   const [isMenuOpen, setMenuIsOpen] = useState(false)
   const burgerDivRef = useRef<HTMLDivElement>(null)
 
-  const handleOpenCloseMenu = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void => {
-    e.preventDefault()
-
+  const handleOpenCloseMenu = (): void => {
     setMenuIsOpen(!isMenuOpen)
   }
 
@@ -94,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({
         <div
           className="w-10 cursor-pointer rounded-md p-0.5 text-white transition-all duration-300 hover:scale-110 hover:bg-amber-300 hover:text-amber-800"
           ref={burgerDivRef}
-          onClick={(e) => handleOpenCloseMenu(e)}
+          onClick={handleOpenCloseMenu}
         >
           <BurgerMenuSvg />
         </div>
