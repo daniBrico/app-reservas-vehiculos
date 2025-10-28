@@ -2,7 +2,9 @@ import CitySelect from '@/components/CitySelect'
 import { DatePicker } from '@/components/DatePicker'
 import TimeSelect from '@/components/TimeSelect'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useVehicles from '@/hooks/useVehicles'
+import VehicleInformation from '@/components/VehicleInformation'
 
 const MakeReservation: React.FC = () => {
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
@@ -27,12 +29,14 @@ const MakeReservation: React.FC = () => {
     setDiscountCode(value)
   }
 
+  const { vehicles } = useVehicles()
+
   return (
-    <section className="mt-12 flex items-center justify-center gap-2 px-16">
-      <aside className="w-1/5">
+    <section className="mt-10 flex justify-center gap-4 px-16">
+      <aside className="w-[30%]">
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className="flex w-full flex-col items-center gap-4 rounded-md border border-black/10 px-4 py-8"
+          className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md"
         >
           <CitySelect
             selectedCity={selectedCity}
@@ -75,7 +79,21 @@ const MakeReservation: React.FC = () => {
         </form>
         {/* <div>filtro de autos</div> */}
       </aside>
-      <article className="w-[80%] bg-amber-500">Lista de los vehículos</article>
+      <article className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md">
+        {vehicles &&
+          vehicles.map((vehicle) => {
+            const makeAndModel = `${vehicle.make} ${vehicle.model}`
+
+            return (
+              <VehicleInformation
+                key={vehicle._id}
+                makeAndModel={makeAndModel}
+                transmissionType={vehicle.transmissionType}
+                pricePerDay={vehicle.pricePerDay}
+              />
+            )
+          })}
+      </article>
     </section>
   )
 }
