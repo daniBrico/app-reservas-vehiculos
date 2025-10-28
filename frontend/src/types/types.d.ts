@@ -14,10 +14,15 @@ export interface IVehicle extends Document {
   description: string
 }
 
+// User types
+export type EmailType = string
+export type PasswordType = string
+export type FullName = string
+
 export interface IUser extends Document {
-  email: string
-  password: string
-  full_name: string
+  email: EmailType
+  password: PasswordType
+  full_name: FullName
   last_name: string
   country: string
   address: string
@@ -26,4 +31,16 @@ export interface IUser extends Document {
   fiscal_condition: string
   document_type: string
   document_number: number
+}
+
+// Login types
+interface UserInfo {
+  _id: Schema.Types.ObjectId
+  email: EmailType
+  full_name: string
+}
+
+interface LoginResponse {
+  token: string
+  userInfo: UserInfo
 }

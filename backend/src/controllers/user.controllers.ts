@@ -5,7 +5,10 @@ import UserModel from '../models/mongoDB/schemas/user.model'
 import type { IUser } from '../types/types'
 
 // Registro de usuario
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
+export const registerUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const {
       email,
@@ -59,49 +62,52 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       }
     })
   } catch (error) {
-    res.status(500).json({ message: error instanceof Error ? error.message : 'Error desconocido' })
+    res.status(500).json({
+      message: error instanceof Error ? error.message : 'Error desconocido'
+    })
   }
 }
 
 // Login de usuario
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
-  console.log('REQ BODY LOGIN:', req.body)
   try {
-    const { email, password } = req.body as { email: string; password: string }
+    const { email, password } = req.body
 
     if (!email || !password) {
-      res.status(400).json({ message: 'Correo y contraseña son obligatorios' })
+      res.status(400).json({ message: 'Credenciales invalidas' })
       return
     }
 
-    const user = await UserModel.findOne({ email })
-    if (!user) {
-      res.status(401).json({ message: 'Correo o contraseña incorrectos' })
+    const userFounded = await UserModel.findOne({ email })
+    if (userFounded === null) {
+      res.status(401).json({ message: 'Credenciales invalidas' })
       return
     }
 
-    const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = await bcrypt.compare(password, userFounded.password)
     if (!isMatch) {
       res.status(401).json({ message: 'Correo o contraseña incorrectos' })
       return
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET || 'default_secret',
+      { id: userFounded._id, email: userFounded.email },
+      process.env.JWT_SECRET!,
       { expiresIn: '1h' }
     )
 
     res.status(200).json({
       message: 'Login exitoso',
-      user: {
-        id: user._id,
-        full_name: user.full_name,
-        email: user.email
+      userInfo: {
+        id: userFounded._id,
+        full_name: userFounded.full_name,
+        email: userFounded.email
       },
       token
     })
   } catch (error) {
-    res.status(500).json({ message: error instanceof Error ? error.message : 'Error desconocido' })
+    res.status(500).json({
+      message: error instanceof Error ? error.message : 'Error desconocido'
+    })
   }
 }

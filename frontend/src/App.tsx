@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react'
+import { useEffect, useState, type JSX } from 'react'
 import {
   Navigate,
   Route,
@@ -13,13 +13,29 @@ import MakeReservation from './pages/ReservationPage'
 import VehicleFleerPage from './pages/VehicleFleetPage'
 import LoginUser from './components/LoginUser'
 import { UserProfilePage } from './pages/UserProfilePage'
+import type { UserInfo } from './types/types'
 
 function App(): JSX.Element {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userInfo')
+
+    if (storedUser) setUserInfo(JSON.parse(storedUser))
+  }, [])
+
+  const handleOnLogout = (): void => {
+    setUserInfo(null)
+  }
 
   return (
     <Router>
-      <Header onLoginClick={() => setIsLoginOpen(true)} />
+      <Header
+        onLoginClick={() => setIsLoginOpen(true)}
+        userInfo={userInfo}
+        onLogout={handleOnLogout}
+      />
       <main className="w-full flex-grow">
         <Routes>
           <Route index element={<Navigate to="/inicio" replace />} />

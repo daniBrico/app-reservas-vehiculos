@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
+import { registerUser } from '@/api/userApi'
 
 interface LoginUserProps {
   onClose: () => void
@@ -32,18 +33,15 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
     e.preventDefault()
 
     try {
-      const res = await axios.post('http://localhost:3000/api/login', {
-        email,
-        password
-      })
+      const res = await registerUser(email, password)
 
-      const user = res.data.user
-      const token = res.data.token
+      const user = res.userInfo
+      const token = res.token
       localStorage.setItem('token', token)
-      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('userInfo', JSON.stringify(user))
 
       setError('')
-      setMessage(`Bienvenido ${res.data.user.full_name}`)
+      setMessage(`Bienvenido ${res.userInfo.full_name}`)
 
       onClose()
     } catch (err: any) {
