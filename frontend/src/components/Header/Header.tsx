@@ -2,8 +2,8 @@ import { useRef, useEffect, useState } from 'react'
 import BurgerMenuSvg from '../svg-components/BurgerMenuSvg'
 import logo from '../../assets/the-be-sharps.png'
 import { Link } from 'react-router-dom'
-import HeaderMenu from './HeaderMenu'
 import UserSvg from '../svg-components/UserSvg'
+import HeaderMenu from './HeaderMenu'
 
 interface HeaderProps {
   onLoginClick: () => void
@@ -46,11 +46,11 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
           />
         </Link>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         {user === null ? (
           <ol className="flex items-center gap-2">
             <li
-              className="cursor-pointer text-xl font-medium tracking-wide text-white"
+              className="cursor-pointer rounded-md p-2 text-xl font-medium tracking-wide text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-amber-300 hover:text-amber-800"
               onClick={onLoginClick}
             >
               Iniciar sesión
@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
             <div className="px-2">
               <div className="h-5 w-0.5 bg-white" />
             </div>
-            <li className="cursor-pointer text-xl font-medium tracking-wide text-white">
+            <li className="cursor-pointer rounded-md p-2 text-xl font-medium tracking-wide text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-amber-300 hover:text-amber-800">
               <Link to="/register">Registrarse</Link>
             </li>
           </ol>
@@ -86,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
           </ol>
         )}
         <div
-          className="w-10 cursor-pointer text-white"
+          className="w-10 cursor-pointer rounded-md p-0.5 text-white transition-all duration-300 hover:scale-110 hover:bg-amber-300 hover:text-amber-800"
           ref={burgerDivRef}
           onClick={(e) => handleOpenCloseMenu(e)}
         >
