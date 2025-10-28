@@ -1,8 +1,9 @@
-import useCloseOnScrollOrClickOutside from '@/hooks/useCloseOnScrollOrClickOutside'
 import classNames from 'classnames'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import WorldSVG from '../svg-components/WorldSVG'
+import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
+import useCloseOnScroll from '@/hooks/useCloseOnScroll'
 
 interface HeaderMenuProps {
   burgerDivRef: React.RefObject<HTMLDivElement | null>
@@ -17,11 +18,15 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
 }) => {
   const menuRef = useRef<HTMLOListElement>(null)
 
-  useCloseOnScrollOrClickOutside({
+  useCloseOnClickOutside({
     isOpen: isMenuOpen,
     onClose: () => setMenuIsOpen(false),
-    ref: menuRef,
-    isThisRef: burgerDivRef
+    ref: burgerDivRef
+  })
+
+  useCloseOnScroll({
+    isOpen: isMenuOpen,
+    onClose: () => setMenuIsOpen(false)
   })
 
   const olHandleClick = (): void => setMenuIsOpen(false)
@@ -29,7 +34,7 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
   return (
     <ol
       className={classNames(
-        'absolute top-full right-0 h-[calc(100dvh-120px)] w-62 bg-amber-900 text-white transition-all duration-300 ease-in-out',
+        'absolute top-full right-0 h-[calc(100dvh-120px)] w-62 bg-amber-900 text-white transition-all duration-300 ease-in-out [&_li]:cursor-pointer [&_li]:px-8 [&_li]:py-4 [&_li]:text-xl [&_li]:font-bold [&_li]:tracking-wide [&_li]:hover:bg-amber-800',
         {
           'invisible translate-x-full opacity-0': !isMenuOpen,
           'translate-x-0': isMenuOpen
@@ -38,25 +43,19 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
       ref={menuRef}
       onClick={olHandleClick}
     >
-      <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
+      <li>
         <Link to="/inicio">Inicio</Link>
       </li>
-      <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
+      <li>
         <Link to="/generar-reserva">Rentar vehículo</Link>
       </li>
-      <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
+      <li>
         <Link to="/flota-vehiculos">Flota de vehículos</Link>
       </li>
-      <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-        Sucursales
-      </li>
-      <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-        Beneficios
-      </li>
-      <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-        Autos usados
-      </li>
-      <li className="flex cursor-pointer gap-2 px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
+      <li>Sucursales</li>
+      <li>Beneficios</li>
+      <li>Autos usados</li>
+      <li className="flex gap-2">
         <div className="w-8">
           <WorldSVG />
         </div>

@@ -51,7 +51,6 @@ const Header: React.FC<HeaderProps> = ({
         <ol className="flex items-center gap-2">
           {userInfo === null ? (
             <>
-              {' '}
               <LiButton
                 cssClasess="hover:scale-105"
                 handleClick={onLoginClick}
