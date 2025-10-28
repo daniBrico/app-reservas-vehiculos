@@ -1,4 +1,4 @@
-import CitySelect from '@/components/CitySelect'
+import CustomSelect from '@/components/CustomSelect'
 import { DatePicker } from '@/components/DatePicker'
 import TimeSelect from '@/components/TimeSelect'
 import { Button } from '@/components/ui/button'
@@ -48,7 +48,7 @@ const MakeReservation: React.FC = () => {
           onSubmit={(e) => handleSubmit(e)}
           className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md"
         >
-          <CitySelect
+          <CustomSelect
             selectedValue={selectedCity}
             setSelectedValue={setSelectedCity}
             selectItems={cities}

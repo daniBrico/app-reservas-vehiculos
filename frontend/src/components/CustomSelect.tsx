@@ -9,14 +9,14 @@ import CancelMarkSvg from './svg-components/CancelMarkSvg'
 
 type SelectItems = { key: string; value: string }[]
 
-interface CitySelectProps {
+interface CustomSelectProps {
   selectedValue: string
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>
   selectItems: SelectItems
   cssClasess?: string
 }
 
-const CitySelect: React.FC<CitySelectProps> = ({
+const CustomSelect: React.FC<CustomSelectProps> = ({
   selectedValue,
   setSelectedValue,
   selectItems,
@@ -27,7 +27,7 @@ const CitySelect: React.FC<CitySelectProps> = ({
   return (
     <div className={`relative ${cssClasess}`}>
       <Select value={selectedValue} onValueChange={setSelectedValue}>
-        <SelectTrigger className="w-full cursor-pointer bg-white text-gray-500">
+        <SelectTrigger className="w-full cursor-pointer bg-white text-gray-900">
           <SelectValue placeholder="Seleccione lugar de entrega" />
         </SelectTrigger>
         <SelectContent>
@@ -54,4 +54,4 @@ const CitySelect: React.FC<CitySelectProps> = ({
   )
 }
 
-export default CitySelect
+export default CustomSelect

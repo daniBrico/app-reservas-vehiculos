@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DatePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
-import CitySelect from './CitySelect'
+import CustomSelect from './CustomSelect'
 // import { format } from 'date-fns'
 
 // interface HomePageFormReservationProps {}
@@ -50,7 +50,7 @@ const HomePageFormReservation: React.FC = () => {
         onSubmit={(e) => handleSubmit(e)}
         className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16"
       >
-        <CitySelect
+        <CustomSelect
           selectedValue={selectedCity}
           setSelectedValue={setSelectedCity}
           selectItems={cities}
