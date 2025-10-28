@@ -51,6 +51,7 @@ function App(): JSX.Element {
         <LoginUser
           onClose={() => setIsLoginOpen(false)}
           isLoginOpen={isLoginOpen}
+          onHandleSubmit={(userInfo) => setUserInfo(userInfo)}
         />
       )}
     </Router>

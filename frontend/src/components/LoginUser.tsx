@@ -1,14 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-// import axios from 'axios'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
 import { registerUser } from '@/api/userApi'
+import type { UserInfo } from '@/types/types'
 
 interface LoginUserProps {
   onClose: () => void
   isLoginOpen: boolean
+  onHandleSubmit: (userInfo: UserInfo) => void
 }
 
-const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
+const LoginUser: React.FC<LoginUserProps> = ({
+  onClose,
+  isLoginOpen,
+  onHandleSubmit
+}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -35,15 +40,18 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
     try {
       const res = await registerUser(email, password)
 
-      const user = res.userInfo
+      const userInfo = res.userInfo
       const token = res.token
       localStorage.setItem('token', token)
-      localStorage.setItem('userInfo', JSON.stringify(user))
+      localStorage.setItem('userInfo', JSON.stringify(userInfo))
+
+      onHandleSubmit(userInfo)
 
       setError('')
       setMessage(`Bienvenido ${res.userInfo.full_name}`)
 
       onClose()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al iniciar sesión')
       setMessage('')
