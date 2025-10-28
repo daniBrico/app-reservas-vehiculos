@@ -1,24 +1,25 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import BurgerMenuSvg from '../svg-components/BurgerMenuSvg'
 import logo from '../../assets/the-be-sharps.png'
 import { Link } from 'react-router-dom'
 import UserSvg from '../svg-components/UserSvg'
 import HeaderMenu from './HeaderMenu'
+import type { UserInfo } from '@/types/types'
+import LiButton from '../LiButton'
 
 interface HeaderProps {
   onLoginClick: () => void
+  userInfo: UserInfo | null
+  onLogout: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
+const Header: React.FC<HeaderProps> = ({
+  onLoginClick,
+  userInfo,
+  onLogout
+}) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
-  const [user, setUser] = useState<{ full_name: string } | null>(null)
-
   const burgerDivRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user')
-    if (storedUser) setUser(JSON.parse(storedUser))
-  }, [])
 
   const handleOpenCloseMenu = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -30,8 +31,8 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
 
   const handleLogout = (): void => {
     localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    setUser(null)
+    localStorage.removeItem('userInfo')
+    onLogout()
     window.location.href = '/inicio'
   }
 
@@ -47,44 +48,50 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
         </Link>
       </div>
       <div className="flex items-center gap-2">
-        {user === null ? (
-          <ol className="flex items-center gap-2">
-            <li
-              className="cursor-pointer rounded-md p-2 text-xl font-medium tracking-wide text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-amber-300 hover:text-amber-800"
-              onClick={onLoginClick}
-            >
-              Iniciar sesión
-            </li>
-            <div className="px-2">
-              <div className="h-5 w-0.5 bg-white" />
-            </div>
-            <li className="cursor-pointer rounded-md p-2 text-xl font-medium tracking-wide text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-amber-300 hover:text-amber-800">
-              <Link to="/register">Registrarse</Link>
-            </li>
-          </ol>
-        ) : (
-          <ol className="flex items-center gap-2">
-            <li>
-              <Link className="flex items-center gap-2" to="/perfil">
-                <div className="w-8 stroke-white">
-                  <UserSvg />
-                </div>
-                <div className="cursor-pointer text-xl font-medium tracking-wide text-white">
-                  {user.full_name}
-                </div>
-              </Link>
-            </li>
-            <div className="px-2">
-              <div className="h-5 w-0.5 bg-white" />
-            </div>
-            <li
-              className="cursor-pointer text-xl font-medium tracking-wide text-white"
-              onClick={handleLogout}
-            >
-              Salir
-            </li>
-          </ol>
-        )}
+        <ol className="flex items-center gap-2">
+          {userInfo === null ? (
+            <>
+              {' '}
+              <LiButton
+                cssClasess="hover:scale-105"
+                handleClick={onLoginClick}
+                content="Iniciar sesión"
+              />
+              <div className="px-2">
+                <div className="h-5 w-0.5 bg-white" />
+              </div>
+              <LiButton
+                cssClasess="hover:scale-105"
+                content="Registrarse"
+                link={<Link to="/register">Registrarse</Link>}
+              />
+            </>
+          ) : (
+            <>
+              <LiButton
+                cssClasess="hover:scale-105 group"
+                link={
+                  <Link className="flex items-center gap-2" to="/perfil">
+                    <div className="w-8 stroke-white group-hover:stroke-amber-800">
+                      <UserSvg />
+                    </div>
+                    <div className="text-xl font-medium tracking-wide text-white group-hover:text-amber-800">
+                      {userInfo.full_name}
+                    </div>
+                  </Link>
+                }
+              />
+              <div className="px-2">
+                <div className="h-5 w-0.5 bg-white" />
+              </div>
+              <LiButton
+                cssClasess="hover:scale-110"
+                handleClick={handleLogout}
+                content="Salir"
+              />
+            </>
+          )}
+        </ol>
         <div
           className="w-10 cursor-pointer rounded-md p-0.5 text-white transition-all duration-300 hover:scale-110 hover:bg-amber-300 hover:text-amber-800"
           ref={burgerDivRef}
