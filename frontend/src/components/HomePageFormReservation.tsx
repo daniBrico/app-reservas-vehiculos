@@ -6,6 +6,16 @@ import CitySelect from './CitySelect'
 
 // interface HomePageFormReservationProps {}
 
+const cities = [
+  { key: 'bahia-blanca', value: 'Bahía Blanca' },
+  { key: 'buenos-aires', value: 'Buenos Aires' },
+  { key: 'cordoba', value: 'Córdoba' },
+  { key: 'rosario', value: 'Rosario' },
+  { key: 'mendoza', value: 'Mendoza' },
+  { key: 'neuquen', value: 'Neuquén' },
+  { key: 'tucuman', value: 'San Miguel de Tucumán' }
+]
+
 const HomePageFormReservation: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<string>('')
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
@@ -41,8 +51,9 @@ const HomePageFormReservation: React.FC = () => {
         className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16"
       >
         <CitySelect
-          selectedCity={selectedCity}
-          setSelectedCity={setSelectedCity}
+          selectedValue={selectedCity}
+          setSelectedValue={setSelectedCity}
+          selectItems={cities}
           cssClasess="min-w-56"
         />
         <DatePicker

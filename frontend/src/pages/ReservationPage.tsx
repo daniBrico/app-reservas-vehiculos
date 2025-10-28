@@ -2,9 +2,19 @@ import CitySelect from '@/components/CitySelect'
 import { DatePicker } from '@/components/DatePicker'
 import TimeSelect from '@/components/TimeSelect'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useVehicles from '@/hooks/useVehicles'
 import VehicleInformation from '@/components/VehicleInformation'
+
+const cities = [
+  { key: 'bahia-blanca', value: 'Bahía Blanca' },
+  { key: 'buenos-aires', value: 'Buenos Aires' },
+  { key: 'cordoba', value: 'Córdoba' },
+  { key: 'rosario', value: 'Rosario' },
+  { key: 'mendoza', value: 'Mendoza' },
+  { key: 'neuquen', value: 'Neuquén' },
+  { key: 'tucuman', value: 'San Miguel de Tucumán' }
+]
 
 const MakeReservation: React.FC = () => {
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
@@ -39,8 +49,9 @@ const MakeReservation: React.FC = () => {
           className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md"
         >
           <CitySelect
-            selectedCity={selectedCity}
-            setSelectedCity={setSelectedCity}
+            selectedValue={selectedCity}
+            setSelectedValue={setSelectedCity}
+            selectItems={cities}
             cssClasess="w-full"
           />
           <DatePicker

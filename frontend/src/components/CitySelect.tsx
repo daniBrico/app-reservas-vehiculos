@@ -1,4 +1,3 @@
-// Date Picker
 import {
   Select,
   SelectContent,
@@ -8,32 +7,42 @@ import {
 } from '@/components/ui/select'
 import CancelMarkSvg from './svg-components/CancelMarkSvg'
 
+type SelectItems = { key: string; value: string }[]
+
 interface CitySelectProps {
-  selectedCity: string
-  setSelectedCity: React.Dispatch<React.SetStateAction<string>>
+  selectedValue: string
+  setSelectedValue: React.Dispatch<React.SetStateAction<string>>
+  selectItems: SelectItems
   cssClasess?: string
 }
 
 const CitySelect: React.FC<CitySelectProps> = ({
-  selectedCity,
-  setSelectedCity,
+  selectedValue,
+  setSelectedValue,
+  selectItems,
   cssClasess
 }) => {
-  const handleClearSelect = (): void => setSelectedCity('')
+  const handleClearSelect = (): void => setSelectedValue('')
 
   return (
     <div className={`relative ${cssClasess}`}>
-      <Select value={selectedCity} onValueChange={setSelectedCity}>
+      <Select value={selectedValue} onValueChange={setSelectedValue}>
         <SelectTrigger className="w-full cursor-pointer bg-white text-gray-500">
           <SelectValue placeholder="Seleccione lugar de entrega" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="bahia-blanca" className="cursor-pointer">
-            Bahía blanca
-          </SelectItem>
+          {selectItems.map((item) => (
+            <SelectItem
+              key={item.key}
+              value={item.value}
+              className="cursor-pointer"
+            >
+              {item.value}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
-      {selectedCity !== '' && (
+      {selectedValue !== '' && (
         <button
           className="absolute top-0 right-full z-1000 mt-0.5 mr-2 w-8 cursor-pointer rounded-full border border-gray-200 bg-white stroke-stone-300 transition-all duration-300 ease-in-out hover:scale-110 hover:rotate-180 hover:bg-stone-800 hover:stroke-white"
           onClick={handleClearSelect}
