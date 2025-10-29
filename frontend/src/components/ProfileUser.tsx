@@ -1,10 +1,8 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
-export default function RegisterForm() {
+export default function ModifyUser() {
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
     full_name: '',
     last_name: '',
     country: '',
@@ -13,13 +11,34 @@ export default function RegisterForm() {
     phone_number: '',
     fiscal_condition: '',
     document_type: '',
-    document_number: ''
+    document_number: '',
+    current_password: '',
+    new_password: ''
   })
 
   const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
 
+useEffect(() => {
+    const storedUser = localStorage.getItem('userInfo')
+    if (storedUser) {
+      const user = JSON.parse(storedUser)
+      setFormData({
+        email: user.email || '',
+        full_name: user.full_name || '',
+        last_name: user.last_name || '',
+        country: user.country || '',
+        address: user.address || '',
+        address_number: user.address_number || '',
+        phone_number: user.phone_number || '',
+        fiscal_condition: user.fiscal_condition || '',
+        document_type: user.document_type || '',
+        document_number: user.document_number || '',
+        current_password: '',
+        new_password: ''
+      })
+    }
+  }, [])
+  
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -32,50 +51,29 @@ export default function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    const token = localStorage.getItem('token')
+
     try {
-      const res = await fetch('http://localhost:3000/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch('http://localhost:3000/api/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify(formData)
       })
 
       const data = await res.json()
 
       if (res.ok) {
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userInfo', JSON.stringify(data.user))
-
-        setMessage(`Bienvenido ${data.user.full_name}, registro exitoso! Se redirigira a reservar en un instante`)
-
-        setFormData({
-          email: '',
-          password: '',
-          full_name: '',
-          last_name: '',
-          country: '',
-          address: '',
-          address_number: '',
-          phone_number: '',
-          fiscal_condition: '',
-          document_type: '',
-          document_number: ''
-        })
-
-        setTimeout(() => {
-          setMessage('')
-          navigate('/inicio')
-          window.location.reload()
-        }, 2000)
+        setMessage('Datos actualizados correctamente')
+        localStorage.setItem('user', JSON.stringify(data.user))
+        setFormData(data.user)
       } else {
-        setMessage(data.message || 'Error desconocido')
-        setTimeout(() => setMessage(''), 5000)
+        setMessage(data.message || 'Error al actualizar datos')
       }
     } catch (err) {
       setMessage('Error de conexión con el servidor')
-      setTimeout(() => setMessage(''), 5000)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -86,7 +84,7 @@ export default function RegisterForm() {
         className="w-full max-w-lg space-y-4 rounded-xl bg-white p-8 shadow-lg"
       >
         <h2 className="mb-6 text-center text-3xl font-bold text-amber-800">
-          Registro de Usuario
+          Mis datos
         </h2>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -96,7 +94,6 @@ export default function RegisterForm() {
             value={formData.full_name}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
           />
           <input
             name="last_name"
@@ -104,7 +101,6 @@ export default function RegisterForm() {
             value={formData.last_name}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
           />
           <input
             name="email"
@@ -113,16 +109,6 @@ export default function RegisterForm() {
             value={formData.email}
             onChange={handleChange}
             className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Contraseña"
-            value={formData.password}
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
           />
           <input
             name="country"
@@ -130,7 +116,6 @@ export default function RegisterForm() {
             value={formData.country}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
           />
           <input
             name="address"
@@ -138,7 +123,6 @@ export default function RegisterForm() {
             value={formData.address}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
           />
           <input
             name="address_number"
@@ -147,7 +131,6 @@ export default function RegisterForm() {
             value={formData.address_number}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
           />
           <input
             name="phone_number"
@@ -156,8 +139,8 @@ export default function RegisterForm() {
             value={formData.phone_number}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
           />
+
           <label htmlFor="fiscal_condition" className="sr-only">
             Condición fiscal
           </label>
@@ -167,8 +150,7 @@ export default function RegisterForm() {
             value={formData.fiscal_condition}
             onChange={handleChange}
             className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          >
+            required>
             <option value="" disabled>
               Condición fiscal
             </option>
@@ -178,7 +160,7 @@ export default function RegisterForm() {
             <option value="Exento">Exento</option>
             <option value="No alcanzado">No alcanzado</option>
           </select>
-
+          
           <label htmlFor="document_type" className="sr-only">
             Tipo de documento
           </label>
@@ -188,8 +170,7 @@ export default function RegisterForm() {
             value={formData.document_type}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          >
+            required>
             <option value="" disabled>
               Tipo de documento
             </option>
@@ -197,6 +178,7 @@ export default function RegisterForm() {
             <option value="LE">LE</option>
             <option value="LC">LC</option>
           </select>
+
           <input
             name="document_number"
             type="number"
@@ -204,16 +186,31 @@ export default function RegisterForm() {
             value={formData.document_number}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
+          />
+
+          <input
+            name="current_password"
+            type="password"
+            placeholder="Contraseña actual"
+            value={formData.current_password}
+            onChange={handleChange}
+            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+          />
+          <input
+            name="new_password"
+            type="password"
+            placeholder="Nueva contraseña"
+            value={formData.new_password}
+            onChange={handleChange}
+            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
           />
         </div>
 
         <button
           type="submit"
-          disabled={loading}
-          className="mt-4 w-full rounded-lg bg-amber-800 py-3 font-bold text-white transition hover:bg-amber-900 disabled:bg-amber-400"
+          className="mt-4 w-full rounded-lg bg-amber-800 py-3 font-bold text-white transition hover:bg-amber-900"
         >
-          {loading ? 'Registrando...' : 'Registrarse'}
+          Modificar cambios
         </button>
 
         {message && (

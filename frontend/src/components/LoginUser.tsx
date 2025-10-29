@@ -29,7 +29,6 @@ const LoginUser: React.FC<LoginUserProps> = ({
 
   useEffect(() => {
     document.body.style.overflowY = 'hidden'
-
     return (): void => {
       document.body.style.overflowY = 'auto'
     }
@@ -58,33 +57,50 @@ const LoginUser: React.FC<LoginUserProps> = ({
         setMessage(`Bienvenido ${payload.full_name}`)
       }
 
-      onClose()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // Espera 4 segundos antes de cerrar el modal
+      setTimeout(() => {
+        setMessage('')
+        onClose()
+      }, 4000)
+
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al iniciar sesión')
       setMessage('')
+
+      // Borra el mensaje de error luego de 3 segundos
+      setTimeout(() => {
+        setError('')
+      }, 3000)
     }
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
       <div
-        className="w-80 rounded-lg bg-white p-8 shadow-lg"
+        className="w-80 rounded-lg bg-white p-8 shadow-lg relative"
         ref={loginDivContainer}
       >
-        <h2 className="mb-4 text-center text-2xl font-bold">Iniciar Sesión</h2>
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-2 right-2 bg-amber-400 rounded px-3 py-1 text-white hover:bg-amber-500"
+        >
+          x
+        </button>
+
+        <h2 className="mb-4 text-center text-2xl font-bold">Ingresar</h2>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <div className="flex flex-col">
             <label htmlFor="email" className="mb-1 font-semibold">
-              Email
+              Correo
             </label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Ingresa tu email"
+              placeholder="Ingresar correo"
               required
               className="rounded border p-2"
             />
@@ -99,7 +115,7 @@ const LoginUser: React.FC<LoginUserProps> = ({
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Ingresa tu contraseña"
+              placeholder="Ingresar contraseña"
               required
               className="rounded border p-2"
             />
