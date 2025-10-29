@@ -13,19 +13,19 @@ interface CustomSelectProps {
   selectedValue: string
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>
   selectItems: SelectItems
-  cssClasess?: string
+  cssClasses?: string
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
   selectedValue,
   setSelectedValue,
   selectItems,
-  cssClasess
+  cssClasses
 }) => {
   const handleClearSelect = (): void => setSelectedValue('')
 
   return (
-    <div className={`relative ${cssClasess}`}>
+    <div className={`relative ${cssClasses}`}>
       <Select value={selectedValue} onValueChange={setSelectedValue}>
         <SelectTrigger className="w-full cursor-pointer bg-white text-base text-gray-900">
           <SelectValue placeholder="Seleccione lugar de entrega" />

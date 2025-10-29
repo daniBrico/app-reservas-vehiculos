@@ -33,14 +33,43 @@ export interface IUser extends Document {
   document_number: number
 }
 
+export interface IReservation extends Document {
+  _id?: Schema.Types.ObjectId
+  user_id: string
+  vehicle_id: Schema.Types.ObjectId
+  pickup_date: Date
+  return_date: Date
+  pickup_time: string
+  return_time: string
+  status: string | undefined
+  pickup_location: string
+  discount_code?: string
+  insurance_policy_id?: Schema.Types.ObjectId | null
+}
+
 // Login types
-interface UserInfo {
+export interface UserInfo {
   _id: Schema.Types.ObjectId
   email: EmailType
   full_name: string
 }
 
-interface LoginResponse {
+export interface TokenPayload {
+  _id: string
+  email: EmailType
+  full_name: string
+}
+
+export interface LoginResponse {
   token: string
-  userInfo: UserInfo
+}
+
+// Response
+export interface LoginResponse {
+  token: string
+}
+
+export interface ReservationResponse {
+  message: string
+  reservation: IReservation
 }

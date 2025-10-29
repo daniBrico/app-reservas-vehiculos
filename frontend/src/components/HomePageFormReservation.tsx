@@ -54,19 +54,19 @@ const HomePageFormReservation: React.FC = () => {
           selectedValue={selectedCity}
           setSelectedValue={setSelectedCity}
           selectItems={cities}
-          cssClasess="min-w-56"
+          cssClasses="min-w-56"
         />
         <DatePicker
           placeholder="Fecha de retiro"
           onDateChange={setPickupDate}
           disabled={{ before: new Date() }}
-          cssClasess="text-base"
+          cssClasses="text-base"
         />
         <DatePicker
           placeholder="Fecha de devolución"
           onDateChange={setReturnDate}
           disabled={{ before: new Date() }}
-          cssClasess="text-base"
+          cssClasses="text-base"
         />
 
         <input

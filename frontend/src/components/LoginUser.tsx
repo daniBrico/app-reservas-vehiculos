@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
 import { registerUser } from '@/api/userApi'
-import type { UserInfo } from '@/types/types'
+import type { TokenPayload, UserInfo } from '@/types/types'
+import { jwtDecode } from 'jwt-decode'
 
 interface LoginUserProps {
   onClose: () => void
@@ -40,15 +41,22 @@ const LoginUser: React.FC<LoginUserProps> = ({
     try {
       const res = await registerUser(email, password)
 
-      const userInfo = res.userInfo
       const token = res.token
-      localStorage.setItem('token', token)
-      localStorage.setItem('userInfo', JSON.stringify(userInfo))
 
-      onHandleSubmit(userInfo)
+      if (token) {
+        const payload: TokenPayload = jwtDecode(token)
 
-      setError('')
-      setMessage(`Bienvenido ${res.userInfo.full_name}`)
+        localStorage.setItem('token', token)
+        const userInfo: UserInfo = {
+          _id: payload._id,
+          full_name: payload.full_name,
+          email: payload.email
+        }
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+        onHandleSubmit(userInfo)
+        setError('')
+        setMessage(`Bienvenido ${payload.full_name}`)
+      }
 
       onClose()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

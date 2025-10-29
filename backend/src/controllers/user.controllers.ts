@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import UserModel from '../models/mongoDB/schemas/user.model'
+import UserModel from '../models/mongodb/schemas/user.model'
 import type { IUser } from '../types/types'
 
 // Registro de usuario
@@ -91,18 +91,17 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     }
 
     const token = jwt.sign(
-      { id: userFounded._id, email: userFounded.email },
+      {
+        _id: userFounded._id,
+        email: userFounded.email,
+        full_name: userFounded.full_name
+      },
       process.env.JWT_SECRET!,
       { expiresIn: '1h' }
     )
 
     res.status(200).json({
       message: 'Login exitoso',
-      userInfo: {
-        id: userFounded._id,
-        full_name: userFounded.full_name,
-        email: userFounded.email
-      },
       token
     })
   } catch (error) {

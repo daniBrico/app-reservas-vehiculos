@@ -16,14 +16,14 @@ interface datePickerProps {
   placeholder: string
   onDateChange?: (date: Date | undefined) => void
   disabled: Matcher | Matcher[]
-  cssClasess?: string
+  cssClasses?: string
 }
 
 export function DatePicker({
   placeholder,
   onDateChange,
   disabled,
-  cssClasess
+  cssClasses
 }: datePickerProps): JSX.Element {
   const [date, setDate] = useState<Date>()
 
@@ -38,7 +38,7 @@ export function DatePicker({
         <Button
           variant="outline"
           data-empty={!date}
-          className={`data-[empty=true]:text-muted-foreground justify-start text-left font-normal ${cssClasess}`}
+          className={`data-[empty=true]:text-muted-foreground justify-start text-left font-normal ${cssClasses}`}
         >
           <CalendarIcon />
           {date ? format(date, 'PPP') : <span>{placeholder}</span>}
