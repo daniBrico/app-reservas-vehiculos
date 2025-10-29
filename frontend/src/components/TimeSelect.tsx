@@ -7,7 +7,11 @@ import {
 } from '@/components/ui/select'
 import { useState } from 'react'
 
-const TimeSelect: React.FC = () => {
+interface TimeSelectProps {
+  onTimeChange: (timeValue: string) => void
+}
+
+const TimeSelect: React.FC<TimeSelectProps> = ({ onTimeChange }) => {
   const [selectedTime, setSelectedTime] = useState('')
 
   // Genera horarios desde 16:00 hasta 21:30 en intervalos de 15 minutos
@@ -22,12 +26,20 @@ const TimeSelect: React.FC = () => {
     }
   }
 
+  const handleOnValueChange = (timeValue: string): void => {
+    setSelectedTime(timeValue)
+    onTimeChange(timeValue)
+  }
+
   return (
-    <Select value={selectedTime} onValueChange={setSelectedTime}>
-      <SelectTrigger className="w-full bg-white">
-        <SelectValue />
+    <Select
+      value={selectedTime}
+      onValueChange={(value) => handleOnValueChange(value)}
+    >
+      <SelectTrigger className="w-full bg-white text-base">
+        <SelectValue placeholder="00:00" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="max-h-52">
         {times.map((time) => (
           <SelectItem key={time} value={time}>
             {time}

@@ -1,13 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
+import { registerUser } from '@/api/userApi'
+import type { TokenPayload, UserInfo } from '@/types/types'
+import { jwtDecode } from 'jwt-decode'
 
 interface LoginUserProps {
   onClose: () => void
   isLoginOpen: boolean
+  onHandleSubmit: (userInfo: UserInfo) => void
 }
 
-const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
+const LoginUser: React.FC<LoginUserProps> = ({
+  onClose,
+  isLoginOpen,
+  onHandleSubmit
+}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -22,7 +29,6 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
 
   useEffect(() => {
     document.body.style.overflowY = 'hidden'
-
     return (): void => {
       document.body.style.overflowY = 'auto'
     }
@@ -32,45 +38,69 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
     e.preventDefault()
 
     try {
-      const res = await axios.post('http://localhost:3000/api/login', {
-        email,
-        password
-      })
+      const res = await registerUser(email, password)
 
-      const user = res.data.user
-      const token = res.data.token
-      localStorage.setItem('token', token)
-      localStorage.setItem('user', JSON.stringify(user))
+      const token = res.token
 
-      setError('')
-      setMessage(`Bienvenido ${res.data.user.full_name}`)
+      if (token) {
+        const payload: TokenPayload = jwtDecode(token)
 
-      onClose()
+        localStorage.setItem('token', token)
+        const userInfo: UserInfo = {
+          _id: payload._id,
+          full_name: payload.full_name,
+          email: payload.email
+        }
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+        onHandleSubmit(userInfo)
+        setError('')
+        setMessage(`Bienvenido ${payload.full_name}`)
+      }
+
+      // Espera 4 segundos antes de cerrar el modal
+      setTimeout(() => {
+        setMessage('')
+        onClose()
+      }, 4000)
+
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al iniciar sesión')
       setMessage('')
+
+      // Borra el mensaje de error luego de 3 segundos
+      setTimeout(() => {
+        setError('')
+      }, 3000)
     }
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
       <div
-        className="w-80 rounded-lg bg-white p-8 shadow-lg"
+        className="w-80 rounded-lg bg-white p-8 shadow-lg relative"
         ref={loginDivContainer}
       >
-        <h2 className="mb-4 text-center text-2xl font-bold">Iniciar Sesión</h2>
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-2 right-2 bg-amber-400 rounded px-3 py-1 text-white hover:bg-amber-500"
+        >
+          x
+        </button>
+
+        <h2 className="mb-4 text-center text-2xl font-bold">Ingresar</h2>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <div className="flex flex-col">
             <label htmlFor="email" className="mb-1 font-semibold">
-              Email
+              Correo
             </label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Ingresa tu email"
+              placeholder="Ingresar correo"
               required
               className="rounded border p-2"
             />
@@ -85,7 +115,7 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Ingresa tu contraseña"
+              placeholder="Ingresar contraseña"
               required
               className="rounded border p-2"
             />
