@@ -26,14 +26,19 @@ export function DatePicker({
   cssClasses
 }: datePickerProps): JSX.Element {
   const [date, setDate] = useState<Date>()
+  const [open, setOpen] = useState(false)
 
   const handleSelect = (selectedDate: Date | undefined): void => {
     setDate(selectedDate)
     onDateChange?.(selectedDate)
+
+    if (selectedDate) {
+      setOpen(false)
+    }
   }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"

@@ -28,13 +28,12 @@ export const useReservation = (): useReservationReturn => {
 
     try {
       const data = await makeReservation(token, reservation)
-
+      console.log('Se hace la peti')
       setReservation(data)
+      setLoading(false)
     } catch (err) {
       if (err instanceof Error) setError(err.message)
       else setError(String(err))
-    } finally {
-      setLoading(false)
     }
   }
 

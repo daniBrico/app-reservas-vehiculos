@@ -41,7 +41,6 @@ const ReservationPage: React.FC = () => {
   )
   const [showMessage, setShowMessage] = useState(false)
   const [message, setMessage] = useState('')
-  const [hasAttemptedReservation, setHasAttemptedReservation] = useState(false)
 
   const { vehicles } = useVehicles()
   const {
@@ -51,65 +50,68 @@ const ReservationPage: React.FC = () => {
   } = useReservation()
 
   useEffect(() => {
-    if (message === '') return
-
-    setShowMessage(true)
-
-    const messageTimeout = setTimeout(() => {
-      setShowMessage(false)
-    }, 3000)
-
-    return (): void => {
-      clearTimeout(messageTimeout)
-      setMessage('')
+    if (showMessage) {
+      const timeout = setTimeout(() => setShowMessage(false), 3000)
+      return (): void => {
+        clearTimeout(timeout)
+        setMessage('')
+      }
     }
-  }, [message])
+  }, [showMessage])
 
   useEffect(() => {
-    if (!hasAttemptedReservation) return
-    if (reservationIsLoading) return
-
-    if (reservationError === null) {
-      setMessage('Reserva creada exitosamente')
+    if (reservationError) {
+      setMessage('Ocurrió un error al realizar la reserva. Intente nuevamente.')
+      setShowMessage(true)
       return
     }
 
-    setMessage('Ha ocurrido un error.')
-  }, [reservationIsLoading, hasAttemptedReservation])
+    if (reservationIsLoading && reservationError === null) {
+      setMessage('Reserva realizada con éxito.')
+      setShowMessage(true)
+    }
+  }, [reservationError, reservationIsLoading])
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
+    console.log('🚀 ~ ReservationPage ~ message: ', message)
     e.preventDefault()
 
     // Validaciones
-    if (!selectedCity) {
+    if (selectedCity === '') {
       setMessage('Seleccione una ciudad.')
+      setShowMessage(true)
       return
     }
 
     if (!pickupDate) {
       setMessage('Seleccione la fecha de retiro.')
+      setShowMessage(true)
       return
     }
 
     if (!returnDate) {
       setMessage('Seleccione la fecha de devolución.')
+      setShowMessage(true)
       return
     }
 
-    if (!pickupTime) {
+    if (pickupTime === '') {
       setMessage('Seleccione la hora de retiro.')
+      setShowMessage(true)
       return
     }
 
-    if (!returnTime) {
+    if (returnTime === '') {
       setMessage('Seleccione la hora de devolución.')
+      setShowMessage(true)
       return
     }
 
-    if (!vehicleIDSelected) {
+    if (vehicleIDSelected === null) {
       setMessage('Seleccione un vehículo.')
+      setShowMessage(true)
       return
     }
 
@@ -118,6 +120,7 @@ const ReservationPage: React.FC = () => {
 
     if (pickupDateTime > returnDateTime) {
       setMessage('La fecha de devolución no puede ser anterior a la de retiro.')
+      setShowMessage(true)
       return
     }
 
@@ -140,7 +143,6 @@ const ReservationPage: React.FC = () => {
     } as IReservation
 
     await makeReservationRequest(token, reservation)
-    setHasAttemptedReservation(true)
   }
 
   const handleDiscountCodeChange = (
@@ -256,7 +258,7 @@ const ReservationPage: React.FC = () => {
           </div>
           <div
             className={classNames(
-              'absolute top-full mt-2 flex w-full items-center justify-center rounded-md border border-gray-200 bg-white p-4 shadow-md transition-all duration-300 ease-in-out',
+              'pointer-events-none absolute top-full mt-2 flex w-full items-center justify-center rounded-md border border-gray-200 bg-white p-4 shadow-md transition-all duration-300 ease-in-out',
               {
                 'translate-y-0 opacity-100': showMessage,
                 '-translate-y-full opacity-0': !showMessage
