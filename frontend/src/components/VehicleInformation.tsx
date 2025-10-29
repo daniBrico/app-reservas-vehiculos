@@ -18,7 +18,7 @@ const VehicleInformation: React.FC<VehicleInformationProps> = ({
   return (
     <div className="flex w-full items-center rounded-md border py-4 shadow-md">
       <div className="w-[60%]">
-        <img src={vehicleLogo} alt="Logo del vehículo" className="w-96" />
+        <img src={vehicleLogo} alt="Logo del vehículo" className="w-72" />
       </div>
       <div className="flex w-full">
         <div className="w-1/2">

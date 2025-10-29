@@ -42,8 +42,8 @@ const MakeReservation: React.FC = () => {
   const { vehicles } = useVehicles()
 
   return (
-    <section className="mt-10 flex justify-center gap-4 px-16">
-      <aside className="w-[30%]">
+    <section className="my-10 flex justify-center gap-4 px-16">
+      <aside className="flex w-[40%] flex-col gap-4">
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md"
@@ -58,13 +58,13 @@ const MakeReservation: React.FC = () => {
             placeholder="Fecha de retiro"
             onDateChange={setPickupDate}
             disabled={{ before: new Date() }}
-            cssClasess="w-full"
+            cssClasess="w-full text-base"
           />
           <DatePicker
             placeholder="Fecha de devolución"
             onDateChange={setReturnDate}
             disabled={{ before: new Date() }}
-            cssClasess="w-full"
+            cssClasess="w-full text-base"
           />
 
           <div className="flex w-full gap-2">
@@ -75,7 +75,7 @@ const MakeReservation: React.FC = () => {
           <input
             type="text"
             placeholder="Código de descuento"
-            className="h-9 w-full rounded-sm border border-gray-200 bg-white pl-2"
+            className="h-9 w-full rounded-sm border border-gray-200 bg-white pl-2 text-base placeholder:text-base"
             onChange={handleDiscountCodeChange}
             value={discountCode}
           />
@@ -88,7 +88,17 @@ const MakeReservation: React.FC = () => {
             Continuar
           </Button>
         </form>
-        {/* <div>filtro de autos</div> */}
+        <div className="flex h-96 w-full flex-col rounded-md border border-gray-200 p-4 shadow-md">
+          <h4 className="w-full text-center text-xl font-bold">Categorías</h4>
+          <div>
+            <ol>
+              <li>
+                <input type="checkbox" name="" id="" className="" />
+                <label htmlFor="">Categoria de filtro</label>
+              </li>
+            </ol>
+          </div>
+        </div>
       </aside>
       <article className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md">
         {vehicles &&

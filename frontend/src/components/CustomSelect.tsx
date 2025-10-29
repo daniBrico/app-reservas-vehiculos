@@ -27,7 +27,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   return (
     <div className={`relative ${cssClasess}`}>
       <Select value={selectedValue} onValueChange={setSelectedValue}>
-        <SelectTrigger className="w-full cursor-pointer bg-white text-gray-900">
+        <SelectTrigger className="w-full cursor-pointer bg-white text-base text-gray-900">
           <SelectValue placeholder="Seleccione lugar de entrega" />
         </SelectTrigger>
         <SelectContent>

@@ -60,17 +60,19 @@ const HomePageFormReservation: React.FC = () => {
           placeholder="Fecha de retiro"
           onDateChange={setPickupDate}
           disabled={{ before: new Date() }}
+          cssClasess="text-base"
         />
         <DatePicker
           placeholder="Fecha de devolución"
           onDateChange={setReturnDate}
           disabled={{ before: new Date() }}
+          cssClasess="text-base"
         />
 
         <input
           type="text"
           placeholder="Código de descuento"
-          className="h-9 rounded-sm bg-white pl-2"
+          className="h-9 rounded-sm bg-white pl-2 text-base"
           onChange={handleDiscountCodeChange}
           value={discountCode}
         />
@@ -78,7 +80,7 @@ const HomePageFormReservation: React.FC = () => {
         <Button
           disabled={selectedCity === ''}
           type="submit"
-          className="cursor-pointer bg-white font-medium text-gray-400 shadow-md shadow-stone-600 transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-gray-200 disabled:cursor-not-allowed disabled:bg-white disabled:text-gray-300 disabled:opacity-100 disabled:shadow-none"
+          className="cursor-pointer bg-white text-base font-medium text-gray-400 shadow-md shadow-stone-600 transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-gray-200 disabled:cursor-not-allowed disabled:bg-white disabled:text-gray-300 disabled:opacity-100 disabled:shadow-none"
         >
           Continuar
         </Button>

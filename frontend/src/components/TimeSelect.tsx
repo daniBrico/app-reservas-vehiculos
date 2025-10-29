@@ -24,8 +24,8 @@ const TimeSelect: React.FC = () => {
 
   return (
     <Select value={selectedTime} onValueChange={setSelectedTime}>
-      <SelectTrigger className="w-full bg-white">
-        <SelectValue />
+      <SelectTrigger className="w-full bg-white text-base">
+        <SelectValue placeholder="00:00" />
       </SelectTrigger>
       <SelectContent>
         {times.map((time) => (
