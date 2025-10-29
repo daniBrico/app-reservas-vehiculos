@@ -10,8 +10,8 @@ import CancelMarkSvg from './svg-components/CancelMarkSvg'
 type SelectItems = { key: string; value: string }[]
 
 interface CustomSelectProps {
-  selectedValue: string
-  setSelectedValue: React.Dispatch<React.SetStateAction<string>>
+  selectedValue: string | undefined
+  setSelectedValue: React.Dispatch<React.SetStateAction<string | undefined>>
   selectItems: SelectItems
   cssClasses?: string
 }
@@ -42,7 +42,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           ))}
         </SelectContent>
       </Select>
-      {selectedValue !== '' && (
+      {selectedValue !== '' && selectedValue !== undefined && (
         <button
           className="absolute top-0 right-full z-1000 mt-0.5 mr-2 w-8 cursor-pointer rounded-full border border-gray-200 bg-white stroke-stone-300 transition-all duration-300 ease-in-out hover:scale-110 hover:rotate-180 hover:bg-stone-800 hover:stroke-white"
           onClick={handleClearSelect}

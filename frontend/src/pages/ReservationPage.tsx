@@ -169,14 +169,14 @@ const ReservationPage: React.FC = () => {
     // Caja manual
     if (
       activeFilters.includes('manual-transmission') &&
-      v.transmissionType !== 'manual'
+      v.transmissionType.toLocaleLowerCase() !== 'manual'
     )
       return false
 
     // Caja automática
     if (
       activeFilters.includes('automatic-transmission') &&
-      v.transmissionType !== 'automatic'
+      v.transmissionType.toLocaleLowerCase() !== 'automatic'
     )
       return false
 
