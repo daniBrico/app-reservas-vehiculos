@@ -8,7 +8,7 @@ interface useVehicleReturn {
   loading: boolean
 }
 
-export const useVehicle = (): useVehicleReturn => {
+export const useVehicles = (): useVehicleReturn => {
   const [vehicles, setVehicles] = useState<IVehicle[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -36,4 +36,4 @@ export const useVehicle = (): useVehicleReturn => {
   return { vehicles, loading, error }
 }
 
-export default useVehicle
+export default useVehicles

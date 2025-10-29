@@ -3,6 +3,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --animate-loading-spinner: loading-spinner 0.9s linear infinite;
+
+  @keyframes loading-spinner {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -122,4 +136,8 @@
 /* Slick Slider */
 .slick-slide > div {
   margin: 0 0.5rem;
+}
+
+body {
+  font-family: 'Questrial';
 }

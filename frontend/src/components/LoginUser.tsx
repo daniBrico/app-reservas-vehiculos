@@ -1,13 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
+import { registerUser } from '@/api/userApi'
+import type { TokenPayload, UserInfo } from '@/types/types'
+import { jwtDecode } from 'jwt-decode'
 
 interface LoginUserProps {
   onClose: () => void
   isLoginOpen: boolean
+  onHandleSubmit: (userInfo: UserInfo) => void
 }
 
-const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
+const LoginUser: React.FC<LoginUserProps> = ({
+  onClose,
+  isLoginOpen,
+  onHandleSubmit
+}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -32,20 +39,27 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
     e.preventDefault()
 
     try {
-      const res = await axios.post('http://localhost:3000/api/login', {
-        email,
-        password
-      })
+      const res = await registerUser(email, password)
 
-      const user = res.data.user
-      const token = res.data.token
-      localStorage.setItem('token', token)
-      localStorage.setItem('user', JSON.stringify(user))
+      const token = res.token
 
-      setError('')
-      setMessage(`Bienvenido ${res.data.user.full_name}`)
+      if (token) {
+        const payload: TokenPayload = jwtDecode(token)
+
+        localStorage.setItem('token', token)
+        const userInfo: UserInfo = {
+          _id: payload._id,
+          full_name: payload.full_name,
+          email: payload.email
+        }
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+        onHandleSubmit(userInfo)
+        setError('')
+        setMessage(`Bienvenido ${payload.full_name}`)
+      }
 
       onClose()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al iniciar sesión')
       setMessage('')

@@ -10,6 +10,14 @@ const VehicleSchema = new Schema<IVehicle>({
     type: String,
     required: true
   },
+  transmissionType: {
+    type: String,
+    required: true
+  },
+  seatingCapacity: {
+    type: Number,
+    required: true
+  },
   year: {
     type: Number,
     required: true
