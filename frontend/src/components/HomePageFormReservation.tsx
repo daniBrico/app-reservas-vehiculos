@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DatePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
 import CustomSelect from './CustomSelect'
+import { Link } from 'react-router-dom'
 // import { format } from 'date-fns'
 
 // interface HomePageFormReservationProps {}
@@ -17,10 +18,10 @@ const cities = [
 ]
 
 const HomePageFormReservation: React.FC = () => {
-  const [selectedCity, setSelectedCity] = useState<string>('')
+  const [selectedCity, setSelectedCity] = useState<string | undefined>()
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
   const [returnDate, setReturnDate] = useState<Date | undefined>()
-  const [discountCode, setDiscountCode] = useState('')
+  const [discountCode, setDiscountCode] = useState<string | undefined>()
 
   const handleDiscountCodeChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -33,11 +34,22 @@ const HomePageFormReservation: React.FC = () => {
     setDiscountCode(value)
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  //   e.preventDefault()
 
-    console.log('Se presionó el submit')
-  }
+  //   console.log('Se presionó el submit')
+  // }
+
+  useEffect(() => {
+    const reservationInfo = {
+      selectedCity,
+      pickupDate,
+      returnDate,
+      discountCode
+    }
+
+    localStorage.setItem('reservationInfo', JSON.stringify(reservationInfo))
+  }, [selectedCity, pickupDate, returnDate, discountCode])
 
   return (
     <>
@@ -46,27 +58,24 @@ const HomePageFormReservation: React.FC = () => {
           Alquiler de autos en Argentina con Sharps
         </h1>
       </div>
-      <form
-        onSubmit={(e) => handleSubmit(e)}
-        className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16"
-      >
+      <div className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16">
         <CustomSelect
           selectedValue={selectedCity}
           setSelectedValue={setSelectedCity}
           selectItems={cities}
-          cssClasess="min-w-56"
+          cssClasses="min-w-56"
         />
         <DatePicker
           placeholder="Fecha de retiro"
           onDateChange={setPickupDate}
           disabled={{ before: new Date() }}
-          cssClasess="text-base"
+          cssClasses="text-base"
         />
         <DatePicker
           placeholder="Fecha de devolución"
           onDateChange={setReturnDate}
           disabled={{ before: new Date() }}
-          cssClasess="text-base"
+          cssClasses="text-base"
         />
 
         <input
@@ -77,14 +86,15 @@ const HomePageFormReservation: React.FC = () => {
           value={discountCode}
         />
 
-        <Button
-          disabled={selectedCity === ''}
-          type="submit"
-          className="cursor-pointer bg-white text-base font-medium text-gray-400 shadow-md shadow-stone-600 transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-gray-200 disabled:cursor-not-allowed disabled:bg-white disabled:text-gray-300 disabled:opacity-100 disabled:shadow-none"
-        >
-          Continuar
+        <Button className="bg-white text-base font-medium text-gray-400 shadow-md shadow-stone-600 transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-gray-200 disabled:cursor-not-allowed disabled:bg-white disabled:text-gray-300 disabled:opacity-100 disabled:shadow-none">
+          <Link
+            to="/generar-reserva"
+            className="block h-full w-full cursor-pointer"
+          >
+            Continuar
+          </Link>
         </Button>
-      </form>
+      </div>
     </>
   )
 }

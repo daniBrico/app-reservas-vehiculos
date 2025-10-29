@@ -5,6 +5,11 @@ import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import useVehicles from '@/hooks/useVehicles'
 import VehicleInformation from '@/components/VehicleInformation'
+import useReservation from '@/hooks/useReservation'
+import { jwtDecode } from 'jwt-decode'
+import type { IReservation, TokenPayload } from '@/types/types'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import classNames from 'classnames'
 
 const cities = [
   { key: 'bahia-blanca', value: 'Bahía Blanca' },
@@ -23,17 +28,121 @@ const filters = [
   { key: 'economic-manual', value: 'Económico (TM)' }
 ]
 
-const MakeReservation: React.FC = () => {
+const ReservationPage: React.FC = () => {
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
   const [returnDate, setReturnDate] = useState<Date | undefined>()
-  const [discountCode, setDiscountCode] = useState('')
+  const [discountCode, setDiscountCode] = useState<string>('')
   const [selectedCity, setSelectedCity] = useState<string>('')
   const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const [pickupTime, setPickupTime] = useState<string>('')
+  const [returnTime, setReturnTime] = useState<string>('')
+  const [vehicleIDSelected, setVehicleIDSelected] = useState<string | null>(
+    null
+  )
+  const [showMessage, setShowMessage] = useState(false)
+  const [message, setMessage] = useState('')
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const { vehicles } = useVehicles()
+  const {
+    loading: reservationIsLoading,
+    error: reservationError,
+    makeReservationRequest
+  } = useReservation()
+
+  useEffect(() => {
+    if (showMessage) {
+      const timeout = setTimeout(() => setShowMessage(false), 3000)
+      return (): void => {
+        clearTimeout(timeout)
+        setMessage('')
+      }
+    }
+  }, [showMessage])
+
+  useEffect(() => {
+    if (reservationError) {
+      setMessage('Ocurrió un error al realizar la reserva. Intente nuevamente.')
+      setShowMessage(true)
+      return
+    }
+
+    if (reservationIsLoading && reservationError === null) {
+      setMessage('Reserva realizada con éxito.')
+      setShowMessage(true)
+    }
+  }, [reservationError, reservationIsLoading])
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    console.log('🚀 ~ ReservationPage ~ message: ', message)
     e.preventDefault()
 
-    console.log('Se presionó el submit')
+    // Validaciones
+    if (selectedCity === '') {
+      setMessage('Seleccione una ciudad.')
+      setShowMessage(true)
+      return
+    }
+
+    if (!pickupDate) {
+      setMessage('Seleccione la fecha de retiro.')
+      setShowMessage(true)
+      return
+    }
+
+    if (!returnDate) {
+      setMessage('Seleccione la fecha de devolución.')
+      setShowMessage(true)
+      return
+    }
+
+    if (pickupTime === '') {
+      setMessage('Seleccione la hora de retiro.')
+      setShowMessage(true)
+      return
+    }
+
+    if (returnTime === '') {
+      setMessage('Seleccione la hora de devolución.')
+      setShowMessage(true)
+      return
+    }
+
+    if (vehicleIDSelected === null) {
+      setMessage('Seleccione un vehículo.')
+      setShowMessage(true)
+      return
+    }
+
+    const pickupDateTime = new Date(pickupDate)
+    const returnDateTime = new Date(returnDate)
+
+    if (pickupDateTime > returnDateTime) {
+      setMessage('La fecha de devolución no puede ser anterior a la de retiro.')
+      setShowMessage(true)
+      return
+    }
+
+    const token = localStorage.getItem('token')
+
+    if (!token) return
+
+    const tokenPayload: TokenPayload = jwtDecode(token)
+
+    const reservation = {
+      user_id: tokenPayload._id,
+      vehicle_id: vehicleIDSelected,
+      pickup_date: pickupDate,
+      return_date: returnDate,
+      pickup_time: pickupTime,
+      return_time: returnTime,
+      status: 'pendiente',
+      pickup_location: selectedCity,
+      discount_code: discountCode
+    } as IReservation
+
+    await makeReservationRequest(token, reservation)
   }
 
   const handleDiscountCodeChange = (
@@ -46,8 +155,6 @@ const MakeReservation: React.FC = () => {
 
     setDiscountCode(value)
   }
-
-  const { vehicles } = useVehicles()
 
   const handleFilterChange = (key: string): void => {
     setActiveFilters((prev) =>
@@ -62,14 +169,14 @@ const MakeReservation: React.FC = () => {
     // Caja manual
     if (
       activeFilters.includes('manual-transmission') &&
-      v.transmissionType !== 'manual'
+      v.transmissionType.toLocaleLowerCase() !== 'manual'
     )
       return false
 
     // Caja automática
     if (
       activeFilters.includes('automatic-transmission') &&
-      v.transmissionType !== 'automatic'
+      v.transmissionType.toLocaleLowerCase() !== 'automatic'
     )
       return false
 
@@ -87,42 +194,47 @@ const MakeReservation: React.FC = () => {
     return true
   })
 
-  useEffect(() => {
-    if (filteredVehicles?.length === 0 && activeFilters.length === 0) return
-
-    console.log('🚀 ~ MakeReservation ~ filteredVehicles: ', filteredVehicles)
-    console.log('🚀 ~ MakeReservation ~ activeFilters: ', activeFilters)
-  }, [filteredVehicles, activeFilters])
-
   return (
     <section className="my-10 flex justify-center gap-4 px-16">
       <aside className="flex w-[50%] flex-col gap-4">
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md"
+          className="relative flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md"
         >
           <CustomSelect
             selectedValue={selectedCity}
             setSelectedValue={setSelectedCity}
             selectItems={cities}
-            cssClasess="w-full"
+            cssClasses="w-full"
           />
           <DatePicker
             placeholder="Fecha de retiro"
             onDateChange={setPickupDate}
             disabled={{ before: new Date() }}
-            cssClasess="w-full text-base"
+            cssClasses="w-full text-base"
           />
           <DatePicker
             placeholder="Fecha de devolución"
             onDateChange={setReturnDate}
             disabled={{ before: new Date() }}
-            cssClasess="w-full text-base"
+            cssClasses="w-full text-base"
           />
 
           <div className="flex w-full gap-2">
-            <TimeSelect />
-            <TimeSelect />
+            <div className="flex w-full flex-col">
+              <p className="mb-1 ml-2 text-xs text-gray-900">Hora de retiro</p>
+              <TimeSelect
+                onTimeChange={(timeValue) => setPickupTime(timeValue)}
+              />
+            </div>
+            <div className="flex w-full flex-col">
+              <p className="mb-1 ml-2 text-xs text-gray-900">
+                Hora de devolución
+              </p>
+              <TimeSelect
+                onTimeChange={(timeValue) => setReturnTime(timeValue)}
+              />
+            </div>
           </div>
 
           <input
@@ -132,14 +244,30 @@ const MakeReservation: React.FC = () => {
             onChange={handleDiscountCodeChange}
             value={discountCode}
           />
-
-          <Button
-            disabled={selectedCity === ''}
-            type="submit"
-            className="cursor-pointer border border-black/30 bg-white text-gray-400 shadow-md transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-white"
+          <div className="relative">
+            <Button
+              disabled={reservationIsLoading}
+              type="submit"
+              className="cursor-pointer border border-black/30 bg-white text-gray-400 shadow-md transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-white"
+            >
+              Continuar
+            </Button>
+            <LoadingSpinner
+              isLoading={reservationIsLoading}
+              cssClasses="h-8 w-8 absolute top-0 mt-0.5 -right-10"
+            />
+          </div>
+          <div
+            className={classNames(
+              'pointer-events-none absolute top-full mt-2 flex w-full items-center justify-center rounded-md border border-gray-200 bg-white p-4 shadow-md transition-all duration-300 ease-in-out',
+              {
+                'translate-y-0 opacity-100': showMessage,
+                '-translate-y-full opacity-0': !showMessage
+              }
+            )}
           >
-            Continuar
-          </Button>
+            <p className="text-center text-pretty">{message}</p>
+          </div>
         </form>
         <div className="flex flex-col gap-4 rounded-md border border-gray-200 p-4 text-gray-900 shadow-md">
           <h4 className="w-full text-center text-xl font-bold">Categorías</h4>
@@ -173,6 +301,9 @@ const MakeReservation: React.FC = () => {
                 transmissionType={vehicle.transmissionType}
                 pricePerDay={vehicle.pricePerDay}
                 warrantyCost={vehicle.warrantyCost}
+                vehicleID={vehicle._id}
+                handleSelectVehicle={setVehicleIDSelected}
+                vehicleIDSelected={vehicleIDSelected}
               />
             )
           })}
@@ -181,4 +312,4 @@ const MakeReservation: React.FC = () => {
   )
 }
 
-export default MakeReservation
+export default ReservationPage

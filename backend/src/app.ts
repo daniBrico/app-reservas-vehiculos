@@ -2,7 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import vehicleRoutes from './routes/vehicle.routes'
 import userRoutes from './routes/user.routes'
-
+import reservationRoutes from './routes/reservation.routes'
+import { authMiddleware } from './middlewares/authMiddleware'
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.use('/ping', (_req, res) => {
 })
 
 app.use('/vehicles', vehicleRoutes)
+app.use('/reservations', authMiddleware, reservationRoutes)
 app.use('/api', userRoutes)
 
 export { app }

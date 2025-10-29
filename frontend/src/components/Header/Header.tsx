@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({
           {userInfo === null ? (
             <>
               <LiButton
-                cssClasess="hover:scale-105"
+                cssClasses="hover:scale-105"
                 handleClick={onLoginClick}
                 content="Iniciar sesión"
               />
@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
                 <div className="h-5 w-0.5 bg-white" />
               </div>
               <LiButton
-                cssClasess="hover:scale-105"
+                cssClasses="hover:scale-105"
                 content="Registrarse"
                 link={<Link to="/register">Registrarse</Link>}
               />
@@ -64,13 +64,13 @@ const Header: React.FC<HeaderProps> = ({
           ) : (
             <>
               <LiButton
-                cssClasess="hover:scale-105 group"
+                cssClasses="hover:scale-105 group"
                 link={
                   <Link className="flex items-center gap-2" to="/perfil">
                     <div className="w-8 stroke-white group-hover:stroke-amber-800">
                       <UserSvg />
                     </div>
-                    <div className="text-xl font-medium tracking-wide text-white group-hover:text-amber-800">
+                    <div className="text-xl font-bold text-white group-hover:text-amber-800">
                       {userInfo.full_name}
                     </div>
                   </Link>
@@ -80,7 +80,7 @@ const Header: React.FC<HeaderProps> = ({
                 <div className="h-5 w-0.5 bg-white" />
               </div>
               <LiButton
-                cssClasess="hover:scale-110"
+                cssClasses="hover:scale-110"
                 handleClick={handleLogout}
                 content="Salir"
               />

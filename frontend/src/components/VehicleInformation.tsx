@@ -1,22 +1,39 @@
 import vehicleLogo from '../assets/fiat-mobi-easy.webp'
 import UserIconSvg from '@/components/svg-components/UserIconSvg'
 import { CarIconSvg } from '@/components/svg-components/CarIconSvg'
+import classNames from 'classnames'
 
 interface VehicleInformationProps {
   makeAndModel: string
   transmissionType: string
   pricePerDay: number
   warrantyCost: number
+  vehicleID: string
+  handleSelectVehicle: (vehicleID: string) => void
+  vehicleIDSelected: string | null
 }
 
 const VehicleInformation: React.FC<VehicleInformationProps> = ({
   makeAndModel,
   transmissionType,
   pricePerDay,
-  warrantyCost
+  warrantyCost,
+  vehicleID,
+  handleSelectVehicle,
+  vehicleIDSelected
 }) => {
   return (
-    <div className="flex w-full items-center rounded-md border py-4 shadow-md">
+    <div
+      className={classNames(
+        'flex w-full cursor-pointer items-center rounded-md border py-4 transition-all duration-300 ease-in-out hover:scale-101 hover:bg-gray-200',
+        {
+          'scale-101 border border-gray-300 bg-gray-200 inset-shadow-sm inset-shadow-gray-400':
+            vehicleID === vehicleIDSelected,
+          'shadow-md': vehicleID !== vehicleIDSelected
+        }
+      )}
+      onClick={() => handleSelectVehicle(vehicleID)}
+    >
       <div className="w-[60%]">
         <img src={vehicleLogo} alt="Logo del vehículo" className="w-72" />
       </div>
