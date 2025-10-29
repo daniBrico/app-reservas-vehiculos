@@ -246,6 +246,7 @@ const ReservationPage: React.FC = () => {
           />
           <div className="relative">
             <Button
+              disabled={reservationIsLoading}
               type="submit"
               className="cursor-pointer border border-black/30 bg-white text-gray-400 shadow-md transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-white"
             >
