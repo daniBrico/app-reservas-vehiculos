@@ -10,11 +10,8 @@ export const setReservation = async (
   res: Response
 ): Promise<void> => {
   try {
-    // Verificar que el usuario esté logueado
-    // const userId = req.user?.id // si usás un middleware JWT
-
+    // La verificación de logueo del usuario está en el middleware
     const userId = req.user?._id
-    console.log('🚀 ~ setReservation ~ req: ', req.user)
 
     if (!userId) {
       res.status(401).json({ message: 'Credenciales invalidas' })
@@ -39,11 +36,6 @@ export const setReservation = async (
       discount_code,
       insurance_policy_id
     } = req.body.reservation
-
-    console.log(
-      '🚀 ~ setReservation ~ req.body.reservation: ',
-      req.body.reservation
-    )
 
     if (
       !vehicle_id ||

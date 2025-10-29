@@ -67,11 +67,6 @@ const ReservationPage: React.FC = () => {
   useEffect(() => {
     if (reservationIsLoading) return
 
-    console.log(
-      '🚀 ~ ReservationPage ~ reservationIsLoading: ',
-      reservationIsLoading
-    )
-
     if (reservationError === null) {
       setMessage('Reserva creada exitosamente')
       return
