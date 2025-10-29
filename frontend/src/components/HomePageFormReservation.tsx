@@ -32,7 +32,7 @@ const HomePageFormReservation: React.FC = () => {
   return (
     <>
       <div className="w-4/5">
-        <h1 className="mb-4 text-5xl font-bold text-white">
+        <h1 className="mb-4 text-5xl font-bold text-white text-center">
           Alquiler de autos en Argentina con Sharps
         </h1>
       </div>
