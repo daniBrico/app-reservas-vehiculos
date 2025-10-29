@@ -27,7 +27,7 @@ const TimeSelect: React.FC = () => {
       <SelectTrigger className="w-full bg-white text-base">
         <SelectValue placeholder="00:00" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="max-h-52">
         {times.map((time) => (
           <SelectItem key={time} value={time}>
             {time}
