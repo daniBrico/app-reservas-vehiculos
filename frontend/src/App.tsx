@@ -5,15 +5,16 @@ import {
   BrowserRouter as Router,
   Routes
 } from 'react-router-dom'
-import Header from './components/header/Header'
+import Header from './components/Header/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
 import MakeReservation from './pages/ReservationPage'
 import VehicleFleerPage from './pages/VehicleFleetPage'
 import LoginUser from './components/LoginUser'
-import { UserProfilePage } from './pages/UserProfilePage'
+import UserProfilePage from './pages/UserProfilePage'
 import type { UserInfo } from './types/types'
+
 
 function App(): JSX.Element {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
