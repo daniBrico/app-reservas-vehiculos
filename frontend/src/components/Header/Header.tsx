@@ -3,7 +3,7 @@ import BurgerMenuSvg from '../svg-components/BurgerMenuSvg'
 import logo from '../../assets/the-be-sharps.png'
 import { Link } from 'react-router-dom'
 import UserSvg from '../svg-components/UserSvg'
-import HeaderMenu from './HeaderMenu'
+import HeaderMenu from './HeaderMenu.tsx'
 import type { UserInfo } from '@/types/types'
 import LiButton from '../LiButton'
 
