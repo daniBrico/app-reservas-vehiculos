@@ -41,6 +41,7 @@ const ReservationPage: React.FC = () => {
   )
   const [showMessage, setShowMessage] = useState(false)
   const [message, setMessage] = useState('')
+  const [hasAttemptedReservation, setHasAttemptedReservation] = useState(false)
 
   const { vehicles } = useVehicles()
   const {
@@ -65,6 +66,7 @@ const ReservationPage: React.FC = () => {
   }, [message])
 
   useEffect(() => {
+    if (!hasAttemptedReservation) return
     if (reservationIsLoading) return
 
     if (reservationError === null) {
@@ -73,7 +75,7 @@ const ReservationPage: React.FC = () => {
     }
 
     setMessage('Ha ocurrido un error.')
-  }, [reservationIsLoading])
+  }, [reservationIsLoading, hasAttemptedReservation])
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -138,6 +140,7 @@ const ReservationPage: React.FC = () => {
     } as IReservation
 
     await makeReservationRequest(token, reservation)
+    setHasAttemptedReservation(true)
   }
 
   const handleDiscountCodeChange = (
