@@ -2,7 +2,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { DatePicker } from '@/components/DatePicker'
 import TimeSelect from '@/components/TimeSelect'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useVehicles from '@/hooks/useVehicles'
 import VehicleInformation from '@/components/VehicleInformation'
 
@@ -16,11 +16,19 @@ const cities = [
   { key: 'tucuman', value: 'San Miguel de Tucumán' }
 ]
 
+const filters = [
+  { key: 'passengers', value: 'Cantidad de pasajeros' },
+  { key: 'manual-transmission', value: 'Caja manual' },
+  { key: 'automatic-transmission', value: 'Caja automática' },
+  { key: 'economic-manual', value: 'Económico (TM)' }
+]
+
 const MakeReservation: React.FC = () => {
   const [pickupDate, setPickupDate] = useState<Date | undefined>()
   const [returnDate, setReturnDate] = useState<Date | undefined>()
   const [discountCode, setDiscountCode] = useState('')
   const [selectedCity, setSelectedCity] = useState<string>('')
+  const [activeFilters, setActiveFilters] = useState<string[]>([])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -41,9 +49,54 @@ const MakeReservation: React.FC = () => {
 
   const { vehicles } = useVehicles()
 
+  const handleFilterChange = (key: string): void => {
+    setActiveFilters((prev) =>
+      prev.includes(key) ? prev.filter((f) => f !== key) : [...prev, key]
+    )
+  }
+
+  const filteredVehicles = vehicles?.filter((v) => {
+    // Si no hay filtros, mostrar todos
+    if (activeFilters.length === 0) return true
+
+    // Caja manual
+    if (
+      activeFilters.includes('manual-transmission') &&
+      v.transmissionType !== 'manual'
+    )
+      return false
+
+    // Caja automática
+    if (
+      activeFilters.includes('automatic-transmission') &&
+      v.transmissionType !== 'automatic'
+    )
+      return false
+
+    // Económico (TM): precio menor a cierto valor + transmisión manual
+    if (
+      activeFilters.includes('economic-manual') &&
+      !(v.transmissionType.toLowerCase() === 'manual' && v.pricePerDay <= 65)
+    )
+      return false
+
+    // Cantidad de pasajeros: autos con más de 4 asientos
+    if (activeFilters.includes('passengers') && v.seatingCapacity < 5)
+      return false
+
+    return true
+  })
+
+  useEffect(() => {
+    if (filteredVehicles?.length === 0 && activeFilters.length === 0) return
+
+    console.log('🚀 ~ MakeReservation ~ filteredVehicles: ', filteredVehicles)
+    console.log('🚀 ~ MakeReservation ~ activeFilters: ', activeFilters)
+  }, [filteredVehicles, activeFilters])
+
   return (
     <section className="my-10 flex justify-center gap-4 px-16">
-      <aside className="flex w-[40%] flex-col gap-4">
+      <aside className="flex w-[50%] flex-col gap-4">
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md"
@@ -88,21 +141,29 @@ const MakeReservation: React.FC = () => {
             Continuar
           </Button>
         </form>
-        <div className="flex h-96 w-full flex-col rounded-md border border-gray-200 p-4 shadow-md">
+        <div className="flex flex-col gap-4 rounded-md border border-gray-200 p-4 text-gray-900 shadow-md">
           <h4 className="w-full text-center text-xl font-bold">Categorías</h4>
-          <div>
-            <ol>
-              <li>
-                <input type="checkbox" name="" id="" className="" />
-                <label htmlFor="">Categoria de filtro</label>
+          <ol className="grid grid-cols-2 gap-2">
+            {filters.map((filter) => (
+              <li key={filter.key} className="flex gap-2">
+                <input
+                  type="checkbox"
+                  id={filter.key}
+                  className="h-5 w-5 cursor-pointer"
+                  checked={activeFilters.includes(filter.key)}
+                  onChange={() => handleFilterChange(filter.key)}
+                />
+                <label htmlFor={filter.key}>{filter.value}</label>
               </li>
-            </ol>
-          </div>
+            ))}
+          </ol>
+          <div className="h-0.5 border-t" />
+          <p>TM: Transmisión Manual</p>
         </div>
       </aside>
       <article className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md">
-        {vehicles &&
-          vehicles.map((vehicle) => {
+        {filteredVehicles &&
+          filteredVehicles.map((vehicle) => {
             const makeAndModel = `${vehicle.make} ${vehicle.model}`
 
             return (
