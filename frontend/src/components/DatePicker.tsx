@@ -9,11 +9,12 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import type { JSX } from 'react/jsx-runtime'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 
 interface datePickerProps {
   placeholder: string
+  value?: Date
   onDateChange?: (date: Date | undefined) => void
   disabled: Matcher | Matcher[]
   cssClasses?: string
@@ -21,12 +22,17 @@ interface datePickerProps {
 
 export function DatePicker({
   placeholder,
+  value,
   onDateChange,
   disabled,
   cssClasses
 }: datePickerProps): JSX.Element {
   const [date, setDate] = useState<Date>()
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    setDate(value)
+  }, [value])
 
   const handleSelect = (selectedDate: Date | undefined): void => {
     setDate(selectedDate)

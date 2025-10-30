@@ -11,7 +11,7 @@ type SelectItems = { key: string; value: string }[]
 
 interface CustomSelectProps {
   selectedValue: string | undefined
-  setSelectedValue: React.Dispatch<React.SetStateAction<string | undefined>>
+  setSelectedValue: (value: string) => void
   selectItems: SelectItems
   cssClasses?: string
 }

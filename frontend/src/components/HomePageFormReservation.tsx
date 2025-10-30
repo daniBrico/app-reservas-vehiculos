@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react'
 import { DatePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
 import CustomSelect from './CustomSelect'
 import { Link } from 'react-router-dom'
-// import { format } from 'date-fns'
-
-// interface HomePageFormReservationProps {}
+import { useReservationStore } from '@/store/useReservationStore'
 
 const cities = [
   { key: 'bahia-blanca', value: 'Bahía Blanca' },
@@ -18,10 +15,16 @@ const cities = [
 ]
 
 const HomePageFormReservation: React.FC = () => {
-  const [selectedCity, setSelectedCity] = useState<string | undefined>()
-  const [pickupDate, setPickupDate] = useState<Date | undefined>()
-  const [returnDate, setReturnDate] = useState<Date | undefined>()
-  const [discountCode, setDiscountCode] = useState<string | undefined>()
+  const {
+    selectedCity,
+    setSelectedCity,
+    pickupDate,
+    setPickupDate,
+    returnDate,
+    setReturnDate,
+    discountCode,
+    setDiscountCode
+  } = useReservationStore()
 
   const handleDiscountCodeChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -34,27 +37,10 @@ const HomePageFormReservation: React.FC = () => {
     setDiscountCode(value)
   }
 
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-  //   e.preventDefault()
-
-  //   console.log('Se presionó el submit')
-  // }
-
-  useEffect(() => {
-    const reservationInfo = {
-      selectedCity,
-      pickupDate,
-      returnDate,
-      discountCode
-    }
-
-    localStorage.setItem('reservationInfo', JSON.stringify(reservationInfo))
-  }, [selectedCity, pickupDate, returnDate, discountCode])
-
   return (
     <>
       <div className="w-4/5">
-        <h1 className="mb-4 text-5xl font-bold text-white text-center">
+        <h1 className="mb-4 text-center text-5xl font-bold text-white">
           Alquiler de autos en Argentina con Sharps
         </h1>
       </div>
@@ -67,12 +53,14 @@ const HomePageFormReservation: React.FC = () => {
         />
         <DatePicker
           placeholder="Fecha de retiro"
+          value={pickupDate}
           onDateChange={setPickupDate}
           disabled={{ before: new Date() }}
           cssClasses="text-base"
         />
         <DatePicker
           placeholder="Fecha de devolución"
+          value={returnDate}
           onDateChange={setReturnDate}
           disabled={{ before: new Date() }}
           cssClasses="text-base"

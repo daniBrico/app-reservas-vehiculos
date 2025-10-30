@@ -10,6 +10,7 @@ import { jwtDecode } from 'jwt-decode'
 import type { IReservation, TokenPayload } from '@/types/types'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import classNames from 'classnames'
+import { useReservationStore } from '@/store/useReservationStore'
 
 const cities = [
   { key: 'bahia-blanca', value: 'Bahía Blanca' },
@@ -29,16 +30,23 @@ const filters = [
 ]
 
 const ReservationPage: React.FC = () => {
-  const [pickupDate, setPickupDate] = useState<Date | undefined>()
-  const [returnDate, setReturnDate] = useState<Date | undefined>()
-  const [discountCode, setDiscountCode] = useState<string>('')
-  const [selectedCity, setSelectedCity] = useState<string>('')
+  const {
+    selectedCity,
+    setSelectedCity,
+    pickupDate,
+    setPickupDate,
+    returnDate,
+    setReturnDate,
+    pickupTime,
+    setPickupTime,
+    returnTime,
+    setReturnTime,
+    discountCode,
+    setDiscountCode,
+    vehicleID,
+    setVehicleID
+  } = useReservationStore()
   const [activeFilters, setActiveFilters] = useState<string[]>([])
-  const [pickupTime, setPickupTime] = useState<string>('')
-  const [returnTime, setReturnTime] = useState<string>('')
-  const [vehicleIDSelected, setVehicleIDSelected] = useState<string | null>(
-    null
-  )
   const [showMessage, setShowMessage] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -75,7 +83,6 @@ const ReservationPage: React.FC = () => {
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
-    console.log('🚀 ~ ReservationPage ~ message: ', message)
     e.preventDefault()
 
     // Validaciones
@@ -109,7 +116,7 @@ const ReservationPage: React.FC = () => {
       return
     }
 
-    if (vehicleIDSelected === null) {
+    if (vehicleID === null) {
       setMessage('Seleccione un vehículo.')
       setShowMessage(true)
       return
@@ -132,7 +139,7 @@ const ReservationPage: React.FC = () => {
 
     const reservation = {
       user_id: tokenPayload._id,
-      vehicle_id: vehicleIDSelected,
+      vehicle_id: vehicleID,
       pickup_date: pickupDate,
       return_date: returnDate,
       pickup_time: pickupTime,
@@ -209,12 +216,14 @@ const ReservationPage: React.FC = () => {
           />
           <DatePicker
             placeholder="Fecha de retiro"
+            value={pickupDate}
             onDateChange={setPickupDate}
             disabled={{ before: new Date() }}
             cssClasses="w-full text-base"
           />
           <DatePicker
             placeholder="Fecha de devolución"
+            value={returnDate}
             onDateChange={setReturnDate}
             disabled={{ before: new Date() }}
             cssClasses="w-full text-base"
@@ -224,6 +233,7 @@ const ReservationPage: React.FC = () => {
             <div className="flex w-full flex-col">
               <p className="mb-1 ml-2 text-xs text-gray-900">Hora de retiro</p>
               <TimeSelect
+                value={pickupTime}
                 onTimeChange={(timeValue) => setPickupTime(timeValue)}
               />
             </div>
@@ -232,6 +242,7 @@ const ReservationPage: React.FC = () => {
                 Hora de devolución
               </p>
               <TimeSelect
+                value={returnTime}
                 onTimeChange={(timeValue) => setReturnTime(timeValue)}
               />
             </div>
@@ -289,7 +300,7 @@ const ReservationPage: React.FC = () => {
           <p>TM: Transmisión Manual</p>
         </div>
       </aside>
-      <article className="flex w-full flex-col items-center gap-4 rounded-md border border-gray-200 px-4 py-8 shadow-md">
+      <article className="flex max-h-[588px] w-full flex-col items-center gap-4 overflow-y-scroll rounded-md border border-gray-200 px-4 py-8 shadow-md">
         {filteredVehicles &&
           filteredVehicles.map((vehicle) => {
             const makeAndModel = `${vehicle.make} ${vehicle.model}`
@@ -302,8 +313,8 @@ const ReservationPage: React.FC = () => {
                 pricePerDay={vehicle.pricePerDay}
                 warrantyCost={vehicle.warrantyCost}
                 vehicleID={vehicle._id}
-                handleSelectVehicle={setVehicleIDSelected}
-                vehicleIDSelected={vehicleIDSelected}
+                handleSelectVehicle={setVehicleID}
+                vehicleIDSelected={vehicleID}
               />
             )
           })}
