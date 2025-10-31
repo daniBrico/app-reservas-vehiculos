@@ -2,7 +2,7 @@ import { type Request, type Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import UserModel from '../models/mongodb/schemas/user.model'
-import type { IUser } from '../types/types'
+import type { IUser, JwtPayloadCustom } from '../types/types'
 import { createAccessToken } from '../utils/jwt'
 
 export const registerUser = async (
@@ -109,11 +109,13 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-    const token = await createAccessToken({
+    const userLoginInfo = {
       _id: userFounded._id,
       email: userFounded.email,
       full_name: userFounded.full_name
-    })
+    }
+
+    const token = await createAccessToken(userLoginInfo)
 
     res.cookie('token', token)
 
@@ -173,5 +175,55 @@ export const updateUser = async (req: Request, res: Response) => {
     })
   } catch (err: any) {
     res.status(500).json({ message: err.message || 'Error desconocido' })
+  }
+}
+
+export const verifyToken = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const token = req.cookies?.token
+
+  if (!token) {
+    res.status(401).json({ message: 'Not authorized' })
+    return
+  }
+
+  const { JWT_SECRET } = process.env
+
+  if (!JWT_SECRET) {
+    res.status(500).json({ message: 'Error de autenticación' })
+    return
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayloadCustom
+
+    if (!decoded) {
+      res.status(404).json({ message: 'Error de autenticación' })
+      return
+    }
+
+    const userFounded = await UserModel.findById(decoded._id)
+
+    if (userFounded === null) {
+      res.status(401).json({ message: 'Error de autenticación' })
+      return
+    }
+
+    res.status(200).json({
+      message: 'Autenticación exitosa',
+      userLoginInfo: {
+        _id: userFounded._id,
+        full_name: userFounded.full_name,
+        email: userFounded.email
+      }
+    })
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error('Error de autenticación: ', err.message)
+    } else {
+      console.error('Ha ocurrido un error desconocido.')
+    }
   }
 }

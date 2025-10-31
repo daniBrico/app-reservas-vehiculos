@@ -75,7 +75,7 @@ export interface TokenPayload {
   full_name: string
 }
 
-// Response
+// User
 export interface LoginResponse {
   message: string
   userLoginInfo: UserLoginInfo
@@ -86,6 +86,12 @@ export interface RegisterResponse {
   userLoginInfo: UserLoginInfo
 }
 
+export interface VerifyTokenResponse {
+  message: string
+  userLoginInfo?: UserLoginInfo
+}
+
+// Reservation
 export interface ReservationResponse {
   message: string
   reservation: IReservation

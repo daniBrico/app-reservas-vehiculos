@@ -13,18 +13,10 @@ import ReservationPage from './pages/ReservationPage'
 import VehicleFleerPage from './pages/VehicleFleetPage'
 import LoginUser from './components/LoginUser'
 import UserProfilePage from './pages/UserProfilePage'
-// import type { UserLoginInfo } from './types/types'
 import AuthProvider from './context/AuthContext'
 
 function App(): JSX.Element {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
-  // const [UserLoginInfo, setUserInfo] = useState<UserLoginInfo | null>(null)
-
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem('UserLoginInfo')
-
-  //   if (storedUser) setUserInfo(JSON.parse(storedUser))
-  // }, [])
 
   const handleOnLogout = (): void => {
     // setUserInfo(null)

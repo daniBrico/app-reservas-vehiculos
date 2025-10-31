@@ -1,14 +1,14 @@
-import { loginUser, registerUser } from '@/api/userApi'
+import { loginUser, registerUser, verifyTokenRequest } from '@/api/userApi'
 import { AuthContext, type AuthContextProps } from '@/hooks/useAuthContext'
 import type {
   EmailType,
   IUserInput,
-  LoginResponse,
   PasswordType,
-  RegisterResponse,
   UserLoginInfo
 } from '@/types/types'
-import { useState, type JSX, type ReactNode } from 'react'
+import { useEffect, useState, type JSX, type ReactNode } from 'react'
+import Cookies from 'js-cookie'
+import { jwtDecode } from 'jwt-decode'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -18,9 +18,13 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<UserLoginInfo | null>(null)
   const [error, setError] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  const handleAuthSuccess = (res: RegisterResponse | LoginResponse): void => {
-    setUser(res.userLoginInfo)
+  const handleAuthSuccess = (userLoginInfo: UserLoginInfo | null): void => {
+    const cookies = Cookies.get()
+    const decoded = jwtDecode(cookies.token)
+
+    setUser(userLoginInfo)
     setIsAuthenticated(true)
   }
 
@@ -28,7 +32,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     try {
       const res = await registerUser(signInUser)
 
-      handleAuthSuccess(res)
+      handleAuthSuccess(res.userLoginInfo)
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message)
@@ -45,11 +49,51 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     try {
       const res = await loginUser(email, password)
 
-      handleAuthSuccess(res)
+      handleAuthSuccess(res.userLoginInfo)
     } catch (err) {
       console.log(err)
     }
   }
+
+  const resetAuthState = (): void => {
+    Cookies.remove('token')
+    setIsAuthenticated(false)
+    setUser(null)
+  }
+
+  useEffect(() => {
+    async function checkLogin(): Promise<void> {
+      const cookies = Cookies.get()
+
+      if (cookies.token === null) {
+        resetAuthState()
+
+        setLoading(false)
+        return
+      }
+
+      try {
+        const res = await verifyTokenRequest()
+
+        const userLoginInfo = res.userLoginInfo
+
+        if (userLoginInfo) handleAuthSuccess(userLoginInfo)
+
+        setLoading(false)
+      } catch (err) {
+        if (err instanceof Error)
+          console.log(
+            'Ha ocurrido un error al intentar autenticar el usuario: ',
+            err.message
+          )
+
+        resetAuthState()
+        setLoading(false)
+      }
+    }
+
+    checkLogin()
+  }, [])
 
   const value: AuthContextProps = { user, signUp, signIn }
 

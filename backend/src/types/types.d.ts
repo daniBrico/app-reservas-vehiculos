@@ -50,10 +50,9 @@ export interface UserLoginInfo {
   full_name: string
 }
 
-export interface TokenPayload {
-  _id: string
-  email: EmailType
-  full_name: string
+export interface VerifyTokenResponse {
+  message: string
+  userLoginInfo?: UserLoginInfo
 }
 
 // Response
@@ -64,4 +63,15 @@ export interface LoginResponse {
 export interface ReservationResponse {
   message: string
   reservation: IReservation
+}
+
+// jwt
+export interface TokenPayload {
+  _id: string
+  email: EmailType
+  full_name: string
+}
+
+interface JwtPayloadCustom extends jwt.JwtPayload {
+  userLoginInfo: TokenPayload
 }

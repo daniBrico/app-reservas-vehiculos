@@ -3,7 +3,8 @@ import type {
   IUserInput,
   LoginResponse,
   PasswordType,
-  RegisterResponse
+  RegisterResponse,
+  VerifyTokenResponse
 } from '@/types/types'
 import httpClient from './httpClient'
 
@@ -15,3 +16,6 @@ export const loginUser = (
 
 export const registerUser = (user: IUserInput): Promise<RegisterResponse> =>
   httpClient('/api/register', { method: 'POST', body: { user } })
+
+export const verifyTokenRequest = (): Promise<VerifyTokenResponse> =>
+  httpClient(`/api/verify`, { method: 'GET' })
