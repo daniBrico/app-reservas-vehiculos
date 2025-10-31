@@ -4,22 +4,19 @@ import logo from '../../assets/the-be-sharps.png'
 import { Link } from 'react-router-dom'
 import UserSvg from '../svg-components/UserSvg'
 import HeaderMenu from './HeaderMenu.tsx'
-import type { UserLoginInfo } from '@/types/types'
 import LiButton from '../LiButton'
+import { useAuthContext } from '@/hooks/useAuthContext.ts'
 
 interface HeaderProps {
   onLoginClick: () => void
-  UserLoginInfo: UserLoginInfo | null
   onLogout: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({
-  onLoginClick,
-  UserLoginInfo,
-  onLogout
-}) => {
+const Header: React.FC<HeaderProps> = ({ onLoginClick, onLogout }) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
   const burgerDivRef = useRef<HTMLDivElement>(null)
+
+  const { user } = useAuthContext()
 
   const handleOpenCloseMenu = (): void => {
     setMenuIsOpen(!isMenuOpen)
@@ -45,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
       </div>
       <div className="flex items-center gap-2">
         <ol className="flex items-center gap-2">
-          {UserLoginInfo === null ? (
+          {user === null ? (
             <>
               <LiButton
                 cssClasses="hover:scale-105"
@@ -71,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({
                       <UserSvg />
                     </div>
                     <div className="text-xl font-bold text-white group-hover:text-amber-800">
-                      {UserLoginInfo.full_name}
+                      {user.full_name}
                     </div>
                   </Link>
                 }

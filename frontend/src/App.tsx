@@ -1,4 +1,4 @@
-import { useEffect, useState, type JSX } from 'react'
+import { useState, type JSX } from 'react'
 import {
   Navigate,
   Route,
@@ -13,21 +13,21 @@ import ReservationPage from './pages/ReservationPage'
 import VehicleFleerPage from './pages/VehicleFleetPage'
 import LoginUser from './components/LoginUser'
 import UserProfilePage from './pages/UserProfilePage'
-import type { UserLoginInfo } from './types/types'
+// import type { UserLoginInfo } from './types/types'
 import AuthProvider from './context/AuthContext'
 
 function App(): JSX.Element {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const [UserLoginInfo, setUserInfo] = useState<UserLoginInfo | null>(null)
+  // const [UserLoginInfo, setUserInfo] = useState<UserLoginInfo | null>(null)
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('UserLoginInfo')
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem('UserLoginInfo')
 
-    if (storedUser) setUserInfo(JSON.parse(storedUser))
-  }, [])
+  //   if (storedUser) setUserInfo(JSON.parse(storedUser))
+  // }, [])
 
   const handleOnLogout = (): void => {
-    setUserInfo(null)
+    // setUserInfo(null)
   }
 
   return (
@@ -35,7 +35,6 @@ function App(): JSX.Element {
       <Router>
         <Header
           onLoginClick={() => setIsLoginOpen(true)}
-          UserLoginInfo={UserLoginInfo}
           onLogout={handleOnLogout}
         />
         <main className="w-full flex-grow">
@@ -53,7 +52,6 @@ function App(): JSX.Element {
           <LoginUser
             onClose={() => setIsLoginOpen(false)}
             isLoginOpen={isLoginOpen}
-            onHandleSubmit={(UserLoginInfo) => setUserInfo(UserLoginInfo)}
           />
         )}
       </Router>

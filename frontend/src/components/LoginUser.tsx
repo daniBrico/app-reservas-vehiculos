@@ -1,20 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
-import { loginUser } from '@/api/userApi'
-import type { TokenPayload, UserLoginInfo } from '@/types/types'
-import { jwtDecode } from 'jwt-decode'
+import { useAuthContext } from '@/hooks/useAuthContext'
 
 interface LoginUserProps {
   onClose: () => void
   isLoginOpen: boolean
-  onHandleSubmit: (UserLoginInfo: UserLoginInfo) => void
 }
 
-const LoginUser: React.FC<LoginUserProps> = ({
-  onClose,
-  isLoginOpen,
-  onHandleSubmit
-}) => {
+const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -27,6 +20,8 @@ const LoginUser: React.FC<LoginUserProps> = ({
     ref: loginDivContainer
   })
 
+  const { signIn, user } = useAuthContext()
+
   useEffect(() => {
     document.body.style.overflowY = 'hidden'
     return (): void => {
@@ -34,30 +29,19 @@ const LoginUser: React.FC<LoginUserProps> = ({
     }
   }, [])
 
+  useEffect(() => {
+    if (user === null) return
+
+    setMessage(`Bienvenido ${user.full_name}`)
+  }, [user])
+
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
     try {
-      const res = await loginUser(email, password)
+      signIn(email, password)
+      setError('')
 
-      const token = res.token
-
-      if (token) {
-        const payload: TokenPayload = jwtDecode(token)
-
-        localStorage.setItem('token', token)
-        const UserLoginInfo: UserLoginInfo = {
-          _id: payload._id,
-          full_name: payload.full_name,
-          email: payload.email
-        }
-        localStorage.setItem('UserLoginInfo', JSON.stringify(UserLoginInfo))
-        onHandleSubmit(UserLoginInfo)
-        setError('')
-        setMessage(`Bienvenido ${payload.full_name}`)
-      }
-
-      // Espera 4 segundos antes de cerrar el modal
       setTimeout(() => {
         setMessage('')
         onClose()
@@ -66,7 +50,6 @@ const LoginUser: React.FC<LoginUserProps> = ({
       setError(err.response?.data?.message || 'Error al iniciar sesión')
       setMessage('')
 
-      // Borra el mensaje de error luego de 3 segundos
       setTimeout(() => {
         setError('')
       }, 3000)

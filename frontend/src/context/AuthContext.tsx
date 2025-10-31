@@ -1,6 +1,13 @@
-import { registerUser } from '@/api/userApi'
+import { loginUser, registerUser } from '@/api/userApi'
 import { AuthContext, type AuthContextProps } from '@/hooks/useAuthContext'
-import type { IUserInput, RegisterResponse, UserLoginInfo } from '@/types/types'
+import type {
+  EmailType,
+  IUserInput,
+  LoginResponse,
+  PasswordType,
+  RegisterResponse,
+  UserLoginInfo
+} from '@/types/types'
 import { useState, type JSX, type ReactNode } from 'react'
 
 interface AuthProviderProps {
@@ -12,7 +19,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [error, setError] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  const handleAuthSuccess = (res: RegisterResponse): void => {
+  const handleAuthSuccess = (res: RegisterResponse | LoginResponse): void => {
     setUser(res.userLoginInfo)
     setIsAuthenticated(true)
   }
@@ -31,7 +38,20 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     }
   }
 
-  const value: AuthContextProps = { user, signUp }
+  const signIn = async (
+    email: EmailType,
+    password: PasswordType
+  ): Promise<void> => {
+    try {
+      const res = await loginUser(email, password)
+
+      handleAuthSuccess(res)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const value: AuthContextProps = { user, signUp, signIn }
 
   return <AuthContext value={value}>{children}</AuthContext>
 }

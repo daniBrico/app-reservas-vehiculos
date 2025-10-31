@@ -1,9 +1,15 @@
-import type { IUserInput, UserLoginInfo } from '@/types/types'
+import type {
+  EmailType,
+  IUserInput,
+  PasswordType,
+  UserLoginInfo
+} from '@/types/types'
 import { createContext, useContext } from 'react'
 
 export interface AuthContextProps {
   user: UserLoginInfo | null
   signUp: (signiInUser: IUserInput) => Promise<void>
+  signIn: (email: EmailType, password: PasswordType) => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextProps | null>(null)
