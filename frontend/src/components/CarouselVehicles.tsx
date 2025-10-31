@@ -27,8 +27,10 @@ const CarouselVehicles: React.FC<CarouselVehiclesProps> = ({ vehicles }) => {
           {vehicles.map((vehicle) => {
             return (
               <div className="h-72 rounded-md bg-white p-4" key={vehicle._id}>
-                <div className="flex flex-col items-center gap-10">
-                  <h3 className="text-2xl font-bold">{vehicle.title}</h3>
+                <div className="flex h-full flex-col items-center">
+                  <h3 className="grow-[2] text-center text-2xl font-bold">
+                    {vehicle.title}
+                  </h3>
                   <div className="mt-auto">
                     <img
                       className="mx-auto w-58"
