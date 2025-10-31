@@ -10,7 +10,8 @@ import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
 import ReservationPage from './pages/ReservationPage'
-import VehicleFleerPage from './pages/VehicleFleetPage'
+import VehicleFleetPage from './pages/VehicleFleetPage'
+import VehicleDetailsPage from './pages/VehicleDetailsPage'
 import LoginUser from './components/LoginUser'
 import UserProfilePage from './pages/UserProfilePage'
 import type { UserInfo } from './types/types'
@@ -42,7 +43,8 @@ function App(): JSX.Element {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/inicio" element={<HomePage />} />
           <Route path="/generar-reserva" element={<ReservationPage />} />
-          <Route path="/flota-vehiculos" element={<VehicleFleerPage />} />
+          <Route path="/flota-vehiculos" element={<VehicleFleetPage />} />
+          <Route path="/vehiculo/:id" element={<VehicleDetailsPage />} />
           <Route path="/perfil" element={<UserProfilePage />} />
         </Routes>
       </main>
