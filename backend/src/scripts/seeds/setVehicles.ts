@@ -3,7 +3,7 @@ import {
   openDatabaseConnection
 } from '../../models/mongodb/database'
 import VehicleModel from '../../models/mongodb/schemas/vehicle.model'
-import vehiclesData from '../data/vehiclesData.json'
+import vehiclesJSON from '../data/vehicles.json'
 
 openDatabaseConnection()
   .then(() => {
@@ -15,17 +15,17 @@ openDatabaseConnection()
 
 const setVehicles = async (): Promise<void> => {
   try {
-    for (const vehicle of vehiclesData) {
+    for (const vehicle of vehiclesJSON) {
       const newVehicle = new VehicleModel({
-        make: vehicle.make,
-        model: vehicle.model,
-        transmissionType: vehicle.transmissionType,
+        title: vehicle.title,
         seatingCapacity: vehicle.seatingCapacity,
+        transmissionType: vehicle.transmissionType,
+        trunkCapacity: vehicle.trunkCapacity,
         year: vehicle.year,
         licencePlate: vehicle.licencePlate,
         pricePerDay: vehicle.pricePerDay,
         status: vehicle.status,
-        image: vehicle.image,
+        imageURL: vehicle.imageURL,
         warrantyCost: vehicle.warrantyCost,
         description: vehicle.description
       })

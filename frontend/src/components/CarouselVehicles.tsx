@@ -3,11 +3,13 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import type { IVehicle } from '@/types/types'
-import carImage from '../assets/fiat-mobi-easy.webp'
+// import carImage from '../assets/fiat-mobi-easy.webp'
 
 interface CarouselVehiclesProps {
   vehicles: IVehicle[]
 }
+
+const API_URL = import.meta.env.VITE_API_URL
 
 const CarouselVehicles: React.FC<CarouselVehiclesProps> = ({ vehicles }) => {
   const settings = {
@@ -26,12 +28,12 @@ const CarouselVehicles: React.FC<CarouselVehiclesProps> = ({ vehicles }) => {
             return (
               <div className="h-72 rounded-md bg-white p-4" key={vehicle._id}>
                 <div className="flex flex-col items-center gap-10">
-                  <h3 className="text-2xl font-bold">{vehicle.make}</h3>
+                  <h3 className="text-2xl font-bold">{vehicle.title}</h3>
                   <div className="mt-auto">
                     <img
                       className="mx-auto w-58"
-                      src={carImage}
-                      alt={vehicle.make}
+                      src={`${API_URL}/${vehicle.imageURL}`}
+                      alt={vehicle.title}
                     />
                     <p className="h-16 text-center font-light">
                       {vehicle.description}

@@ -2,11 +2,7 @@ import { Schema, model } from 'mongoose'
 import type { IVehicle } from '../../../types/types'
 
 const VehicleSchema = new Schema<IVehicle>({
-  make: {
-    type: String,
-    required: true
-  },
-  model: {
+  title: {
     type: String,
     required: true
   },
@@ -15,6 +11,10 @@ const VehicleSchema = new Schema<IVehicle>({
     required: true
   },
   seatingCapacity: {
+    type: Number,
+    required: true
+  },
+  trunkCapacity: {
     type: Number,
     required: true
   },
@@ -34,7 +34,7 @@ const VehicleSchema = new Schema<IVehicle>({
     type: String,
     required: true
   },
-  image: {
+  imageURL: {
     type: String,
     required: true
   },
