@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import UserModel from '../models/mongodb/schemas/user.model'
 import type { IUser } from '../types/types'
+import { createAccessToken } from '../utils/jwt'
 
 // Registro de usuario
 export const registerUser = async (
@@ -22,9 +23,21 @@ export const registerUser = async (
       fiscal_condition,
       document_type,
       document_number
-    } = req.body as IUser
+    } = req.body.user as IUser
 
-    if (!email || !password || !full_name) {
+    if (
+      !email ||
+      !password ||
+      !full_name ||
+      !last_name ||
+      !country ||
+      !address ||
+      !address_number ||
+      !phone_number ||
+      !fiscal_condition ||
+      !document_type ||
+      !document_number
+    ) {
       res.status(400).json({ message: 'Campos obligatorios faltantes' })
       return
     }
@@ -53,9 +66,17 @@ export const registerUser = async (
 
     const userObj = newUser.toObject()
 
+    const token = await createAccessToken({
+      _id: userObj._id,
+      email: userObj.email,
+      full_name: userObj.full_name
+    })
+
+    res.cookie('token', token)
+
     res.status(201).json({
       message: 'Usuario creado correctamente',
-      user: {
+      userLoginInfo: {
         id: userObj._id,
         full_name: userObj.full_name,
         email: userObj.email
@@ -122,7 +143,9 @@ export const updateUser = async (req: Request, res: Response) => {
     // Cambio de contraseña
     if (new_password) {
       if (!current_password) {
-        return res.status(400).json({ message: 'Debe ingresar la contraseña actual' })
+        return res
+          .status(400)
+          .json({ message: 'Debe ingresar la contraseña actual' })
       }
 
       const isMatch = await bcrypt.compare(current_password, user.password)
@@ -133,7 +156,9 @@ export const updateUser = async (req: Request, res: Response) => {
       updates.password = await bcrypt.hash(new_password, 10)
     }
 
-    const updatedUser = await UserModel.findOneAndUpdate({ email }, updates, { new: true })
+    const updatedUser = await UserModel.findOneAndUpdate({ email }, updates, {
+      new: true
+    })
 
     res.json({
       message: 'Usuario actualizado correctamente',
