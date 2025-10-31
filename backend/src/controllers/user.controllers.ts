@@ -5,7 +5,6 @@ import UserModel from '../models/mongodb/schemas/user.model'
 import type { IUser } from '../types/types'
 import { createAccessToken } from '../utils/jwt'
 
-// Registro de usuario
 export const registerUser = async (
   req: Request,
   res: Response
@@ -89,7 +88,6 @@ export const registerUser = async (
   }
 }
 
-// Login de usuario
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body
@@ -107,23 +105,21 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     const isMatch = await bcrypt.compare(password, userFounded.password)
     if (!isMatch) {
-      res.status(401).json({ message: 'Correo o contraseña incorrectos' })
+      res.status(401).json({ message: 'Credenciales invalidas' })
       return
     }
 
-    const token = jwt.sign(
-      {
-        _id: userFounded._id,
-        email: userFounded.email,
-        full_name: userFounded.full_name
-      },
-      process.env.JWT_SECRET!,
-      { expiresIn: '1h' }
-    )
+    const token = await createAccessToken({
+      _id: userFounded._id,
+      email: userFounded.email,
+      full_name: userFounded.full_name
+    })
+
+    res.cookie('token', token)
 
     res.status(200).json({
       message: 'Login exitoso',
-      token
+      userLoginInfo: userFounded
     })
   } catch (error) {
     res.status(500).json({
@@ -132,7 +128,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-//Modificar usuario
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { email, current_password, new_password, ...updates } = req.body

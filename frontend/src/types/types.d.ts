@@ -77,7 +77,7 @@ export interface TokenPayload {
 
 // Response
 export interface LoginResponse {
-  token: string
+  message: string
   userLoginInfo: UserLoginInfo
 }
 
