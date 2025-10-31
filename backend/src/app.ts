@@ -19,11 +19,8 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 
-app.use('/ping', (_req, res) => {
-  res.send('pong')
-})
-
 app.use('/vehicles', vehicleRoutes)
+app.use('/vehicles-images', express.static('./src/assets/vehicles/'))
 app.use('/reservations', authMiddleware, reservationRoutes)
 app.use('/api', userRoutes)
 
