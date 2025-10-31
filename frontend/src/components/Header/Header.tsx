@@ -4,18 +4,18 @@ import logo from '../../assets/the-be-sharps.png'
 import { Link } from 'react-router-dom'
 import UserSvg from '../svg-components/UserSvg'
 import HeaderMenu from './HeaderMenu.tsx'
-import type { UserInfo } from '@/types/types'
+import type { UserLoginInfo } from '@/types/types'
 import LiButton from '../LiButton'
 
 interface HeaderProps {
   onLoginClick: () => void
-  userInfo: UserInfo | null
+  UserLoginInfo: UserLoginInfo | null
   onLogout: () => void
 }
 
 const Header: React.FC<HeaderProps> = ({
   onLoginClick,
-  userInfo,
+  UserLoginInfo,
   onLogout
 }) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleLogout = (): void => {
     localStorage.removeItem('token')
-    localStorage.removeItem('userInfo')
+    localStorage.removeItem('UserLoginInfo')
     onLogout()
     window.location.href = '/inicio'
   }
@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({
       </div>
       <div className="flex items-center gap-2">
         <ol className="flex items-center gap-2">
-          {userInfo === null ? (
+          {UserLoginInfo === null ? (
             <>
               <LiButton
                 cssClasses="hover:scale-105"
@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({
                       <UserSvg />
                     </div>
                     <div className="text-xl font-bold text-white group-hover:text-amber-800">
-                      {userInfo.full_name}
+                      {UserLoginInfo.full_name}
                     </div>
                   </Link>
                 }

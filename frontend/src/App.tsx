@@ -13,14 +13,15 @@ import ReservationPage from './pages/ReservationPage'
 import VehicleFleerPage from './pages/VehicleFleetPage'
 import LoginUser from './components/LoginUser'
 import UserProfilePage from './pages/UserProfilePage'
-import type { UserInfo } from './types/types'
+import type { UserLoginInfo } from './types/types'
+import AuthProvider from './context/AuthContext'
 
 function App(): JSX.Element {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+  const [UserLoginInfo, setUserInfo] = useState<UserLoginInfo | null>(null)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('userInfo')
+    const storedUser = localStorage.getItem('UserLoginInfo')
 
     if (storedUser) setUserInfo(JSON.parse(storedUser))
   }, [])
@@ -30,31 +31,33 @@ function App(): JSX.Element {
   }
 
   return (
-    <Router>
-      <Header
-        onLoginClick={() => setIsLoginOpen(true)}
-        userInfo={userInfo}
-        onLogout={handleOnLogout}
-      />
-      <main className="w-full flex-grow">
-        <Routes>
-          <Route index element={<Navigate to="/inicio" replace />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/inicio" element={<HomePage />} />
-          <Route path="/generar-reserva" element={<ReservationPage />} />
-          <Route path="/flota-vehiculos" element={<VehicleFleerPage />} />
-          <Route path="/perfil" element={<UserProfilePage />} />
-        </Routes>
-      </main>
-      <Footer />
-      {isLoginOpen && (
-        <LoginUser
-          onClose={() => setIsLoginOpen(false)}
-          isLoginOpen={isLoginOpen}
-          onHandleSubmit={(userInfo) => setUserInfo(userInfo)}
+    <AuthProvider>
+      <Router>
+        <Header
+          onLoginClick={() => setIsLoginOpen(true)}
+          UserLoginInfo={UserLoginInfo}
+          onLogout={handleOnLogout}
         />
-      )}
-    </Router>
+        <main className="w-full flex-grow">
+          <Routes>
+            <Route index element={<Navigate to="/inicio" replace />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/inicio" element={<HomePage />} />
+            <Route path="/generar-reserva" element={<ReservationPage />} />
+            <Route path="/flota-vehiculos" element={<VehicleFleerPage />} />
+            <Route path="/perfil" element={<UserProfilePage />} />
+          </Routes>
+        </main>
+        <Footer />
+        {isLoginOpen && (
+          <LoginUser
+            onClose={() => setIsLoginOpen(false)}
+            isLoginOpen={isLoginOpen}
+            onHandleSubmit={(UserLoginInfo) => setUserInfo(UserLoginInfo)}
+          />
+        )}
+      </Router>
+    </AuthProvider>
   )
 }
 

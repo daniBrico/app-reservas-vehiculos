@@ -44,7 +44,7 @@ export interface IReservation extends Document {
 }
 
 // Login types
-export interface UserInfo {
+export interface UserLoginInfo {
   _id: Schema.Types.ObjectId
   email: EmailType
   full_name: string

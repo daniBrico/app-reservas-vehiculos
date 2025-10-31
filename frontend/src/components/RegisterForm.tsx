@@ -1,28 +1,38 @@
-import { useState } from 'react'
+import { useAuthContext } from '@/hooks/useAuthContext'
+import type { IUserInput } from '@/types/types'
+import { useEffect, useState, type JSX } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function RegisterForm() {
-  const [formData, setFormData] = useState({
+const RegisterForm = (): JSX.Element => {
+  const [formData, setFormData] = useState<IUserInput>({
     email: '',
     password: '',
     full_name: '',
     last_name: '',
     country: '',
     address: '',
-    address_number: '',
-    phone_number: '',
+    address_number: 0,
+    phone_number: 0,
     fiscal_condition: '',
     document_type: '',
-    document_number: ''
+    document_number: 0
   })
 
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
+  const { signUp, user } = useAuthContext()
+
+  useEffect(() => {
+    if (user === null) return
+
+    setMessage(`Bienvenido ${user.full_name}, registro exitoso!`)
+  }, [user])
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  ): void => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -30,49 +40,39 @@ export default function RegisterForm() {
     }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
+
     setLoading(true)
+
     try {
-      const res = await fetch('http://localhost:3000/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+      signUp(formData)
+
+      setFormData({
+        email: '',
+        password: '',
+        full_name: '',
+        last_name: '',
+        country: '',
+        address: '',
+        address_number: 0,
+        phone_number: 0,
+        fiscal_condition: '',
+        document_type: '',
+        document_number: 0
       })
 
-      const data = await res.json()
-
-      if (res.ok) {
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userInfo', JSON.stringify(data.user))
-
-        setMessage(`Bienvenido ${data.user.full_name}, registro exitoso! Se redirigira a reservar en un instante`)
-
-        setFormData({
-          email: '',
-          password: '',
-          full_name: '',
-          last_name: '',
-          country: '',
-          address: '',
-          address_number: '',
-          phone_number: '',
-          fiscal_condition: '',
-          document_type: '',
-          document_number: ''
-        })
-
-        setTimeout(() => {
-          setMessage('')
-          navigate('/inicio')
-          window.location.reload()
-        }, 2000)
-      } else {
-        setMessage(data.message || 'Error desconocido')
-        setTimeout(() => setMessage(''), 5000)
-      }
+      setTimeout(() => {
+        setMessage('')
+        navigate('/inicio')
+        window.location.reload()
+      }, 2000)
     } catch (err) {
-      setMessage('Error de conexión con el servidor')
+      if (err instanceof Error) {
+        setMessage('Error de conexión con el servidor')
+      } else {
+        setMessage('Error desconocido')
+      }
       setTimeout(() => setMessage(''), 5000)
     } finally {
       setLoading(false)
@@ -144,7 +144,7 @@ export default function RegisterForm() {
             name="address_number"
             type="number"
             placeholder="Altura"
-            value={formData.address_number}
+            value={formData.address_number === 0 ? '' : formData.address_number}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
@@ -153,7 +153,7 @@ export default function RegisterForm() {
             name="phone_number"
             type="number"
             placeholder="Teléfono"
-            value={formData.phone_number}
+            value={formData.phone_number === 0 ? '' : formData.phone_number}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
@@ -201,7 +201,9 @@ export default function RegisterForm() {
             name="document_number"
             type="number"
             placeholder="Número de documento"
-            value={formData.document_number}
+            value={
+              formData.document_number === 0 ? '' : formData.document_number
+            }
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
@@ -225,3 +227,5 @@ export default function RegisterForm() {
     </div>
   )
 }
+
+export default RegisterForm
