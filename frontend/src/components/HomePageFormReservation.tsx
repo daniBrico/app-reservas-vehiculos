@@ -38,52 +38,45 @@ const HomePageFormReservation: React.FC = () => {
   }
 
   return (
-    <>
-      <div className="w-4/5">
-        <h1 className="mb-4 text-center text-5xl font-bold tracking-wide text-white text-shadow-md">
-          Alquiler de autos en Argentina con Sharps
-        </h1>
-      </div>
-      <div className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16">
-        <CustomSelect
-          selectedValue={selectedCity}
-          setSelectedValue={setSelectedCity}
-          selectItems={cities}
-          cssClasses="min-w-56"
-        />
-        <DatePicker
-          placeholder="Fecha de retiro"
-          value={pickupDate}
-          onDateChange={setPickupDate}
-          disabled={{ before: new Date() }}
-          cssClasses="text-base"
-        />
-        <DatePicker
-          placeholder="Fecha de devolución"
-          value={returnDate}
-          onDateChange={setReturnDate}
-          disabled={{ before: new Date() }}
-          cssClasses="text-base"
-        />
+    <div className="flex h-32 w-4/5 items-center gap-4 rounded-sm bg-stone-700/40 p-16">
+      <CustomSelect
+        selectedValue={selectedCity}
+        setSelectedValue={setSelectedCity}
+        selectItems={cities}
+        cssClasses="min-w-56"
+      />
+      <DatePicker
+        placeholder="Fecha de retiro"
+        value={pickupDate}
+        onDateChange={setPickupDate}
+        disabled={{ before: new Date() }}
+        cssClasses="text-base"
+      />
+      <DatePicker
+        placeholder="Fecha de devolución"
+        value={returnDate}
+        onDateChange={setReturnDate}
+        disabled={{ before: new Date() }}
+        cssClasses="text-base"
+      />
 
-        <input
-          type="text"
-          placeholder="Código de descuento"
-          className="h-9 rounded-sm bg-white pl-2 text-base"
-          onChange={handleDiscountCodeChange}
-          value={discountCode}
-        />
+      <input
+        type="text"
+        placeholder="Código de descuento"
+        className="h-9 rounded-sm bg-white pl-2 text-base"
+        onChange={handleDiscountCodeChange}
+        value={discountCode}
+      />
 
-        <Button className="bg-white text-base font-medium text-gray-400 shadow-md shadow-stone-600 transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-gray-200 disabled:cursor-not-allowed disabled:bg-white disabled:text-gray-300 disabled:opacity-100 disabled:shadow-none">
-          <Link
-            to="/generar-reserva"
-            className="block h-full w-full cursor-pointer"
-          >
-            Continuar
-          </Link>
-        </Button>
-      </div>
-    </>
+      <Button className="bg-white text-base font-medium text-gray-400 shadow-md shadow-stone-600 transition-colors duration-300 ease-in-out hover:bg-stone-800 hover:text-gray-200 disabled:cursor-not-allowed disabled:bg-white disabled:text-gray-300 disabled:opacity-100 disabled:shadow-none">
+        <Link
+          to="/generar-reserva"
+          className="block h-full w-full cursor-pointer"
+        >
+          Continuar
+        </Link>
+      </Button>
+    </div>
   )
 }
 

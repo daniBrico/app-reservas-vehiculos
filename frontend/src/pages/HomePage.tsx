@@ -11,6 +11,11 @@ const HomePage = (): JSX.Element => {
   return (
     <>
       <section className="flex h-[calc(100dvh-120px)] w-full flex-col items-center justify-center bg-[url('./assets/driving-car.jpg')] bg-cover bg-center bg-no-repeat">
+        <div className="w-4/5">
+          <h1 className="mb-4 text-center text-5xl font-bold tracking-wide text-white text-shadow-md">
+            Alquiler de autos en Argentina con Sharps
+          </h1>
+        </div>
         <HomePageFormReservation />
       </section>
       <section className="relative flex flex-col items-center justify-between gap-6 pt-6 pb-16">

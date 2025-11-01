@@ -33,12 +33,10 @@ function App(): JSX.Element {
           </Routes>
         </main>
         <Footer />
-        {isLoginOpen && (
-          <LoginUser
-            onClose={() => setIsLoginOpen(false)}
-            isLoginOpen={isLoginOpen}
-          />
-        )}
+        <LoginUser
+          onClose={() => setIsLoginOpen(false)}
+          isLoginOpen={isLoginOpen}
+        />
       </Router>
     </AuthProvider>
   )

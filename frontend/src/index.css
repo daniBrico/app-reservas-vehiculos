@@ -139,6 +139,19 @@
       0 -6px 6px -1px rgb(106, 114, 130, 0.2),
       0 -2px 4px -2px rgb(106, 114, 130, 0.2);
   }
+
+  .scale-up-center {
+    animation: scale-up-center 0.3s;
+  }
+
+  @keyframes scale-up-center {
+    0% {
+      transform: scale(0.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 }
 /* Slick Slider */
 .slick-slide > div {
