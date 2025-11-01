@@ -4,36 +4,25 @@ import logo from '../../assets/the-be-sharps.png'
 import { Link } from 'react-router-dom'
 import UserSvg from '../svg-components/UserSvg'
 import HeaderMenu from './HeaderMenu.tsx'
-import type { UserInfo } from '@/types/types'
 import LiButton from '../LiButton'
+import { useAuthContext } from '@/hooks/useAuthContext.ts'
 
 interface HeaderProps {
   onLoginClick: () => void
-  userInfo: UserInfo | null
-  onLogout: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({
-  onLoginClick,
-  userInfo,
-  onLogout
-}) => {
+const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
   const burgerDivRef = useRef<HTMLDivElement>(null)
 
-  const handleOpenCloseMenu = (): void => {
-    setMenuIsOpen(!isMenuOpen)
-  }
+  const { user, logout, authLoading } = useAuthContext()
 
-  const handleLogout = (): void => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('userInfo')
-    onLogout()
-    window.location.href = '/inicio'
-  }
+  const handleOpenCloseMenu = (): void => setMenuIsOpen(!isMenuOpen)
+
+  const handleLogout = (): void => logout()
 
   return (
-    <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-lg shadow-amber-600">
+    <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-lg shadow-gray-500">
       <div className="flex items-center justify-center gap-2">
         <Link to="/inicio">
           <img
@@ -45,45 +34,49 @@ const Header: React.FC<HeaderProps> = ({
       </div>
       <div className="flex items-center gap-2">
         <ol className="flex items-center gap-2">
-          {userInfo === null ? (
+          {!authLoading && (
             <>
-              <LiButton
-                cssClasses="hover:scale-105"
-                handleClick={onLoginClick}
-                content="Iniciar sesión"
-              />
-              <div className="px-2">
-                <div className="h-5 w-0.5 bg-white" />
-              </div>
-              <LiButton
-                cssClasses="hover:scale-105"
-                content="Registrarse"
-                link={<Link to="/register">Registrarse</Link>}
-              />
-            </>
-          ) : (
-            <>
-              <LiButton
-                cssClasses="hover:scale-105 group"
-                link={
-                  <Link className="flex items-center gap-2" to="/perfil">
-                    <div className="w-8 stroke-white group-hover:stroke-amber-800">
-                      <UserSvg />
-                    </div>
-                    <div className="text-xl font-bold text-white group-hover:text-amber-800">
-                      {userInfo.full_name}
-                    </div>
-                  </Link>
-                }
-              />
-              <div className="px-2">
-                <div className="h-5 w-0.5 bg-white" />
-              </div>
-              <LiButton
-                cssClasses="hover:scale-110"
-                handleClick={handleLogout}
-                content="Salir"
-              />
+              {user === null ? (
+                <>
+                  <LiButton
+                    cssClasses="hover:scale-105"
+                    handleClick={onLoginClick}
+                    content="Iniciar sesión"
+                  />
+                  <div className="px-2">
+                    <div className="h-5 w-0.5 bg-white" />
+                  </div>
+                  <LiButton
+                    cssClasses="hover:scale-105"
+                    content="Registrarse"
+                    link={<Link to="/register">Registrarse</Link>}
+                  />
+                </>
+              ) : (
+                <>
+                  <LiButton
+                    cssClasses="hover:scale-105 group"
+                    link={
+                      <Link className="flex items-center gap-2" to="/perfil">
+                        <div className="w-8 stroke-white group-hover:stroke-amber-800">
+                          <UserSvg />
+                        </div>
+                        <div className="text-xl font-bold text-white group-hover:text-amber-800">
+                          {user.full_name}
+                        </div>
+                      </Link>
+                    }
+                  />
+                  <div className="px-2">
+                    <div className="h-5 w-0.5 bg-white" />
+                  </div>
+                  <LiButton
+                    cssClasses="hover:scale-110"
+                    handleClick={handleLogout}
+                    content="Cerrar sesión"
+                  />
+                </>
+              )}
             </>
           )}
         </ol>

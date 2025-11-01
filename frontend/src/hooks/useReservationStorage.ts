@@ -64,26 +64,6 @@ export function useReservationStorage(): ReservationStorage {
   useEffect(() => {
     if (!isInitialized) return
 
-    // const stored = sessionStorage.getItem(STORAGE_KEY)
-
-    // if (stored) {
-    //   try {
-    //     const data = JSON.parse(stored)
-
-    //     const reservationInfo = {
-    //       selectedCity: data.selectedCity !== selectedCity ? selectedCity : ,
-    //       pickupDate: pickupDate ? pickupDate.toISOString() : null,
-    //       returnDate: returnDate ? returnDate.toISOString() : null,
-    //       pickupTime,
-    //       returnTime,
-    //       discountCode,
-    //       vehicleID
-    //     }
-    //   } catch (err) {
-    //     console.error('Error parsing reservation storage', err)
-    //   }
-    // }
-
     const hasData =
       selectedCity ||
       pickupDate ||
@@ -92,14 +72,6 @@ export function useReservationStorage(): ReservationStorage {
       returnTime ||
       discountCode ||
       vehicleID
-
-    console.log('🚀 ~ useReservationStorage ~ pickupDate: ', pickupDate)
-    console.log('🚀 ~ useReservationStorage ~ pickupTime: ', pickupTime)
-    console.log('🚀 ~ useReservationStorage ~ vehicleID: ', vehicleID)
-    console.log('🚀 ~ useReservationStorage ~ discountCode: ', discountCode)
-    console.log('🚀 ~ useReservationStorage ~ returnDate: ', returnDate)
-    console.log('🚀 ~ useReservationStorage ~ selectedCity: ', selectedCity)
-    console.log("''''''''''''''''''''''''''")
 
     // No guarda si está todo vacío
     if (!hasData) return

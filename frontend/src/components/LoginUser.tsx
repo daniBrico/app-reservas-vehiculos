@@ -1,20 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
-import { registerUser } from '@/api/userApi'
-import type { TokenPayload, UserInfo } from '@/types/types'
-import { jwtDecode } from 'jwt-decode'
+import { useAuthContext } from '@/hooks/useAuthContext'
+import CancelMarkSvg from './svg-components/CancelMarkSvg'
+import classNames from 'classnames'
 
 interface LoginUserProps {
   onClose: () => void
   isLoginOpen: boolean
-  onHandleSubmit: (userInfo: UserInfo) => void
 }
 
-const LoginUser: React.FC<LoginUserProps> = ({
-  onClose,
-  isLoginOpen,
-  onHandleSubmit
-}) => {
+const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -27,47 +22,40 @@ const LoginUser: React.FC<LoginUserProps> = ({
     ref: loginDivContainer
   })
 
+  const { signIn, user } = useAuthContext()
+
   useEffect(() => {
-    document.body.style.overflowY = 'hidden'
+    if (user === null) return
+
+    setMessage(`Bienvenido ${user.full_name}`)
+  }, [user])
+
+  useEffect(() => {
+    document.body.style.overflow = isLoginOpen ? 'hidden' : ''
+
     return (): void => {
-      document.body.style.overflowY = 'auto'
+      document.body.style.overflow = ''
     }
-  }, [])
+  }, [isLoginOpen])
 
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
     try {
-      const res = await registerUser(email, password)
+      signIn(email, password)
+      setError('')
 
-      const token = res.token
-
-      if (token) {
-        const payload: TokenPayload = jwtDecode(token)
-
-        localStorage.setItem('token', token)
-        const userInfo: UserInfo = {
-          _id: payload._id,
-          full_name: payload.full_name,
-          email: payload.email
-        }
-        localStorage.setItem('userInfo', JSON.stringify(userInfo))
-        onHandleSubmit(userInfo)
-        setError('')
-        setMessage(`Bienvenido ${payload.full_name}`)
-      }
-
-      // Espera 4 segundos antes de cerrar el modal
       setTimeout(() => {
         setMessage('')
         onClose()
       }, 4000)
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log('Ha ocurrido un error al intentar loguearse: ', err.message)
+      }
 
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al iniciar sesión')
       setMessage('')
 
-      // Borra el mensaje de error luego de 3 segundos
       setTimeout(() => {
         setError('')
       }, 3000)
@@ -75,17 +63,30 @@ const LoginUser: React.FC<LoginUserProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+    <div
+      className={classNames(
+        'fixed inset-0 flex items-center justify-center bg-black/50 transition-all duration-300 ease-in-out',
+        {
+          'opacity-100': isLoginOpen,
+          'pointer-events-none opacity-0': !isLoginOpen
+        }
+      )}
+    >
       <div
-        className="w-80 rounded-lg bg-white p-8 shadow-lg relative"
+        className={classNames(
+          'relative w-80 rounded-lg bg-white p-8 shadow-lg',
+          {
+            'scale-up-center': isLoginOpen
+          }
+        )}
         ref={loginDivContainer}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-2 right-2 bg-amber-400 rounded px-3 py-1 text-white hover:bg-amber-500"
+          className="absolute top-2 right-2 h-8 w-8 cursor-pointer rounded-full bg-amber-400 stroke-white transition duration-300 ease-in-out hover:scale-110 hover:bg-amber-500"
         >
-          x
+          <CancelMarkSvg />
         </button>
 
         <h2 className="mb-4 text-center text-2xl font-bold">Ingresar</h2>
@@ -123,7 +124,7 @@ const LoginUser: React.FC<LoginUserProps> = ({
 
           <button
             type="submit"
-            className="rounded bg-amber-400 py-2 font-bold text-white hover:bg-amber-500"
+            className="cursor-pointer rounded bg-amber-400 py-2 font-bold text-white transition-all duration-300 ease-in-out hover:bg-amber-500"
           >
             Iniciar sesión
           </button>

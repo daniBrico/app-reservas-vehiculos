@@ -183,7 +183,7 @@ const ReservationPage: React.FC = () => {
     // Caja automática
     if (
       activeFilters.includes('automatic-transmission') &&
-      v.transmissionType.toLocaleLowerCase() !== 'automatic'
+      v.transmissionType.toLocaleLowerCase() !== 'automática'
     )
       return false
 
@@ -303,18 +303,18 @@ const ReservationPage: React.FC = () => {
       <article className="flex max-h-[588px] w-full flex-col items-center gap-4 overflow-y-scroll rounded-md border border-gray-200 px-4 py-8 shadow-md">
         {filteredVehicles &&
           filteredVehicles.map((vehicle) => {
-            const makeAndModel = `${vehicle.make} ${vehicle.model}`
-
             return (
               <VehicleInformation
                 key={vehicle._id}
-                makeAndModel={makeAndModel}
+                title={vehicle.title}
                 transmissionType={vehicle.transmissionType}
+                trunkCapacity={vehicle.trunkCapacity}
                 pricePerDay={vehicle.pricePerDay}
                 warrantyCost={vehicle.warrantyCost}
                 vehicleID={vehicle._id}
                 handleSelectVehicle={setVehicleID}
                 vehicleIDSelected={vehicleID}
+                imageURL={vehicle.imageURL}
               />
             )
           })}

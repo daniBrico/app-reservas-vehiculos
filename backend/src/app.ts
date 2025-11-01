@@ -4,6 +4,7 @@ import vehicleRoutes from './routes/vehicle.routes'
 import userRoutes from './routes/user.routes'
 import reservationRoutes from './routes/reservation.routes'
 import { authMiddleware } from './middlewares/authMiddleware'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 
@@ -18,12 +19,10 @@ const corsOptions = {
 // Middlewares
 app.use(cors(corsOptions))
 app.use(express.json())
-
-app.use('/ping', (_req, res) => {
-  res.send('pong')
-})
+app.use(cookieParser())
 
 app.use('/vehicles', vehicleRoutes)
+app.use('/vehicles-images', express.static('./src/assets/vehicles/'))
 app.use('/reservations', authMiddleware, reservationRoutes)
 app.use('/api', userRoutes)
 

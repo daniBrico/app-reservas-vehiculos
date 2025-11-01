@@ -1,15 +1,15 @@
 // Modelos de MongoDB
 export interface IVehicle extends Document {
   _id: Schema.Types.ObjectId
-  make: string
-  model: string
+  title: string
   transmissionType: string
   seatingCapacity: number
+  trunkCapacity: number
   year: number
   licencePlate: string
   pricePerDay: number
   status: string
-  image: string
+  imageURL: string
   warrantyCost: number
   description: string
 }
@@ -44,16 +44,15 @@ export interface IReservation extends Document {
 }
 
 // Login types
-export interface UserInfo {
+export interface UserLoginInfo {
   _id: Schema.Types.ObjectId
   email: EmailType
   full_name: string
 }
 
-export interface TokenPayload {
-  _id: string
-  email: EmailType
-  full_name: string
+export interface VerifyTokenResponse {
+  message: string
+  userLoginInfo?: UserLoginInfo
 }
 
 // Response
@@ -64,4 +63,15 @@ export interface LoginResponse {
 export interface ReservationResponse {
   message: string
   reservation: IReservation
+}
+
+// jwt
+export interface TokenPayload {
+  _id: string
+  email: EmailType
+  full_name: string
+}
+
+interface JwtPayloadCustom extends jwt.JwtPayload {
+  userLoginInfo: TokenPayload
 }

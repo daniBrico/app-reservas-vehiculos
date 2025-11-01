@@ -18,8 +18,8 @@ export default function ModifyUser() {
 
   const [message, setMessage] = useState('')
 
-useEffect(() => {
-    const storedUser = localStorage.getItem('userInfo')
+  useEffect(() => {
+    const storedUser = localStorage.getItem('UserLoginInfo')
     if (storedUser) {
       const user = JSON.parse(storedUser)
       setFormData({
@@ -38,7 +38,7 @@ useEffect(() => {
       })
     }
   }, [])
-  
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -150,7 +150,8 @@ useEffect(() => {
             value={formData.fiscal_condition}
             onChange={handleChange}
             className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required>
+            required
+          >
             <option value="" disabled>
               Condición fiscal
             </option>
@@ -160,7 +161,7 @@ useEffect(() => {
             <option value="Exento">Exento</option>
             <option value="No alcanzado">No alcanzado</option>
           </select>
-          
+
           <label htmlFor="document_type" className="sr-only">
             Tipo de documento
           </label>
@@ -170,7 +171,8 @@ useEffect(() => {
             value={formData.document_type}
             onChange={handleChange}
             className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required>
+            required
+          >
             <option value="" disabled>
               Tipo de documento
             </option>
