@@ -4,7 +4,7 @@ import type { JSX } from 'react'
 
 const Footer = (): JSX.Element => {
   return (
-    <footer className="bg-amber-400 px-16 text-amber-950 shadow-lg shadow-amber-600">
+    <footer className="shadow-top text bg-amber-400 px-16 text-amber-950 shadow-md shadow-amber-600">
       <div className="flex justify-between py-8">
         {/* Logo y descripción */}
         <div className="flex items-center gap-2">

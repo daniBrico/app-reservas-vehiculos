@@ -133,6 +133,13 @@
   }
 }
 
+@layer utilities {
+  .shadow-top {
+    box-shadow:
+      0 -6px 6px -1px rgb(106, 114, 130, 0.2),
+      0 -2px 4px -2px rgb(106, 114, 130, 0.2);
+  }
+}
 /* Slick Slider */
 .slick-slide > div {
   margin: 0 0.5rem;

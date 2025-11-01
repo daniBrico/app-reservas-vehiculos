@@ -21,32 +21,30 @@ const CarouselVehicles: React.FC<CarouselVehiclesProps> = ({ vehicles }) => {
   }
 
   return (
-    <div className="m-auto w-3/4">
-      <div>
-        <Slider {...settings}>
-          {vehicles.map((vehicle) => {
-            return (
-              <div className="h-72 rounded-md bg-white p-4" key={vehicle._id}>
-                <div className="flex h-full flex-col items-center">
-                  <h3 className="grow-[2] text-center text-2xl font-bold">
-                    {vehicle.title}
-                  </h3>
-                  <div className="mt-auto">
-                    <img
-                      className="mx-auto w-58"
-                      src={`${API_URL}/${vehicle.imageURL}`}
-                      alt={vehicle.title}
-                    />
-                    <p className="h-16 text-center font-light">
-                      {vehicle.description}
-                    </p>
-                  </div>
+    <div className="w-ful relative m-auto w-3/4">
+      <Slider {...settings}>
+        {vehicles.map((vehicle) => {
+          return (
+            <div className="h-72 rounded-md bg-amber-200 p-4" key={vehicle._id}>
+              <div className="flex h-full flex-col items-center">
+                <h3 className="grow-[2] text-center text-2xl font-bold">
+                  {vehicle.title}
+                </h3>
+                <div className="mt-auto">
+                  <img
+                    className="mx-auto w-58"
+                    src={`${API_URL}/${vehicle.imageURL}`}
+                    alt={vehicle.title}
+                  />
+                  <p className="h-16 text-center font-light">
+                    {vehicle.description}
+                  </p>
                 </div>
               </div>
-            )
-          })}
-        </Slider>
-      </div>
+            </div>
+          )
+        })}
+      </Slider>
     </div>
   )
 }
