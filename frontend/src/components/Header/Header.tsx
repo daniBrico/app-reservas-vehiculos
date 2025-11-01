@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
   const burgerDivRef = useRef<HTMLDivElement>(null)
 
-  const { user, logout } = useAuthContext()
+  const { user, logout, authLoading } = useAuthContext()
 
   const handleOpenCloseMenu = (): void => setMenuIsOpen(!isMenuOpen)
 
@@ -34,45 +34,49 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
       </div>
       <div className="flex items-center gap-2">
         <ol className="flex items-center gap-2">
-          {user === null ? (
+          {!authLoading && (
             <>
-              <LiButton
-                cssClasses="hover:scale-105"
-                handleClick={onLoginClick}
-                content="Iniciar sesión"
-              />
-              <div className="px-2">
-                <div className="h-5 w-0.5 bg-white" />
-              </div>
-              <LiButton
-                cssClasses="hover:scale-105"
-                content="Registrarse"
-                link={<Link to="/register">Registrarse</Link>}
-              />
-            </>
-          ) : (
-            <>
-              <LiButton
-                cssClasses="hover:scale-105 group"
-                link={
-                  <Link className="flex items-center gap-2" to="/perfil">
-                    <div className="w-8 stroke-white group-hover:stroke-amber-800">
-                      <UserSvg />
-                    </div>
-                    <div className="text-xl font-bold text-white group-hover:text-amber-800">
-                      {user.full_name}
-                    </div>
-                  </Link>
-                }
-              />
-              <div className="px-2">
-                <div className="h-5 w-0.5 bg-white" />
-              </div>
-              <LiButton
-                cssClasses="hover:scale-110"
-                handleClick={handleLogout}
-                content="Cerrar sesión"
-              />
+              {user === null ? (
+                <>
+                  <LiButton
+                    cssClasses="hover:scale-105"
+                    handleClick={onLoginClick}
+                    content="Iniciar sesión"
+                  />
+                  <div className="px-2">
+                    <div className="h-5 w-0.5 bg-white" />
+                  </div>
+                  <LiButton
+                    cssClasses="hover:scale-105"
+                    content="Registrarse"
+                    link={<Link to="/register">Registrarse</Link>}
+                  />
+                </>
+              ) : (
+                <>
+                  <LiButton
+                    cssClasses="hover:scale-105 group"
+                    link={
+                      <Link className="flex items-center gap-2" to="/perfil">
+                        <div className="w-8 stroke-white group-hover:stroke-amber-800">
+                          <UserSvg />
+                        </div>
+                        <div className="text-xl font-bold text-white group-hover:text-amber-800">
+                          {user.full_name}
+                        </div>
+                      </Link>
+                    }
+                  />
+                  <div className="px-2">
+                    <div className="h-5 w-0.5 bg-white" />
+                  </div>
+                  <LiButton
+                    cssClasses="hover:scale-110"
+                    handleClick={handleLogout}
+                    content="Cerrar sesión"
+                  />
+                </>
+              )}
             </>
           )}
         </ol>

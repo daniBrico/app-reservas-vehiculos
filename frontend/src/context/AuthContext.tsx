@@ -18,12 +18,9 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<UserLoginInfo | null>(null)
   const [error, setError] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [authLoading, setAuthLoading] = useState(true)
 
   const handleAuthSuccess = (userLoginInfo: UserLoginInfo | null): void => {
-    const cookies = Cookies.get()
-    const decoded = jwtDecode(cookies.token)
-
     setUser(userLoginInfo)
     setIsAuthenticated(true)
   }
@@ -71,8 +68,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
 
       if (cookies.token === null) {
         resetAuthState()
-
-        setLoading(false)
+        setAuthLoading(false)
         return
       }
 
@@ -82,8 +78,6 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
         const userLoginInfo = res.userLoginInfo
 
         if (userLoginInfo) handleAuthSuccess(userLoginInfo)
-
-        setLoading(false)
       } catch (err) {
         if (err instanceof Error)
           console.log(
@@ -92,14 +86,15 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
           )
 
         resetAuthState()
-        setLoading(false)
+      } finally {
+        setAuthLoading(false)
       }
     }
 
     checkLogin()
   }, [])
 
-  const value: AuthContextProps = { user, signUp, signIn, logout }
+  const value: AuthContextProps = { user, signUp, signIn, logout, authLoading }
 
   return <AuthContext value={value}>{children}</AuthContext>
 }

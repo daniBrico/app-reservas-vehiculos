@@ -11,6 +11,7 @@ export interface AuthContextProps {
   signUp: (signiInUser: IUserInput) => Promise<void>
   signIn: (email: EmailType, password: PasswordType) => Promise<void>
   logout: () => void
+  authLoading: boolean
 }
 
 export const AuthContext = createContext<AuthContextProps | null>(null)
