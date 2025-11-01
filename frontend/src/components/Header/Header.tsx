@@ -9,25 +9,17 @@ import { useAuthContext } from '@/hooks/useAuthContext.ts'
 
 interface HeaderProps {
   onLoginClick: () => void
-  onLogout: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ onLoginClick, onLogout }) => {
+const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
   const burgerDivRef = useRef<HTMLDivElement>(null)
 
-  const { user } = useAuthContext()
+  const { user, logout } = useAuthContext()
 
-  const handleOpenCloseMenu = (): void => {
-    setMenuIsOpen(!isMenuOpen)
-  }
+  const handleOpenCloseMenu = (): void => setMenuIsOpen(!isMenuOpen)
 
-  const handleLogout = (): void => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('UserLoginInfo')
-    onLogout()
-    window.location.href = '/inicio'
-  }
+  const handleLogout = (): void => logout()
 
   return (
     <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-lg shadow-amber-600">
@@ -79,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick, onLogout }) => {
               <LiButton
                 cssClasses="hover:scale-110"
                 handleClick={handleLogout}
-                content="Salir"
+                content="Cerrar sesión"
               />
             </>
           )}

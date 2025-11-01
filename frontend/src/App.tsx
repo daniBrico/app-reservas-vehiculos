@@ -18,17 +18,10 @@ import AuthProvider from './context/AuthContext'
 function App(): JSX.Element {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
 
-  const handleOnLogout = (): void => {
-    // setUserInfo(null)
-  }
-
   return (
     <AuthProvider>
       <Router>
-        <Header
-          onLoginClick={() => setIsLoginOpen(true)}
-          onLogout={handleOnLogout}
-        />
+        <Header onLoginClick={() => setIsLoginOpen(true)} />
         <main className="w-full flex-grow">
           <Routes>
             <Route index element={<Navigate to="/inicio" replace />} />

@@ -61,6 +61,10 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     setUser(null)
   }
 
+  const logout = (): void => {
+    resetAuthState()
+  }
+
   useEffect(() => {
     async function checkLogin(): Promise<void> {
       const cookies = Cookies.get()
@@ -95,7 +99,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     checkLogin()
   }, [])
 
-  const value: AuthContextProps = { user, signUp, signIn }
+  const value: AuthContextProps = { user, signUp, signIn, logout }
 
   return <AuthContext value={value}>{children}</AuthContext>
 }
