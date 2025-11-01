@@ -29,7 +29,8 @@ function App(): JSX.Element {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/inicio" element={<HomePage />} />
             <Route path="/generar-reserva" element={<ReservationPage />} />
-            <Route path="/flota-vehiculos" element={<VehicleFleerPage />} />
+            <Route path="/flota-vehiculos" element={<VehicleFleetPage />} />
+            <Route path="/vehiculo/:id" element={<VehicleDetailsPage />} />
             <Route path="/perfil" element={<UserProfilePage />} />
           </Routes>
         </main>
