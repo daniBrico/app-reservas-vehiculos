@@ -25,17 +25,18 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
   const { signIn, user } = useAuthContext()
 
   useEffect(() => {
-    document.body.style.overflowY = 'hidden'
-    return (): void => {
-      document.body.style.overflowY = 'auto'
-    }
-  }, [])
-
-  useEffect(() => {
     if (user === null) return
 
     setMessage(`Bienvenido ${user.full_name}`)
   }, [user])
+
+  useEffect(() => {
+    document.body.style.overflow = isLoginOpen ? 'hidden' : ''
+
+    return (): void => {
+      document.body.style.overflow = ''
+    }
+  }, [isLoginOpen])
 
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
