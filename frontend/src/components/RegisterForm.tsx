@@ -80,84 +80,73 @@ const RegisterForm = (): JSX.Element => {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-lg space-y-4 rounded-xl bg-white p-8 shadow-lg"
-      >
-        <h2 className="mb-6 text-center text-3xl font-bold text-amber-800">
+    <section>
+      <form onSubmit={handleSubmit}>
+        <h2 className="mb-8 text-left text-3xl font-bold text-amber-800">
           Registro de Usuario
         </h2>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <input
-            name="full_name"
-            placeholder="Nombre"
-            value={formData.full_name}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="last_name"
-            placeholder="Apellido"
-            value={formData.last_name}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="email"
-            type="email"
-            placeholder="Correo"
-            value={formData.email}
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Contraseña"
-            value={formData.password}
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="country"
-            placeholder="Provincia/Ciudad"
-            value={formData.country}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="address"
-            placeholder="Calle"
-            value={formData.address}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="address_number"
-            type="number"
-            placeholder="Altura"
-            value={formData.address_number === 0 ? '' : formData.address_number}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-          <input
-            name="phone_number"
-            type="number"
-            placeholder="Teléfono"
-            value={formData.phone_number === 0 ? '' : formData.phone_number}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
+        <div className="grid max-w-2xl grid-cols-2 gap-x-4 gap-y-8 [&_input]:h-11 [&_select]:h-11">
+          <div className="col-span-2 grid grid-cols-3 gap-2">
+            <div className="relative w-full">
+              <input
+                type="text"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="peer h-11 w-full rounded-lg border border-gray-300 px-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+                placeholder=""
+                required
+              />
+              <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+                Provincia/Ciudad
+              </label>
+            </div>
+            <div className="relative w-full">
+              <input
+                name="address"
+                placeholder=""
+                value={formData.address}
+                onChange={handleChange}
+                className="peer rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+                required
+              />
+              <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+                Calle
+              </label>
+            </div>
+            <div className="relative w-full">
+              <input
+                name="address_number"
+                type="number"
+                placeholder=""
+                value={
+                  formData.address_number === 0 ? '' : formData.address_number
+                }
+                onChange={handleChange}
+                className="peer rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+                required
+              />
+              <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+                Número de calle
+              </label>
+            </div>
+          </div>
+          <div className="relative w-full">
+            <input
+              name="phone_number"
+              type="number"
+              placeholder=""
+              value={formData.phone_number === 0 ? '' : formData.phone_number}
+              onChange={handleChange}
+              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+              required
+            />
+            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+              Teléfono
+            </label>
+          </div>
+
           <label htmlFor="fiscal_condition" className="sr-only">
             Condición fiscal
           </label>
@@ -166,7 +155,7 @@ const RegisterForm = (): JSX.Element => {
             name="fiscal_condition"
             value={formData.fiscal_condition}
             onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+            className="rounded-lg border pl-1 text-black/50 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           >
             <option value="" disabled>
@@ -187,7 +176,7 @@ const RegisterForm = (): JSX.Element => {
             name="document_type"
             value={formData.document_type}
             onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+            className="rounded-lg border pl-1 text-black/50 focus:ring-2 focus:ring-amber-400 focus:outline-none"
             required
           >
             <option value="" disabled>
@@ -197,26 +186,59 @@ const RegisterForm = (): JSX.Element => {
             <option value="LE">LE</option>
             <option value="LC">LC</option>
           </select>
-          <input
-            name="document_number"
-            type="number"
-            placeholder="Número de documento"
-            value={
-              formData.document_number === 0 ? '' : formData.document_number
-            }
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          />
-        </div>
+          <div className="relative w-full">
+            <input
+              name="document_number"
+              type="number"
+              placeholder=""
+              value={
+                formData.document_number === 0 ? '' : formData.document_number
+              }
+              onChange={handleChange}
+              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+              required
+            />
+            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+              Número de Documento
+            </label>
+          </div>
+          <div className="relative w-full">
+            <input
+              name="email"
+              type="email"
+              placeholder=""
+              value={formData.email}
+              onChange={handleChange}
+              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+              required
+            />
+            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+              Correo
+            </label>
+          </div>
+          <div className="relative w-full">
+            <input
+              name="password"
+              type="password"
+              placeholder=""
+              value={formData.password}
+              onChange={handleChange}
+              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+              required
+            />
+            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+              Contraseña
+            </label>
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="mt-4 w-full rounded-lg bg-amber-800 py-3 font-bold text-white transition hover:bg-amber-900 disabled:bg-amber-400"
-        >
-          {loading ? 'Registrando...' : 'Registrarse'}
-        </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="transition-color w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white duration-300 hover:bg-amber-900 disabled:bg-amber-400"
+          >
+            {loading ? 'Registrando...' : 'Registrarse'}
+          </button>
+        </div>
 
         {message && (
           <p className="mt-2 text-center font-medium text-green-600">
@@ -224,7 +246,7 @@ const RegisterForm = (): JSX.Element => {
           </p>
         )}
       </form>
-    </div>
+    </section>
   )
 }
 

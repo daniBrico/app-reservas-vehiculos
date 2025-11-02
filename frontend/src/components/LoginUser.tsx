@@ -84,14 +84,12 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-2 right-2 h-8 w-8 cursor-pointer rounded-full bg-amber-400 stroke-white transition duration-300 ease-in-out hover:scale-110 hover:bg-amber-500"
+          className="absolute top-4 right-8 h-8 w-8 cursor-pointer rounded-full bg-amber-400 stroke-white transition duration-300 ease-in-out hover:scale-110 hover:bg-amber-500"
         >
           <CancelMarkSvg />
         </button>
 
-        <h2 className="mb-4 text-center text-2xl font-bold">Ingresar</h2>
-
-        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+        <form onSubmit={handleLogin} className="flex flex-col gap-4 pt-4">
           <div className="flex flex-col">
             <label htmlFor="email" className="mb-1 font-semibold">
               Correo

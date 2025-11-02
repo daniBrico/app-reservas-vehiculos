@@ -1,9 +1,9 @@
-import type { JSX } from 'react'
+import { type JSX } from 'react'
 import RegisterForm from '../components/RegisterForm'
 
 export default function RegisterPage(): JSX.Element {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="flex h-full w-full items-center justify-center px-16 py-8">
       <RegisterForm />
     </div>
   )

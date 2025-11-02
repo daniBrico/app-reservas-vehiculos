@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   const handleLogout = (): void => logout()
 
   return (
-    <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-lg shadow-gray-500">
+    <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-md">
       <div className="flex items-center justify-center gap-2">
         <Link to="/inicio">
           <img
