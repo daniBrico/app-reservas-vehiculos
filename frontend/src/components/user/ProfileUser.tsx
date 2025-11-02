@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type JSX } from 'react'
 import InputField from '../InputField'
 
-export default function ModifyUser() {
+const ModifyUser = (): JSX.Element => {
   const [formData, setFormData] = useState({
     email: '',
     full_name: '',
@@ -41,7 +41,7 @@ export default function ModifyUser() {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  ): void => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -49,7 +49,7 @@ export default function ModifyUser() {
     }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
     const token = localStorage.getItem('token')
 
@@ -73,7 +73,13 @@ export default function ModifyUser() {
         setMessage(data.message || 'Error al actualizar datos')
       }
     } catch (err) {
-      setMessage('Error de conexión con el servidor')
+      if (err instanceof Error) {
+        console.log(
+          'Error al realizar cambios en los datos del usuario: ',
+          err.message
+        )
+        setMessage('Error de conexión con el servidor')
+      }
     }
   }
 
@@ -143,7 +149,7 @@ export default function ModifyUser() {
             label="Número de calle"
             name="address_number"
             type="number"
-            value={formData.address_number === 0 ? '' : formData.address_number}
+            value={formData.address_number}
             onChange={handleChange}
             required={true}
           />
@@ -174,7 +180,7 @@ export default function ModifyUser() {
           label="Teléfono"
           name="phone_number"
           type="number"
-          value={formData.phone_number === 0 ? '' : formData.phone_number}
+          value={formData.phone_number}
           onChange={handleChange}
           required={true}
         />
@@ -228,38 +234,13 @@ export default function ModifyUser() {
           label="Número de Documento"
           name="document_number"
           type="number"
-          value={formData.document_number === 0 ? '' : formData.document_number}
+          value={formData.document_number}
           onChange={handleChange}
           required={true}
         />
-        {/* <input
-          name="document_number"
-          type="number"
-          placeholder="Número de documento"
-          value={formData.document_number}
-          onChange={handleChange}
-          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-        /> */}
-        {/* <input
-          name="current_password"
-          type="password"
-          placeholder="Contraseña actual"
-          value={formData.current_password}
-          onChange={handleChange}
-          className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-        />
-        <input
-          name="new_password"
-          type="password"
-          placeholder="Nueva contraseña"
-          value={formData.new_password}
-          onChange={handleChange}
-          className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-        /> */}
       </div>
       <button
         type="submit"
-        // disabled={loading}
         className="col-start-2 col-end-2 w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white transition-all duration-300 ease-in-out hover:bg-amber-900"
       >
         Guardar cambios
@@ -270,3 +251,5 @@ export default function ModifyUser() {
     </form>
   )
 }
+
+export default ModifyUser
