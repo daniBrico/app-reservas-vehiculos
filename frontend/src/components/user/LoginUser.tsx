@@ -3,6 +3,7 @@ import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
 import { useAuthContext } from '@/hooks/useAuthContext'
 import CancelMarkSvg from '../svg-components/CancelMarkSvg'
 import classNames from 'classnames'
+import InputField from '../InputField'
 
 interface LoginUserProps {
   onClose: () => void
@@ -18,7 +19,11 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
 
   useCloseOnClickOutside({
     isOpen: isLoginOpen,
-    onClose: () => onClose(),
+    onClose: () => {
+      onClose()
+      setPassword('')
+      setEmail('')
+    },
     ref: loginDivContainer
   })
 
@@ -62,6 +67,13 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
     }
   }
 
+  const handleClose = (): void => {
+    setEmail('')
+    setPassword('')
+
+    onClose()
+  }
+
   return (
     <div
       className={classNames(
@@ -83,42 +95,29 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
       >
         <button
           type="button"
-          onClick={onClose}
+          onClick={() => handleClose()}
           className="absolute top-4 right-8 h-8 w-8 cursor-pointer rounded-full bg-amber-400 stroke-white transition duration-300 ease-in-out hover:scale-110 hover:bg-amber-500"
         >
           <CancelMarkSvg />
         </button>
 
-        <form onSubmit={handleLogin} className="flex flex-col gap-4 pt-4">
-          <div className="flex flex-col">
-            <label htmlFor="email" className="mb-1 font-semibold">
-              Correo
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Ingresar correo"
-              required
-              className="rounded border p-2"
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label htmlFor="password" className="mb-1 font-semibold">
-              Contraseña
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Ingresar contraseña"
-              required
-              className="rounded border p-2"
-            />
-          </div>
+        <form onSubmit={handleLogin} className="flex flex-col gap-8 pt-8">
+          <InputField
+            label="Correo"
+            name="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required={true}
+          />
+          <InputField
+            label="Contraseña"
+            name="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required={true}
+          />
 
           <button
             type="submit"
