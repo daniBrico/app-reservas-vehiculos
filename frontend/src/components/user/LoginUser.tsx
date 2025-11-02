@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import useCloseOnClickOutside from '@/hooks/useCloseOnClickOutside'
 import { useAuthContext } from '@/hooks/useAuthContext'
-import CancelMarkSvg from './svg-components/CancelMarkSvg'
+import CancelMarkSvg from '../svg-components/CancelMarkSvg'
 import classNames from 'classnames'
 
 interface LoginUserProps {

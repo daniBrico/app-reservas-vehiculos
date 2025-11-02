@@ -1,6 +1,6 @@
 import { DatePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
-import CustomSelect from './CustomSelect'
+import CustomSelect from '../CustomSelect'
 import { Link } from 'react-router-dom'
 import { useReservationStore } from '@/store/useReservationStore'
 

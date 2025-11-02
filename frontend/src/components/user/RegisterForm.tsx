@@ -2,6 +2,7 @@ import { useAuthContext } from '@/hooks/useAuthContext'
 import type { IUserInput } from '@/types/types'
 import { useEffect, useState, type JSX } from 'react'
 import { useNavigate } from 'react-router-dom'
+import InputField from '../InputField'
 
 const RegisterForm = (): JSX.Element => {
   const [formData, setFormData] = useState<IUserInput>({
@@ -88,65 +89,39 @@ const RegisterForm = (): JSX.Element => {
 
         <div className="grid max-w-2xl grid-cols-2 gap-x-4 gap-y-8 [&_input]:h-11 [&_select]:h-11">
           <div className="col-span-2 grid grid-cols-3 gap-2">
-            <div className="relative w-full">
-              <input
-                type="text"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                className="peer h-11 w-full rounded-lg border border-gray-300 px-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-                placeholder=""
-                required
-              />
-              <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
-                Provincia/Ciudad
-              </label>
-            </div>
-            <div className="relative w-full">
-              <input
-                name="address"
-                placeholder=""
-                value={formData.address}
-                onChange={handleChange}
-                className="peer rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-                required
-              />
-              <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
-                Calle
-              </label>
-            </div>
-            <div className="relative w-full">
-              <input
-                name="address_number"
-                type="number"
-                placeholder=""
-                value={
-                  formData.address_number === 0 ? '' : formData.address_number
-                }
-                onChange={handleChange}
-                className="peer rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-                required
-              />
-              <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
-                Número de calle
-              </label>
-            </div>
-          </div>
-          <div className="relative w-full">
-            <input
-              name="phone_number"
-              type="number"
-              placeholder=""
-              value={formData.phone_number === 0 ? '' : formData.phone_number}
+            <InputField
+              label="Provincia/Ciudad"
+              name="country"
+              value={formData.country}
               onChange={handleChange}
-              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-              required
+              required={true}
             />
-            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
-              Teléfono
-            </label>
+            <InputField
+              label="Calle"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required={true}
+            />
+            <InputField
+              label="Número de calle"
+              name="address_number"
+              type="number"
+              value={
+                formData.address_number === 0 ? '' : formData.address_number
+              }
+              onChange={handleChange}
+              required={true}
+            />
           </div>
-
+          <InputField
+            label="Teléfono"
+            name="phone_number"
+            type="number"
+            value={formData.phone_number === 0 ? '' : formData.phone_number}
+            onChange={handleChange}
+            required={true}
+          />
           <label htmlFor="fiscal_condition" className="sr-only">
             Condición fiscal
           </label>
@@ -186,51 +161,32 @@ const RegisterForm = (): JSX.Element => {
             <option value="LE">LE</option>
             <option value="LC">LC</option>
           </select>
-          <div className="relative w-full">
-            <input
-              name="document_number"
-              type="number"
-              placeholder=""
-              value={
-                formData.document_number === 0 ? '' : formData.document_number
-              }
-              onChange={handleChange}
-              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-              required
-            />
-            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
-              Número de Documento
-            </label>
-          </div>
-          <div className="relative w-full">
-            <input
-              name="email"
-              type="email"
-              placeholder=""
-              value={formData.email}
-              onChange={handleChange}
-              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-              required
-            />
-            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
-              Correo
-            </label>
-          </div>
-          <div className="relative w-full">
-            <input
-              name="password"
-              type="password"
-              placeholder=""
-              value={formData.password}
-              onChange={handleChange}
-              className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-              required
-            />
-            <label className="pointer-events-none absolute left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
-              Contraseña
-            </label>
-          </div>
-
+          <InputField
+            label="Número de Documento"
+            name="document_number"
+            type="number"
+            value={
+              formData.document_number === 0 ? '' : formData.document_number
+            }
+            onChange={handleChange}
+            required={true}
+          />
+          <InputField
+            label="Correo"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            required={true}
+          />
+          <InputField
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            required={true}
+          />
           <button
             type="submit"
             disabled={loading}
