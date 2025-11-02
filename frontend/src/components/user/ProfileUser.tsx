@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import InputField from '../InputField'
 
 export default function ModifyUser() {
   const [formData, setFormData] = useState({
@@ -15,7 +16,6 @@ export default function ModifyUser() {
     current_password: '',
     new_password: ''
   })
-
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -78,149 +78,195 @@ export default function ModifyUser() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-lg space-y-4 rounded-xl bg-white p-8 shadow-lg"
-      >
-        <h2 className="mb-6 text-center text-3xl font-bold text-amber-800">
-          Mis datos
-        </h2>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <input
+    <form
+      onSubmit={handleSubmit}
+      className="grid w-full grid-cols-3 space-y-4 bg-white"
+    >
+      <h2 className="col-span-3 mb-6 text-center text-3xl font-bold text-amber-800">
+        Mis datos
+      </h2>
+      <div className="col-span-3 grid grid-cols-2 gap-6 md:grid-cols-2">
+        <div className="col-span-2 grid w-full grid-cols-2 gap-2">
+          <InputField
+            label="Nombre completo"
             name="full_name"
-            placeholder="Nombre"
             value={formData.full_name}
             onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+            required={true}
           />
-          <input
+          <InputField
+            label="Apellido"
             name="last_name"
-            placeholder="Apellido"
             value={formData.last_name}
             onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-          <input
-            name="email"
-            type="email"
-            placeholder="Correo"
-            value={formData.email}
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-          <input
-            name="country"
-            placeholder="Provincia/Ciudad"
-            value={formData.country}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-          <input
-            name="address"
-            placeholder="Calle"
-            value={formData.address}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-          <input
-            name="address_number"
-            type="number"
-            placeholder="Altura"
-            value={formData.address_number}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-          <input
-            name="phone_number"
-            type="number"
-            placeholder="Teléfono"
-            value={formData.phone_number}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-
-          <label htmlFor="fiscal_condition" className="sr-only">
-            Condición fiscal
-          </label>
-          <select
-            id="fiscal_condition"
-            name="fiscal_condition"
-            value={formData.fiscal_condition}
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          >
-            <option value="" disabled>
-              Condición fiscal
-            </option>
-            <option value="Responsable inscripto">Responsable inscripto</option>
-            <option value="Autónomo">Autónomo</option>
-            <option value="Monotributista">Monotributista</option>
-            <option value="Exento">Exento</option>
-            <option value="No alcanzado">No alcanzado</option>
-          </select>
-
-          <label htmlFor="document_type" className="sr-only">
-            Tipo de documento
-          </label>
-          <select
-            id="document_type"
-            name="document_type"
-            value={formData.document_type}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-            required
-          >
-            <option value="" disabled>
-              Tipo de documento
-            </option>
-            <option value="DNI">DNI</option>
-            <option value="LE">LE</option>
-            <option value="LC">LC</option>
-          </select>
-
-          <input
-            name="document_number"
-            type="number"
-            placeholder="Número de documento"
-            value={formData.document_number}
-            onChange={handleChange}
-            className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-
-          <input
-            name="current_password"
-            type="password"
-            placeholder="Contraseña actual"
-            value={formData.current_password}
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-          />
-          <input
-            name="new_password"
-            type="password"
-            placeholder="Nueva contraseña"
-            value={formData.new_password}
-            onChange={handleChange}
-            className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+            required={true}
           />
         </div>
-
-        <button
-          type="submit"
-          className="mt-4 w-full rounded-lg bg-amber-800 py-3 font-bold text-white transition hover:bg-amber-900"
+        {/* <input
+          name="full_name"
+          placeholder="Nombre"
+          value={formData.full_name}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        />
+        <input
+          name="last_name"
+          placeholder="Apellido"
+          value={formData.last_name}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        /> */}
+        {/* <input
+          name="email"
+          type="email"
+          placeholder="Correo"
+          value={formData.email}
+          onChange={handleChange}
+          className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        /> */}
+        <div className="col-span-2 grid grid-cols-3 gap-2">
+          <InputField
+            label="Provincia/Ciudad"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            required={true}
+          />
+          <InputField
+            label="Calle"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            required={true}
+          />
+          <InputField
+            label="Número de calle"
+            name="address_number"
+            type="number"
+            value={formData.address_number === 0 ? '' : formData.address_number}
+            onChange={handleChange}
+            required={true}
+          />
+        </div>
+        {/* <input
+          name="country"
+          placeholder="Provincia/Ciudad"
+          value={formData.country}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        />
+        <input
+          name="address"
+          placeholder="Calle"
+          value={formData.address}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        />
+        <input
+          name="address_number"
+          type="number"
+          placeholder="Altura"
+          value={formData.address_number}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        /> */}
+        <InputField
+          label="Teléfono"
+          name="phone_number"
+          type="number"
+          value={formData.phone_number === 0 ? '' : formData.phone_number}
+          onChange={handleChange}
+          required={true}
+        />
+        {/* <input
+          name="phone_number"
+          type="number"
+          placeholder="Teléfono"
+          value={formData.phone_number}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        /> */}
+        <label htmlFor="fiscal_condition" className="sr-only">
+          Condición fiscal
+        </label>
+        <select
+          id="fiscal_condition"
+          name="fiscal_condition"
+          value={formData.fiscal_condition}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+          required
         >
-          Modificar cambios
-        </button>
-
-        {message && (
-          <p className="mt-2 text-center font-medium text-green-600">
-            {message}
-          </p>
-        )}
-      </form>
-    </div>
+          <option value="" disabled>
+            Condición fiscal
+          </option>
+          <option value="Responsable inscripto">Responsable inscripto</option>
+          <option value="Autónomo">Autónomo</option>
+          <option value="Monotributista">Monotributista</option>
+          <option value="Exento">Exento</option>
+          <option value="No alcanzado">No alcanzado</option>
+        </select>
+        <label htmlFor="document_type" className="sr-only">
+          Tipo de documento
+        </label>
+        <select
+          id="document_type"
+          name="document_type"
+          value={formData.document_type}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+          required
+        >
+          <option value="" disabled>
+            Tipo de documento
+          </option>
+          <option value="DNI">DNI</option>
+          <option value="LE">LE</option>
+          <option value="LC">LC</option>
+        </select>
+        <InputField
+          label="Número de Documento"
+          name="document_number"
+          type="number"
+          value={formData.document_number === 0 ? '' : formData.document_number}
+          onChange={handleChange}
+          required={true}
+        />
+        {/* <input
+          name="document_number"
+          type="number"
+          placeholder="Número de documento"
+          value={formData.document_number}
+          onChange={handleChange}
+          className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        /> */}
+        {/* <input
+          name="current_password"
+          type="password"
+          placeholder="Contraseña actual"
+          value={formData.current_password}
+          onChange={handleChange}
+          className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        />
+        <input
+          name="new_password"
+          type="password"
+          placeholder="Nueva contraseña"
+          value={formData.new_password}
+          onChange={handleChange}
+          className="col-span-2 rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        /> */}
+      </div>
+      <button
+        type="submit"
+        // disabled={loading}
+        className="col-start-2 col-end-2 w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white transition-all duration-300 ease-in-out hover:bg-amber-900"
+      >
+        Guardar cambios
+      </button>
+      {message && (
+        <p className="mt-2 text-center font-medium text-green-600">{message}</p>
+      )}
+    </form>
   )
 }

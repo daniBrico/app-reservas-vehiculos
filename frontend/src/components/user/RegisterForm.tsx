@@ -35,6 +35,7 @@ const RegisterForm = (): JSX.Element => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
     const { name, value } = e.target
+    // La verificación en el name lo hace para guardar el valor numérico en el caso de que el input sea de tipo number (?)
     setFormData((prev) => ({
       ...prev,
       [name]: name.includes('number') ? Number(value) : value
@@ -83,12 +84,11 @@ const RegisterForm = (): JSX.Element => {
 
   return (
     <section>
-      <form onSubmit={handleSubmit}>
-        <h2 className="mb-8 text-left text-3xl font-bold text-amber-800">
+      <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-2">
+        <h2 className="col-span-3 mb-4 text-left text-3xl font-bold text-amber-800">
           Registro de Usuario
         </h2>
-
-        <div className="grid max-w-2xl grid-cols-2 gap-x-4 gap-y-8 [&_input]:h-11 [&_select]:h-11">
+        <div className="col-span-3 grid max-w-2xl grid-cols-2 gap-x-4 gap-y-8 [&_input]:h-11 [&_select]:h-11">
           <div className="col-span-2 grid w-full grid-cols-2 gap-2">
             <InputField
               label="Nombre completo"
@@ -204,15 +204,15 @@ const RegisterForm = (): JSX.Element => {
             onChange={handleChange}
             required={true}
           />
-          <button
-            type="submit"
-            disabled={loading}
-            className="transition-color w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white duration-300 hover:bg-amber-900 disabled:bg-amber-400"
-          >
-            {loading ? 'Registrando...' : 'Registrarse'}
-          </button>
         </div>
-
+        <button
+          type="submit"
+          disabled={loading}
+          className="transition-color col-start-2 col-end-2 w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white duration-300 hover:bg-amber-900 disabled:bg-amber-400"
+        >
+          Registrarse
+          {/* {loading ? 'Registrando...' : 'Registrarse'} */}
+        </button>
         {message && (
           <p className="mt-2 text-center font-medium text-green-600">
             {message}
