@@ -47,6 +47,7 @@ const RegisterForm = (): JSX.Element => {
     setLoading(true)
 
     try {
+      console.log('🚀 ~ handleSubmit ~ formData: ', formData)
       signUp(formData)
 
       setFormData({
@@ -88,6 +89,22 @@ const RegisterForm = (): JSX.Element => {
         </h2>
 
         <div className="grid max-w-2xl grid-cols-2 gap-x-4 gap-y-8 [&_input]:h-11 [&_select]:h-11">
+          <div className="col-span-2 grid w-full grid-cols-2 gap-2">
+            <InputField
+              label="Nombre completo"
+              name="full_name"
+              value={formData.full_name}
+              onChange={handleChange}
+              required={true}
+            />
+            <InputField
+              label="Apellido"
+              name="last_name"
+              value={formData.last_name}
+              onChange={handleChange}
+              required={true}
+            />
+          </div>
           <div className="col-span-2 grid grid-cols-3 gap-2">
             <InputField
               label="Provincia/Ciudad"
