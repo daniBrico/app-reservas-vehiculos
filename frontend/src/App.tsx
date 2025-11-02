@@ -12,7 +12,7 @@ import RegisterPage from './pages/RegisterPage'
 import ReservationPage from './pages/ReservationPage'
 import VehicleFleetPage from './pages/VehicleFleetPage'
 import VehicleDetailsPage from './pages/VehicleDetailsPage'
-import LoginUser from './components/LoginUser'
+import LoginUser from './components/user/LoginUser'
 import UserProfilePage from './pages/UserProfilePage'
 import AuthProvider from './context/AuthContext'
 

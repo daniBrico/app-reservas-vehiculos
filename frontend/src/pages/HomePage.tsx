@@ -2,8 +2,8 @@ import useVehicle from '@/hooks/useVehicles'
 
 import { type JSX } from 'react'
 
-import CarouselVehicles from '@/components/CarouselVehicles'
-import HomePageFormReservation from '@/components/HomePageFormReservation'
+import CarouselVehicles from '@/components/home/CarouselVehicles'
+import HomePageFormReservation from '@/components/home/HomePageFormReservation'
 
 const HomePage = (): JSX.Element => {
   const { vehicles } = useVehicle()
