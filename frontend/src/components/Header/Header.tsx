@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import BurgerMenuSvg from '../svg-components/BurgerMenuSvg'
 import logo from '../../assets/the-be-sharps.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import UserSvg from '../svg-components/UserSvg'
 import HeaderMenu from './HeaderMenu.tsx'
 import LiButton from '../LiButton'
@@ -15,11 +15,17 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   const [isMenuOpen, setMenuIsOpen] = useState(false)
   const burgerDivRef = useRef<HTMLDivElement>(null)
 
+  const navigate = useNavigate()
+
   const { user, logout, authLoading } = useAuthContext()
 
   const handleOpenCloseMenu = (): void => setMenuIsOpen(!isMenuOpen)
 
   const handleLogout = (): void => logout()
+
+  const handleClickRegister = (): void => {
+    navigate('/register')
+  }
 
   return (
     <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-md">
@@ -49,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                   <LiButton
                     cssClasses="hover:scale-105"
                     content="Registrarse"
-                    link={<Link to="/register">Registrarse</Link>}
+                    handleClick={handleClickRegister}
                   />
                 </>
               ) : (
