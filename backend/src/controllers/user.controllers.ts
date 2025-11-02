@@ -130,24 +130,30 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export const updateUser = async (req: Request, res: Response) => {
-  try {
-    const { email, current_password, new_password, ...updates } = req.body
+export const updateUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email, current_password, new_password, ...updates } = req.body
 
+  try {
     const user = await UserModel.findOne({ email })
-    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' })
+    if (!user) {
+      res.status(404).json({ message: 'Usuario no encontrado' })
+      return
+    }
 
     // Cambio de contraseña
     if (new_password) {
       if (!current_password) {
-        return res
-          .status(400)
-          .json({ message: 'Debe ingresar la contraseña actual' })
+        res.status(400).json({ message: 'Debe ingresar la contraseña actual' })
+        return
       }
 
       const isMatch = await bcrypt.compare(current_password, user.password)
       if (!isMatch) {
-        return res.status(401).json({ message: 'Contraseña actual incorrecta' })
+        res.status(401).json({ message: 'Contraseña actual incorrecta' })
+        return
       }
 
       updates.password = await bcrypt.hash(new_password, 10)
@@ -173,8 +179,12 @@ export const updateUser = async (req: Request, res: Response) => {
         document_number: updatedUser!.document_number
       }
     })
-  } catch (err: any) {
-    res.status(500).json({ message: err.message || 'Error desconocido' })
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(500).json({ message: err.message })
+    } else {
+      console.log('Ha ocurrido un error desconocido')
+    }
   }
 }
 
