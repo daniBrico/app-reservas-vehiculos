@@ -2,6 +2,7 @@
 export interface IVehicle extends Document {
   _id: Schema.Types.ObjectId
   title: string
+  make: string
   transmissionType: string
   seatingCapacity: number
   trunkCapacity: number

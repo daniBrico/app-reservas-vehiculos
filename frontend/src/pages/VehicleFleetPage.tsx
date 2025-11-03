@@ -1,71 +1,73 @@
+import useVehicles from '@/hooks/queries/useVehicles'
+import type { IVehicle } from '@/types/types'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { connectDB } from "../../config/db";
-import Vehicle from "../../models/mongoDB/schemas/vehicle.model";
-import vehicles from "./vehicles.json";
-
-interface Vehicle {
-  _id: string
-  make: string
-  model: string
-  transmissionType: string
-  seatingCapacity: number
-  year: number
-  licencePlate: string
-  pricePerDay: number
-  status: string
-  image: string
-  warrantyCost: number
-  description: string
-}
 
 const VehicleFleetPage: React.FC = () => {
   const navigate = useNavigate()
-  const [vehicles, setVehicles] = useState<Vehicle[]>([])
-  const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([])
+  const [filteredVehicles, setFilteredVehicles] = useState<IVehicle[]>([])
 
   // Filtros
-  const [makeFilter, setMakeFilter] = useState('')
-  const [transmissionFilter, setTransmissionFilter] = useState('')
-  const [capacityFilter, setCapacityFilter] = useState('')
-  const [maxPriceFilter, setMaxPriceFilter] = useState<number | ''>('')
+  const [vehicleMake, setVehicleMake] = useState('')
+  const [transmissionTypeFilter, setTransmissionTypeFilter] = useState('')
+  const [seatingCapacity, setCapacityFilter] = useState<number>(0)
+  const [maxPriceFilter, setMaxPriceFilter] = useState<number>(0)
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/vehicles`)
-      .then((res) => res.json())
-      .then((data) => {
-        setVehicles(data)
-        setFilteredVehicles(data)
-      })
-      .catch((err) => console.log('Error al obtener vehículos:', err))
-  }, [])
+  const { vehicles } = useVehicles()
 
   // Aplica filtros dinámicamente
   useEffect(() => {
+    if (vehicles === null) return
+
     let result = [...vehicles]
 
-    if (makeFilter) {
-      result = result.filter((car) => car.make === makeFilter)
-    }
+    if (vehicleMake !== '')
+      result = result.filter((vehicle) => vehicle.make === vehicleMake)
 
-    if (transmissionFilter) {
+    if (transmissionTypeFilter !== '')
       result = result.filter(
-        (car) => car.transmissionType === transmissionFilter
+        (vehicle) => vehicle.transmissionType === transmissionTypeFilter
       )
-    }
 
-    if (capacityFilter) {
+    if (seatingCapacity !== 0)
       result = result.filter(
-        (car) => car.seatingCapacity >= Number(capacityFilter)
+        (vehicle) => vehicle.seatingCapacity >= seatingCapacity
       )
-    }
 
-    if (maxPriceFilter !== '') {
-      result = result.filter((car) => car.pricePerDay <= Number(maxPriceFilter))
-    }
+    if (maxPriceFilter !== 0)
+      result = result.filter(
+        (vehicle) => vehicle.pricePerDay <= Number(maxPriceFilter)
+      )
 
     setFilteredVehicles(result)
-  }, [makeFilter, transmissionFilter, capacityFilter, maxPriceFilter, vehicles])
+  }, [
+    vehicleMake,
+    transmissionTypeFilter,
+    seatingCapacity,
+    maxPriceFilter,
+    vehicles
+  ])
+
+  // Poner bien el tipo de dato de retorno
+  const loadMakeFilterElement = () => {
+    if (vehicles === null) return null
+
+    const vehicleMakes: string[] = []
+
+    return vehicles.map((vehicle) => {
+      const vehicleMakeExists = vehicleMakes.includes(vehicle.make)
+
+      if (vehicleMakeExists) return
+
+      vehicleMakes.push(vehicle.make)
+
+      return (
+        <option key={vehicle.make} value={vehicle.make}>
+          {vehicle.make}
+        </option>
+      )
+    })
+  }
 
   return (
     <div className="min-h-screen bg-white p-10 text-black">
@@ -76,22 +78,18 @@ const VehicleFleetPage: React.FC = () => {
       <div className="mb-8 flex flex-wrap justify-center gap-4">
         {/* Marca */}
         <select
-          value={makeFilter}
-          onChange={(e) => setMakeFilter(e.target.value)}
+          value={vehicleMake}
+          onChange={(e) => setVehicleMake(e.target.value)}
           className="rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
         >
           <option value="">Todas las marcas</option>
-          {Array.from(new Set(vehicles.map((v) => v.make))).map((make) => (
-            <option key={make} value={make}>
-              {make}
-            </option>
-          ))}
+          {loadMakeFilterElement()}
         </select>
 
         {/* Transmisión */}
         <select
-          value={transmissionFilter}
-          onChange={(e) => setTransmissionFilter(e.target.value)}
+          value={transmissionTypeFilter}
+          onChange={(e) => setTransmissionTypeFilter(e.target.value)}
           className="rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
         >
           <option value="">Cualquier transmisión</option>
@@ -101,7 +99,7 @@ const VehicleFleetPage: React.FC = () => {
 
         {/* Capacidad */}
         <select
-          value={capacityFilter}
+          value={seatingCapacity}
           onChange={(e) => setCapacityFilter(e.target.value)}
           className="rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
         >
