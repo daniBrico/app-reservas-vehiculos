@@ -1,7 +1,9 @@
 import useVehicles from '@/hooks/queries/useVehicles'
 import type { IVehicle } from '@/types/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type JSX } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+const URL_API = import.meta.env.VITE_API_URL
 
 const VehicleFleetPage: React.FC = () => {
   const navigate = useNavigate()
@@ -11,7 +13,7 @@ const VehicleFleetPage: React.FC = () => {
   const [vehicleMake, setVehicleMake] = useState('')
   const [transmissionTypeFilter, setTransmissionTypeFilter] = useState('')
   const [seatingCapacity, setCapacityFilter] = useState<number>(0)
-  const [maxPriceFilter, setMaxPriceFilter] = useState<number>(0)
+  const [maxPriceFilter, setMaxPriceFilter] = useState<number>()
 
   const { vehicles } = useVehicles()
 
@@ -50,25 +52,23 @@ const VehicleFleetPage: React.FC = () => {
     vehicles
   ])
 
-  // Poner bien el tipo de dato de retorno
-  const loadMakeFilterElement = () => {
+  const loadMakeFilterElement = (): JSX.Element[] | null => {
     if (vehicles === null) return null
 
     const vehicleMakes: string[] = []
 
-    return vehicles.map((vehicle) => {
-      const vehicleMakeExists = vehicleMakes.includes(vehicle.make)
+    return (
+      vehicles?.flatMap((vehicle) => {
+        if (vehicleMakes.includes(vehicle.make)) return []
+        vehicleMakes.push(vehicle.make)
 
-      if (vehicleMakeExists) return
-
-      vehicleMakes.push(vehicle.make)
-
-      return (
-        <option key={vehicle.make} value={vehicle.make}>
-          {vehicle.make}
-        </option>
-      )
-    })
+        return [
+          <option key={vehicle.make} value={vehicle.make}>
+            {vehicle.make}
+          </option>
+        ]
+      }) ?? null
+    )
   }
 
   return (
@@ -102,7 +102,7 @@ const VehicleFleetPage: React.FC = () => {
         {/* Capacidad */}
         <select
           value={seatingCapacity}
-          onChange={(e) => setCapacityFilter(e.target.value)}
+          onChange={(e) => setCapacityFilter(Number(e.target.value))}
           className="rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
         >
           <option value="">Todos los tamaños</option>
@@ -118,7 +118,7 @@ const VehicleFleetPage: React.FC = () => {
           value={maxPriceFilter}
           onChange={(e) =>
             setMaxPriceFilter(
-              e.target.value === '' ? '' : Number(e.target.value)
+              e.target.value === '' ? undefined : Number(e.target.value)
             )
           }
           className="w-36 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
@@ -128,43 +128,40 @@ const VehicleFleetPage: React.FC = () => {
       {/* Lista filtrada */}
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {filteredVehicles.length > 0 ? (
-          filteredVehicles.map((car) => (
+          filteredVehicles.map((vehicle) => (
             <div
-              key={car._id}
+              key={vehicle._id}
               className="cursor-pointer rounded-xl border border-gray-200 bg-white p-6 text-black shadow-sm transition-all duration-300 hover:bg-gray-100 hover:shadow-md"
             >
               {/* Imagen con Zoom */}
               <div className="flex h-48 w-full items-center justify-center overflow-hidden rounded-md">
                 <img
-                  src={car.image}
-                  alt={car.model}
+                  src={`${URL_API}/${vehicle.imageURL}`}
+                  alt={vehicle.make}
                   className="max-h-full max-w-full object-contain transition-transform duration-500 ease-out hover:scale-110"
                 />
               </div>
-
               <h2 className="mt-4 text-center text-xl font-semibold">
-                {car.make} {car.model}
+                {vehicle.title}
               </h2>
-
               <p className="mt-1 text-center text-gray-600">
-                {car.seatingCapacity} Asientos · {car.transmissionType}
+                {vehicle.seatingCapacity} Asientos · {vehicle.transmissionType}
               </p>
-
               <p className="mt-3 text-center text-lg font-bold text-orange-600">
-                ARS ${car.pricePerDay}/día
+                ARS ${vehicle.pricePerDay}/día
               </p>
               {/* Botones */}
               <div className="mt-4 flex justify-center gap-3">
                 <button
-                  className="rounded-lg bg-orange-500 px-4 py-2 font-medium text-white transition hover:bg-orange-600"
-                  onClick={() => console.log('Reservar →', car._id)}
+                  className="cursor-pointer rounded-lg bg-orange-500 px-4 py-2 font-medium text-white transition hover:bg-orange-600"
+                  onClick={() => console.log('Reservar →', vehicle._id)}
                 >
                   Rentar ahora
                 </button>
 
                 <button
-                  className="rounded-lg border border-gray-400 px-4 py-2 text-gray-700 transition hover:bg-gray-100"
-                  onClick={() => navigate(`/vehiculo/${car._id}`)}
+                  className="cursor-pointer rounded-lg border border-gray-400 px-4 py-2 text-gray-700 transition hover:bg-gray-100"
+                  onClick={() => navigate(`/vehiculo/${vehicle._id}`)}
                 >
                   Ver detalles
                 </button>
