@@ -10,7 +10,6 @@ const ProtectedRoute = ({
 }): JSX.Element => {
   const { isAuthenticated, authIsLoading } = useAuthContext()
 
-  console.log('🚀 ~ ProtectedRoute ~ authIsLoading: ', authIsLoading)
   if (authIsLoading) {
     return (
       <section className="flex h-full w-full items-center justify-center gap-2">

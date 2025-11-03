@@ -18,7 +18,6 @@ const RegisterForm = (): JSX.Element => {
     document_type: '',
     document_number: 0
   })
-
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -48,7 +47,6 @@ const RegisterForm = (): JSX.Element => {
     setLoading(true)
 
     try {
-      console.log('🚀 ~ handleSubmit ~ formData: ', formData)
       signUp(formData)
 
       setFormData({
@@ -68,7 +66,6 @@ const RegisterForm = (): JSX.Element => {
       setTimeout(() => {
         setMessage('')
         navigate('/inicio')
-        window.location.reload()
       }, 2000)
     } catch (err) {
       if (err instanceof Error) {
