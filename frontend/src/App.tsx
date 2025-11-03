@@ -31,9 +31,9 @@ function App(): JSX.Element {
             <Route path="/inicio" element={<HomePage />} />
             <Route path="/flota-vehiculos" element={<VehicleFleetPage />} />
             <Route path="/vehiculo/:id" element={<VehicleDetailsPage />} />
+            <Route path="/generar-reserva" element={<ReservationPage />} />
 
             <Route element={<ProtectedRoute redirectTo="/inicio" />}>
-              <Route path="/generar-reserva" element={<ReservationPage />} />
               <Route path="/perfil" element={<UserProfilePage />} />
             </Route>
           </Routes>

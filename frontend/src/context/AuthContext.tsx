@@ -63,7 +63,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     async function checkLogin(): Promise<void> {
       const cookies = Cookies.get()
 
-      if (cookies.token === null) {
+      if (cookies.token === undefined) {
         resetAuthState()
         setAuthIsLoading(false)
         return
