@@ -12,8 +12,8 @@ const VehicleFleetPage: React.FC = () => {
   // Filtros
   const [vehicleMake, setVehicleMake] = useState('')
   const [transmissionTypeFilter, setTransmissionTypeFilter] = useState('')
-  const [seatingCapacity, setCapacityFilter] = useState<number>(0)
-  const [maxPriceFilter, setMaxPriceFilter] = useState<number>()
+  const [seatingCapacity, setCapacityFilter] = useState('')
+  const [maxPriceFilter, setMaxPriceFilter] = useState('')
 
   const { vehicles } = useVehicles()
 
@@ -33,12 +33,12 @@ const VehicleFleetPage: React.FC = () => {
           transmissionTypeFilter.toLowerCase()
       )
 
-    if (seatingCapacity !== 0)
+    if (seatingCapacity !== '')
       result = result.filter(
-        (vehicle) => vehicle.seatingCapacity >= seatingCapacity
+        (vehicle) => vehicle.seatingCapacity >= Number(seatingCapacity)
       )
 
-    if (maxPriceFilter !== 0)
+    if (maxPriceFilter !== '')
       result = result.filter(
         (vehicle) => vehicle.pricePerDay <= Number(maxPriceFilter)
       )
@@ -102,7 +102,7 @@ const VehicleFleetPage: React.FC = () => {
         {/* Capacidad */}
         <select
           value={seatingCapacity}
-          onChange={(e) => setCapacityFilter(Number(e.target.value))}
+          onChange={(e) => setCapacityFilter(e.target.value)}
           className="rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
         >
           <option value="">Todos los tamaños</option>
@@ -117,9 +117,7 @@ const VehicleFleetPage: React.FC = () => {
           placeholder="Precio máx"
           value={maxPriceFilter}
           onChange={(e) =>
-            setMaxPriceFilter(
-              e.target.value === '' ? undefined : Number(e.target.value)
-            )
+            setMaxPriceFilter(e.target.value === '' ? '' : e.target.value)
           }
           className="w-36 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition hover:border-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
         />
