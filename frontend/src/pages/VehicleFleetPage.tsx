@@ -26,7 +26,9 @@ const VehicleFleetPage: React.FC = () => {
 
     if (transmissionTypeFilter !== '')
       result = result.filter(
-        (vehicle) => vehicle.transmissionType === transmissionTypeFilter
+        (vehicle) =>
+          vehicle.transmissionType.toLowerCase() ===
+          transmissionTypeFilter.toLowerCase()
       )
 
     if (seatingCapacity !== 0)
@@ -94,7 +96,7 @@ const VehicleFleetPage: React.FC = () => {
         >
           <option value="">Cualquier transmisión</option>
           <option value="Manual">Manual</option>
-          <option value="Automatic">Automática</option>
+          <option value="Automática">Automática</option>
         </select>
 
         {/* Capacidad */}
