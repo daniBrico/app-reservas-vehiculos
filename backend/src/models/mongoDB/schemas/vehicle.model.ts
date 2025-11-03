@@ -6,6 +6,10 @@ const VehicleSchema = new Schema<IVehicle>({
     type: String,
     required: true
   },
+  make: {
+    type: String,
+    required: true
+  },
   transmissionType: {
     type: String,
     required: true

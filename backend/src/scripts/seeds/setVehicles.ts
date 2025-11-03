@@ -18,6 +18,7 @@ const setVehicles = async (): Promise<void> => {
     for (const vehicle of vehiclesJSON) {
       const newVehicle = new VehicleModel({
         title: vehicle.title,
+        make: vehicle.make,
         seatingCapacity: vehicle.seatingCapacity,
         transmissionType: vehicle.transmissionType,
         trunkCapacity: vehicle.trunkCapacity,
