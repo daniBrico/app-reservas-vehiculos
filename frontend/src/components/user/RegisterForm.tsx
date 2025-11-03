@@ -213,11 +213,11 @@ const RegisterForm = (): JSX.Element => {
           Registrarse
           {/* {loading ? 'Registrando...' : 'Registrarse'} */}
         </button>
-        {message && (
+        {/* {message && (
           <p className="mt-2 text-center font-medium text-green-600">
             {message}
           </p>
-        )}
+        )} */}
       </form>
     </section>
   )

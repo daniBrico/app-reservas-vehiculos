@@ -1,4 +1,4 @@
-import useVehicle from '@/hooks/useVehicles'
+import useVehicle from '@/hooks/queries/useVehicles'
 
 import { type JSX } from 'react'
 

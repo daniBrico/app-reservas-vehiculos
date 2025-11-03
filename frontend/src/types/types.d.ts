@@ -19,6 +19,7 @@ export type EmailType = string
 export type PasswordType = string
 export type FullName = string
 
+// User
 export interface IUser extends Document {
   _id: Schema.Types.ObjectId
   email: EmailType
@@ -48,6 +49,19 @@ export interface IUserInput {
   document_number: number
 }
 
+export interface UserProfileInfo {
+  full_name: string
+  last_name: string
+  country: string
+  address: string
+  address_number: number
+  phone_number: number
+  fiscal_condition: string
+  document_type: string
+  document_number: number
+}
+
+// Reservation
 export interface IReservation extends Document {
   _id?: Schema.Types.ObjectId
   user_id: string
@@ -75,7 +89,7 @@ export interface TokenPayload {
   full_name: string
 }
 
-// User
+// User eesponses
 export interface LoginResponse {
   message: string
   userLoginInfo: UserLoginInfo
@@ -91,7 +105,12 @@ export interface VerifyTokenResponse {
   userLoginInfo?: UserLoginInfo
 }
 
-// Reservation
+export interface ProfileInfoResponse {
+  message: string
+  userProfileInfo: UserProfileInfo
+}
+
+// Reservation responses
 export interface ReservationResponse {
   message: string
   reservation: IReservation

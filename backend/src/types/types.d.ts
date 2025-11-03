@@ -14,6 +14,7 @@ export interface IVehicle extends Document {
   description: string
 }
 
+// User
 export interface IUser extends Document {
   _id: Schema.Types.ObjectId
   email: string
@@ -29,6 +30,19 @@ export interface IUser extends Document {
   document_number: number
 }
 
+export interface UserProfileInfo {
+  full_name: string
+  last_name: string
+  country: string
+  address: string
+  address_number: number
+  phone_number: number
+  fiscal_condition: string
+  document_type: string
+  document_number: number
+}
+
+// Reservation
 export interface IReservation extends Document {
   _id: Schema.Types.ObjectId
   user_id: Schema.Types.ObjectId

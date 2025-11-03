@@ -3,6 +3,7 @@ import type {
   IUserInput,
   LoginResponse,
   PasswordType,
+  ProfileInfoResponse,
   RegisterResponse,
   VerifyTokenResponse
 } from '@/types/types'
@@ -19,3 +20,6 @@ export const registerUser = (user: IUserInput): Promise<RegisterResponse> =>
 
 export const verifyTokenRequest = (): Promise<VerifyTokenResponse> =>
   httpClient(`/api/verify`, { method: 'GET' })
+
+export const getProfileInfo = (id: string): Promise<ProfileInfoResponse> =>
+  httpClient(`/api/user/${id}`, { method: 'GET' })

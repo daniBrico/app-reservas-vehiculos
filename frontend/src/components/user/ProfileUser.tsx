@@ -1,43 +1,46 @@
 import { useState, useEffect, type JSX } from 'react'
 import InputField from '../InputField'
+import useGetProfileInfo from '@/hooks/queries/useGetProfileInfo'
+import { useAuthContext } from '@/hooks/useAuthContext'
 
 const ModifyUser = (): JSX.Element => {
   const [formData, setFormData] = useState({
-    email: '',
     full_name: '',
     last_name: '',
     country: '',
     address: '',
-    address_number: '',
-    phone_number: '',
+    address_number: 0,
+    phone_number: 0,
     fiscal_condition: '',
     document_type: '',
-    document_number: '',
-    current_password: '',
-    new_password: ''
+    document_number: 0
   })
-  const [message, setMessage] = useState('')
+  // const [message, setMessage] = useState('')
+
+  const { user } = useAuthContext()
+  const { userProfileInfo, fetchProfileInfo } = useGetProfileInfo()
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('UserLoginInfo')
-    if (storedUser) {
-      const user = JSON.parse(storedUser)
-      setFormData({
-        email: user.email || '',
-        full_name: user.full_name || '',
-        last_name: user.last_name || '',
-        country: user.country || '',
-        address: user.address || '',
-        address_number: user.address_number || '',
-        phone_number: user.phone_number || '',
-        fiscal_condition: user.fiscal_condition || '',
-        document_type: user.document_type || '',
-        document_number: user.document_number || '',
-        current_password: '',
-        new_password: ''
-      })
-    }
-  }, [])
+    if (userProfileInfo === null) return
+
+    setFormData({
+      full_name: userProfileInfo.full_name || '',
+      last_name: userProfileInfo.last_name || '',
+      country: userProfileInfo.country || '',
+      address: userProfileInfo.address || '',
+      address_number: userProfileInfo.address_number || 0,
+      phone_number: userProfileInfo.phone_number || 0,
+      fiscal_condition: userProfileInfo.fiscal_condition || '',
+      document_type: userProfileInfo.document_type || '',
+      document_number: userProfileInfo.document_number || 0
+    })
+  }, [userProfileInfo])
+
+  useEffect(() => {
+    if (user === null) return
+
+    fetchProfileInfo(user._id)
+  }, [user])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -51,36 +54,35 @@ const ModifyUser = (): JSX.Element => {
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-    const token = localStorage.getItem('token')
 
-    try {
-      const res = await fetch('http://localhost:3000/api/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      })
+    // console.log('🚀 ~ handleSubmit ~ formData: ', formData)
+    // try {
+    //   const res = await fetch('http://localhost:3000/api/update', {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(formData)
+    //   })
 
-      const data = await res.json()
+    //   const data = await res.json()
 
-      if (res.ok) {
-        setMessage('Datos actualizados correctamente')
-        localStorage.setItem('user', JSON.stringify(data.user))
-        setFormData(data.user)
-      } else {
-        setMessage(data.message || 'Error al actualizar datos')
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(
-          'Error al realizar cambios en los datos del usuario: ',
-          err.message
-        )
-        setMessage('Error de conexión con el servidor')
-      }
-    }
+    //   if (res.ok) {
+    //     setMessage('Datos actualizados correctamente')
+    //     localStorage.setItem('user', JSON.stringify(data.user))
+    //     setFormData(data.user)
+    //   } else {
+    //     setMessage(data.message || 'Error al actualizar datos')
+    //   }
+    // } catch (err) {
+    //   if (err instanceof Error) {
+    //     console.log(
+    //       'Error al realizar cambios en los datos del usuario: ',
+    //       err.message
+    //     )
+    //     setMessage('Error de conexión con el servidor')
+    //   }
+    // }
   }
 
   return (
@@ -245,9 +247,9 @@ const ModifyUser = (): JSX.Element => {
       >
         Guardar cambios
       </button>
-      {message && (
+      {/* {message && (
         <p className="mt-2 text-center font-medium text-green-600">{message}</p>
-      )}
+      )} */}
     </form>
   )
 }

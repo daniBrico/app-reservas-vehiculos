@@ -8,7 +8,6 @@ import type {
 } from '@/types/types'
 import { useEffect, useState, type JSX, type ReactNode } from 'react'
 import Cookies from 'js-cookie'
-import { jwtDecode } from 'jwt-decode'
 
 interface AuthProviderProps {
   children: ReactNode

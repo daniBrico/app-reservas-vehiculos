@@ -12,9 +12,7 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
-  // Busca el token: primero en cookies, luego en headers
-  // const token = req.cookies?.token || req.headers.authorization?.split(' ')[1]
-  const token = req.body.token
+  const token = req.cookies.token
 
   if (!token) {
     res.status(401).json({ message: 'Token inválido' })
@@ -22,13 +20,12 @@ export const authMiddleware = (
   }
 
   try {
-    // Verificar el token con la clave secreta
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET as string
     ) as TokenPayload
 
-    // Guardar la info del usuario en la request
+    // Creo que no es necesario
     req.user = {
       _id: decoded._id,
       full_name: decoded.full_name,

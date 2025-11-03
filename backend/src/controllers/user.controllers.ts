@@ -2,7 +2,7 @@ import { type Request, type Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import UserModel from '../models/mongodb/schemas/user.model'
-import type { IUser, JwtPayloadCustom } from '../types/types'
+import type { IUser, JwtPayloadCustom, UserProfileInfo } from '../types/types'
 import { createAccessToken } from '../utils/jwt'
 
 export const registerUser = async (
@@ -232,6 +232,65 @@ export const verifyToken = async (
   } catch (err) {
     if (err instanceof Error) {
       console.error('Error de autenticación: ', err.message)
+    } else {
+      console.error('Ha ocurrido un error desconocido.')
+    }
+  }
+}
+
+export const getUserProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params
+
+    try {
+      const userFounded = await UserModel.findById(id)
+      if (!userFounded) {
+        res.status(404).json({ message: 'Credenciales invalidas' })
+        return
+      }
+
+      const {
+        full_name,
+        last_name,
+        country,
+        address,
+        address_number,
+        phone_number,
+        fiscal_condition,
+        document_type,
+        document_number
+      } = userFounded
+
+      const userProfileInfo: UserProfileInfo = {
+        full_name,
+        last_name,
+        country,
+        address,
+        address_number,
+        phone_number,
+        fiscal_condition,
+        document_type,
+        document_number
+      }
+
+      res.status(200).json({ message: 'Perfil encontrado', userProfileInfo })
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(404).json({
+          message: `Error al obtener el perfil del usuario: ${err.message}`
+        })
+      } else {
+        res.status(404).json({
+          message: `Error desconcido al obtener el perfil del usuario`
+        })
+      }
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error('Error al obtener el perfil del usuario: ', err.message)
     } else {
       console.error('Ha ocurrido un error desconocido.')
     }

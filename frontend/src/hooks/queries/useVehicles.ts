@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { getVehicles } from '../api/vehicleApi'
-import type { IVehicle } from '../types/types'
+import { getVehicles } from '../../api/vehicleApi'
+import type { IVehicle } from '../../types/types'
 
 interface useVehicleReturn {
   vehicles: IVehicle[] | null
@@ -8,13 +8,13 @@ interface useVehicleReturn {
   loading: boolean
 }
 
-export const useVehicles = (): useVehicleReturn => {
+const useVehicles = (): useVehicleReturn => {
   const [vehicles, setVehicles] = useState<IVehicle[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchCourses = async (): Promise<void> => {
+    const fetchVehicles = async (): Promise<void> => {
       try {
         const data = await getVehicles()
 
@@ -30,7 +30,7 @@ export const useVehicles = (): useVehicleReturn => {
       }
     }
 
-    fetchCourses()
+    fetchVehicles()
   }, [])
 
   return { vehicles, loading, error }
