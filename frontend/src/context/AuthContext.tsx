@@ -17,7 +17,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<UserLoginInfo | null>(null)
   const [error, setError] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [authLoading, setAuthLoading] = useState(true)
+  const [authIsLoading, setAuthIsLoading] = useState(true)
 
   const handleAuthSuccess = (userLoginInfo: UserLoginInfo | null): void => {
     setUser(userLoginInfo)
@@ -57,9 +57,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     setUser(null)
   }
 
-  const logout = (): void => {
-    resetAuthState()
-  }
+  const logout = (): void => resetAuthState()
 
   useEffect(() => {
     async function checkLogin(): Promise<void> {
@@ -67,7 +65,7 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
 
       if (cookies.token === null) {
         resetAuthState()
-        setAuthLoading(false)
+        setAuthIsLoading(false)
         return
       }
 
@@ -86,14 +84,22 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
 
         resetAuthState()
       } finally {
-        setAuthLoading(false)
+        setAuthIsLoading(false)
       }
     }
 
     checkLogin()
   }, [])
 
-  const value: AuthContextProps = { user, signUp, signIn, logout, authLoading }
+  const value: AuthContextProps = {
+    user,
+    signUp,
+    signIn,
+    logout,
+    authIsLoading,
+    isAuthenticated,
+    error
+  }
 
   return <AuthContext value={value}>{children}</AuthContext>
 }

@@ -15,6 +15,7 @@ import VehicleDetailsPage from './pages/VehicleDetailsPage'
 import LoginUser from './components/user/LoginUser'
 import UserProfilePage from './pages/UserProfilePage'
 import AuthProvider from './context/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App(): JSX.Element {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
@@ -28,10 +29,13 @@ function App(): JSX.Element {
             <Route index element={<Navigate to="/inicio" replace />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/inicio" element={<HomePage />} />
-            <Route path="/generar-reserva" element={<ReservationPage />} />
             <Route path="/flota-vehiculos" element={<VehicleFleetPage />} />
             <Route path="/vehiculo/:id" element={<VehicleDetailsPage />} />
-            <Route path="/perfil" element={<UserProfilePage />} />
+
+            <Route element={<ProtectedRoute redirectTo="/inicio" />}>
+              <Route path="/generar-reserva" element={<ReservationPage />} />
+              <Route path="/perfil" element={<UserProfilePage />} />
+            </Route>
           </Routes>
         </main>
         <Footer />

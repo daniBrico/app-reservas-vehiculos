@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
 
   const navigate = useNavigate()
 
-  const { user, logout, authLoading } = useAuthContext()
+  const { user, logout, authIsLoading } = useAuthContext()
 
   const handleOpenCloseMenu = (): void => setMenuIsOpen(!isMenuOpen)
 
@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
       </div>
       <div className="flex items-center gap-2">
         <ol className="flex items-center gap-2">
-          {!authLoading && (
+          {!authIsLoading && (
             <>
               {user === null ? (
                 <>
@@ -62,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                 <>
                   <LiButton
                     cssClasses="hover:scale-105 group"
-                    link={
+                    childrend={
                       <Link className="flex items-center gap-2" to="/perfil">
                         <div className="w-8 stroke-white group-hover:stroke-amber-800">
                           <UserSvg />
