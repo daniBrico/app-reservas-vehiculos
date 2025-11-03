@@ -15,6 +15,21 @@ export interface IVehicle extends Document {
   description: string
 }
 
+export interface VehicleDetails {
+  _id: Schema.Types.ObjectId
+  title: string
+  make: string
+  transmissionType: 'manual' | 'automatic' | 'automática'
+  seatingCapacity: number
+  trunkCapacity: number
+  year: number
+  pricePerDay: number
+  status: string
+  imageURL: string
+  warrantyCost: number
+  description: string
+}
+
 // User types
 export type EmailType = string
 export type PasswordType = string
@@ -90,7 +105,7 @@ export interface TokenPayload {
   full_name: string
 }
 
-// User eesponses
+// User responses
 export interface LoginResponse {
   message: string
   userLoginInfo: UserLoginInfo
@@ -115,4 +130,10 @@ export interface ProfileInfoResponse {
 export interface ReservationResponse {
   message: string
   reservation: IReservation
+}
+
+// Vehicle responses
+export interface VehicleDetailsResponse {
+  message: string
+  vehicleDetails: VehicleDetails
 }
