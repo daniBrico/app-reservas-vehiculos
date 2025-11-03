@@ -11,6 +11,7 @@ import type { IReservation, TokenPayload } from '@/types/types'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import classNames from 'classnames'
 import { useReservationStore } from '@/store/useReservationStore'
+import Cookies from 'js-cookie'
 
 const cities = [
   { key: 'bahia-blanca', value: 'Bahía Blanca' },
@@ -84,6 +85,7 @@ const ReservationPage: React.FC = () => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault()
+    console.log('🚀 ~ handleSubmit ~ selectedCity: ', selectedCity)
 
     // Validaciones
     if (selectedCity === '') {
@@ -131,7 +133,7 @@ const ReservationPage: React.FC = () => {
       return
     }
 
-    const token = localStorage.getItem('token')
+    const token = Cookies.get('token')
 
     if (!token) return
 
