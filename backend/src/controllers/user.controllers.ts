@@ -245,54 +245,46 @@ export const getUserProfile = async (
   try {
     const { id } = req.params
 
-    try {
-      const userFounded = await UserModel.findById(id)
-      if (!userFounded) {
-        res.status(404).json({ message: 'Credenciales invalidas' })
-        return
-      }
-
-      const {
-        full_name,
-        last_name,
-        country,
-        address,
-        address_number,
-        phone_number,
-        fiscal_condition,
-        document_type,
-        document_number
-      } = userFounded
-
-      const userProfileInfo: UserProfileInfo = {
-        full_name,
-        last_name,
-        country,
-        address,
-        address_number,
-        phone_number,
-        fiscal_condition,
-        document_type,
-        document_number
-      }
-
-      res.status(200).json({ message: 'Perfil encontrado', userProfileInfo })
-    } catch (err) {
-      if (err instanceof Error) {
-        res.status(404).json({
-          message: `Error al obtener el perfil del usuario: ${err.message}`
-        })
-      } else {
-        res.status(404).json({
-          message: `Error desconcido al obtener el perfil del usuario`
-        })
-      }
+    const userFounded = await UserModel.findById(id)
+    if (!userFounded) {
+      res.status(404).json({ message: 'Credenciales invalidas' })
+      return
     }
+
+    const {
+      full_name,
+      last_name,
+      country,
+      address,
+      address_number,
+      phone_number,
+      fiscal_condition,
+      document_type,
+      document_number
+    } = userFounded
+
+    const userProfileInfo: UserProfileInfo = {
+      full_name,
+      last_name,
+      country,
+      address,
+      address_number,
+      phone_number,
+      fiscal_condition,
+      document_type,
+      document_number
+    }
+
+    res.status(200).json({ message: 'Perfil encontrado', userProfileInfo })
   } catch (err) {
     if (err instanceof Error) {
-      console.error('Error al obtener el perfil del usuario: ', err.message)
+      res.status(404).json({
+        message: `Error al obtener el perfil del usuario: ${err.message}`
+      })
     } else {
-      console.error('Ha ocurrido un error desconocido.')
+      res.status(404).json({
+        message: `Error desconcido al obtener el perfil del usuario`
+      })
     }
   }
 }

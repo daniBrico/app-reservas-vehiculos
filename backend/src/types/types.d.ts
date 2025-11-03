@@ -15,6 +15,21 @@ export interface IVehicle extends Document {
   description: string
 }
 
+export interface VehicleDetails {
+  _id: Schema.Types.ObjectId
+  title: string
+  make: string
+  transmissionType: 'manual' | 'automatic' | 'automática'
+  seatingCapacity: number
+  trunkCapacity: number
+  year: number
+  pricePerDay: number
+  status: string
+  imageURL: string
+  warrantyCost: number
+  description: string
+}
+
 // User
 export interface IUser extends Document {
   _id: Schema.Types.ObjectId
