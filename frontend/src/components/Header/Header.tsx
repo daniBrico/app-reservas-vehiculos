@@ -27,6 +27,10 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
     navigate('/register')
   }
 
+  const handleProfileButton = (): void => {
+    navigate('/perfil')
+  }
+
   return (
     <header className="relative flex items-center justify-between bg-amber-400 px-16 shadow-md">
       <div className="flex items-center justify-center gap-2">
@@ -46,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                 <>
                   <LiButton
                     cssClasses="hover:scale-105"
-                    handleClick={onLoginClick}
+                    onClick={onLoginClick}
                     content="Iniciar sesión"
                   />
                   <div className="px-2">
@@ -55,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                   <LiButton
                     cssClasses="hover:scale-105"
                     content="Registrarse"
-                    handleClick={handleClickRegister}
+                    onClick={handleClickRegister}
                   />
                 </>
               ) : (
@@ -63,22 +67,23 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                   <LiButton
                     cssClasses="hover:scale-105 group"
                     childrend={
-                      <Link className="flex items-center gap-2" to="/perfil">
+                      <div className="flex items-center gap-2">
                         <div className="w-8 stroke-white group-hover:stroke-amber-800">
                           <UserSvg />
                         </div>
                         <div className="text-xl font-bold text-white group-hover:text-amber-800">
                           {user.full_name}
                         </div>
-                      </Link>
+                      </div>
                     }
+                    onClick={handleProfileButton}
                   />
                   <div className="px-2">
                     <div className="h-5 w-0.5 bg-white" />
                   </div>
                   <LiButton
                     cssClasses="hover:scale-110"
-                    handleClick={handleLogout}
+                    onClick={handleLogout}
                     content="Cerrar sesión"
                   />
                 </>
