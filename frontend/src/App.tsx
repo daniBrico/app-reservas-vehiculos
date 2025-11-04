@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Routes
 } from 'react-router-dom'
-import Header from './components/header/Header'
+import Header from './components/Header/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
@@ -29,7 +29,7 @@ function App(): JSX.Element {
             <Route index element={<Navigate to="/inicio" replace />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/inicio" element={<HomePage />} />
-            <Route path="/flota-vehiculos" element={<VehicleFleetPage />} />
+            <Route path="/flota-vehiculos" element={<VehicleFleetPage onLoginClick={() => setIsLoginOpen(true)} />}/>
             <Route path="/vehiculo/:id" element={<VehicleDetailsPage />} />
             <Route path="/generar-reserva" element={<ReservationPage />} />
 
