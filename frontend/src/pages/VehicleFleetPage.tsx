@@ -2,11 +2,13 @@ import useVehicles from '@/hooks/queries/useVehicles'
 import type { IVehicle } from '@/types/types'
 import { useEffect, useState, type JSX } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuthContext } from '@/hooks/useAuthContext'
 
 const URL_API = import.meta.env.VITE_API_URL
 
 const VehicleFleetPage: React.FC = () => {
   const navigate = useNavigate()
+  const { user } = useAuthContext()
   const [filteredVehicles, setFilteredVehicles] = useState<IVehicle[]>([])
 
   // Filtros
@@ -152,7 +154,15 @@ const VehicleFleetPage: React.FC = () => {
               <div className="mt-4 flex justify-center gap-3">
                 <button
                   className="cursor-pointer rounded-lg bg-orange-500 px-4 py-2 font-medium text-white transition hover:bg-orange-600"
-                  onClick={() => console.log('Reservar →', vehicle._id)}
+                  onClick={() => {
+                    if (user) {
+                      // Usuario logueado → vamos al formulario de reserva
+                      navigate('/generar-reserva', { state: { selectedVehicle: vehicle } })
+                    } else {
+                      // Usuario NO logueado → vamos al login y pasamos info del vehículo
+                      navigate('/login', { state: { from: '/generar-reserva', selectedVehicle: vehicle } })
+                    }
+                  }}
                 >
                   Rentar ahora
                 </button>

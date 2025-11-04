@@ -7,11 +7,13 @@ import useVehicles from '@/hooks/queries/useVehicles'
 import VehicleInformation from '@/components/VehicleInformation'
 import useReservation from '@/hooks/useReservation'
 import { jwtDecode } from 'jwt-decode'
-import type { IReservation, TokenPayload } from '@/types/types'
+import type { IReservation, IVehicle, TokenPayload } from '@/types/types'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import classNames from 'classnames'
 import { useReservationStore } from '@/store/useReservationStore'
 import Cookies from 'js-cookie'
+import { useLocation } from 'react-router-dom'
+
 
 const cities = [
   { key: 'bahia-blanca', value: 'Bahía Blanca' },
@@ -47,6 +49,16 @@ const ReservationPage: React.FC = () => {
     vehicleID,
     setVehicleID
   } = useReservationStore()
+
+ const location = useLocation()
+
+   useEffect(() => {
+    const selectedVehicleFromState = location.state?.selectedVehicle as IVehicle | undefined
+    if (selectedVehicleFromState) {
+      setVehicleID(selectedVehicleFromState._id)
+    }
+  }, [location.state, setVehicleID])
+
   const [activeFilters, setActiveFilters] = useState<string[]>([])
   const [showMessage, setShowMessage] = useState(false)
   const [message, setMessage] = useState('')
