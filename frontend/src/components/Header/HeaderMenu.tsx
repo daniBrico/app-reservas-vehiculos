@@ -70,12 +70,6 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({
       <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
         Sucursales
       </li>
-      {/* <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-        Beneficios
-      </li> */}
-      {/* <li className="cursor-pointer px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
-        Autos usados
-      </li> */}
       <li className="flex cursor-pointer gap-2 px-8 py-4 text-xl font-bold tracking-wide hover:bg-amber-800">
         <div className="w-8">
           <WorldSVG />
