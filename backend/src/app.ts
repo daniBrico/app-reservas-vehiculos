@@ -4,6 +4,7 @@ import vehicleRoutes from './routes/vehicle.routes'
 import userRoutes from './routes/user.routes'
 import reservationRoutes from './routes/reservation.routes'
 import { authMiddleware } from './middlewares/authMiddleware'
+import { getUserReservations } from './controllers/reservation.controllers'
 import cookieParser from 'cookie-parser'
 
 const app = express()
@@ -24,6 +25,7 @@ app.use(cookieParser())
 app.use('/vehicles', vehicleRoutes)
 app.use('/vehicles-images', express.static('./src/assets/vehicles/'))
 app.use('/reservations', authMiddleware, reservationRoutes)
+app.get('/historial', authMiddleware, getUserReservations)
 app.use('/api', userRoutes)
 
 export { app }

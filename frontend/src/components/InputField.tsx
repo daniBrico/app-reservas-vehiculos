@@ -7,6 +7,8 @@ interface InputFieldProps {
   value: string | number
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   required?: boolean
+  className?: string
+  disabled?: boolean
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -15,22 +17,31 @@ const InputField: React.FC<InputFieldProps> = ({
   type = 'text',
   value,
   onChange,
-  required = false
+  required = false,
+  className = '',
+  disabled = false,
 }) => {
   return (
     <div className="relative w-full">
-      <input
-        name={name}
-        type={type}
-        placeholder=""
-        value={value === 0 ? '' : value}
-        onChange={onChange}
-        className="peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-        required={required}
-      />
-      <label className="pointer-events-none absolute -top-6 left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6">
+      <label
+        htmlFor={name}
+        className="pointer-events-none absolute -top-6 left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6"
+      >
         {label}
       </label>
+      <input
+        id={name}                    
+        name={name}
+        type={type}
+        value={value === 0 ? '' : value}
+        onChange={onChange}
+        required={required}
+        disabled={disabled}          
+        placeholder=" "              
+        className={`peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none ${className} ${
+          disabled ? 'bg-gray-200 cursor-not-allowed' : ''
+        }`}
+      />
     </div>
   )
 }
