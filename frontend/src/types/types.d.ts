@@ -132,6 +132,11 @@ export interface ReservationResponse {
   reservation: IReservation
 }
 
+export interface GetReservationResponse {
+  message: string
+  reservations: IReservation[]
+}
+
 // Vehicle responses
 export interface VehicleDetailsResponse {
   message: string

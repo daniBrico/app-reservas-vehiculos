@@ -1,35 +1,10 @@
 import { useEffect, useState, type JSX } from 'react'
-import ProfileUser from '../components/user/ProfileUser'
-import httpClient from '@/api/httpClient'
-
-interface Vehicle {
-  _id: string
-  title: string
-  make: string
-  licencePlate: string
-  year: number
-  transmissionType: string
-  seatingCapacity: number
-  trunkCapacity: number
-  pricePerDay: number
-  description: string
-}
-
-interface Reservation {
-  _id: string
-  vehicle_id: Vehicle
-  pickup_date: string
-  return_date: string
-  pickup_time: string
-  return_time: string
-  pickup_location: string
-  discount_code?: string
-  insurance_policy_id?: string
-  status: string
-}
+import ProfileForm from '../components/user/ProfileForm'
+import { getReservations } from '@/api/reservationApi'
+import type { IReservation } from '@/types/types'
 
 export default function UserProfilePage(): JSX.Element {
-  const [reservations, setReservations] = useState<Reservation[]>([])
+  const [reservations, setReservations] = useState<IReservation[]>([])
   const [loading, setLoading] = useState(true)
 
   const discountPercentages: Record<string, number> = {
@@ -42,15 +17,11 @@ export default function UserProfilePage(): JSX.Element {
   useEffect(() => {
     const fetchReservations = async (): Promise<void> => {
       try {
-        const data = await httpClient<{
-          message: string
-          reservations: Reservation[]
-        }>('/reservations', {
-          method: 'GET'
-        })
+        const data = await getReservations()
+
         setReservations(data.reservations)
       } catch (error) {
-        console.error('Error al cargar historial:', error)
+        console.error('Error al cargar historial de reservas: ', error)
       } finally {
         setLoading(false)
       }
@@ -62,7 +33,7 @@ export default function UserProfilePage(): JSX.Element {
   return (
     <div className="grid w-full grid-cols-2 gap-8 px-16 py-8">
       <aside>
-        <ProfileUser />
+        <ProfileForm />
       </aside>
 
       <section className="px-8">

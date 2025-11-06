@@ -4,7 +4,7 @@ import useGetProfileInfo from '@/hooks/queries/useGetProfileInfo'
 import { useAuthContext } from '@/hooks/useAuthContext'
 import httpClient from '@/api/httpClient'
 
-const ModifyUser = (): JSX.Element => {
+const ProfileForm = (): JSX.Element => {
   const [formData, setFormData] = useState({
     full_name: '',
     last_name: '',
@@ -60,22 +60,31 @@ const ModifyUser = (): JSX.Element => {
     const body = { email: user.email, ...formData }
 
     try {
-      const data = await httpClient<{ user: typeof formData; message: string }>('/api/update', {
-        method: 'PUT',
-        body
-      })
+      const data = await httpClient<{ user: typeof formData; message: string }>(
+        '/api/update',
+        {
+          method: 'PUT',
+          body
+        }
+      )
 
       setMessage('Datos actualizados correctamente')
       localStorage.setItem('user', JSON.stringify(data.user))
       setFormData(data.user)
-    } catch (err: any) {
-      console.error('Error al actualizar usuario:', err)
-      setMessage(err.message || 'Error de conexión con el servidor')
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error('Error al actualizar los datos del usuario:', err)
+      } else {
+        console.error('Error desconocido al actualizar los datos del usuario')
+      }
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid w-full grid-cols-3 space-y-4 bg-white">
+    <form
+      onSubmit={handleSubmit}
+      className="grid w-full grid-cols-3 space-y-4 bg-white"
+    >
       <h2 className="col-span-3 mb-6 text-center text-3xl font-bold text-amber-800">
         Mis datos
       </h2>
@@ -89,7 +98,7 @@ const ModifyUser = (): JSX.Element => {
             value={formData.full_name}
             onChange={handleChange}
             disabled={true}
-            className="bg-gray-200 cursor-not-allowed"
+            className="cursor-not-allowed bg-gray-200"
           />
           <InputField
             label="Apellido"
@@ -97,7 +106,7 @@ const ModifyUser = (): JSX.Element => {
             value={formData.last_name}
             onChange={handleChange}
             disabled={true}
-            className="bg-gray-200 cursor-not-allowed"
+            className="cursor-not-allowed bg-gray-200"
           />
         </div>
 
@@ -137,7 +146,9 @@ const ModifyUser = (): JSX.Element => {
         />
 
         {/* Condición fiscal (editable) */}
-        <label htmlFor="fiscal_condition" className="sr-only">Condición fiscal</label>
+        <label htmlFor="fiscal_condition" className="sr-only">
+          Condición fiscal
+        </label>
         <select
           id="fiscal_condition"
           name="fiscal_condition"
@@ -146,7 +157,9 @@ const ModifyUser = (): JSX.Element => {
           className="rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none"
           required
         >
-          <option value="" disabled>Condición fiscal</option>
+          <option value="" disabled>
+            Condición fiscal
+          </option>
           <option value="Responsable inscripto">Responsable inscripto</option>
           <option value="Autónomo">Autónomo</option>
           <option value="Monotributista">Monotributista</option>
@@ -155,16 +168,20 @@ const ModifyUser = (): JSX.Element => {
         </select>
 
         {/* Tipo y Número de Documento (bloqueados) */}
-        <label htmlFor="document_type" className="sr-only">Tipo de documento</label>
+        <label htmlFor="document_type" className="sr-only">
+          Tipo de documento
+        </label>
         <select
           id="document_type"
           name="document_type"
           value={formData.document_type}
           onChange={handleChange}
           disabled={true}
-          className="bg-gray-200 cursor-not-allowed rounded-lg border p-2 focus:outline-none"
+          className="cursor-not-allowed rounded-lg border bg-gray-200 p-2 focus:outline-none"
         >
-          <option value="" disabled>Tipo de documento</option>
+          <option value="" disabled>
+            Tipo de documento
+          </option>
           <option value="DNI">DNI</option>
           <option value="LE">LE</option>
           <option value="LC">LC</option>
@@ -177,7 +194,7 @@ const ModifyUser = (): JSX.Element => {
           value={formData.document_number}
           onChange={handleChange}
           disabled={true}
-          className="bg-gray-200 cursor-not-allowed"
+          className="cursor-not-allowed bg-gray-200"
         />
       </div>
 
@@ -189,10 +206,12 @@ const ModifyUser = (): JSX.Element => {
       </button>
 
       {message && (
-        <p className="mt-2 col-span-3 text-center font-medium text-green-600">{message}</p>
+        <p className="col-span-3 mt-2 text-center font-medium text-green-600">
+          {message}
+        </p>
       )}
     </form>
   )
 }
 
-export default ModifyUser
+export default ProfileForm
