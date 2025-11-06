@@ -14,7 +14,6 @@ import { useReservationStore } from '@/store/useReservationStore'
 import Cookies from 'js-cookie'
 import { useLocation } from 'react-router-dom'
 
-
 const cities = [
   { key: 'bahia-blanca', value: 'Bahía Blanca' },
   { key: 'buenos-aires', value: 'Buenos Aires' },
@@ -50,14 +49,15 @@ const ReservationPage: React.FC = () => {
     setVehicleID
   } = useReservationStore()
 
- const location = useLocation()
+  const location = useLocation()
 
-   useEffect(() => {
-    const selectedVehicleFromState = location.state?.selectedVehicle as IVehicle | undefined
-    if (selectedVehicleFromState) {
-      setVehicleID(selectedVehicleFromState._id)
-    }
-  }, [location.state, setVehicleID])
+  useEffect(() => {
+    const selectedVehicleFromState = location.state?.selectedVehicle as
+      | IVehicle
+      | undefined
+
+    if (selectedVehicleFromState) setVehicleID(selectedVehicleFromState._id)
+  }, [])
 
   const [activeFilters, setActiveFilters] = useState<string[]>([])
   const [showMessage, setShowMessage] = useState(false)
