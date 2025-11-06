@@ -56,6 +56,12 @@ const ProfileForm = (): JSX.Element => {
 
     setFormData(profileUpdated)
     setMessage('Datos actualizados correctamente')
+
+    const messageTimeout = setTimeout(() => {
+      setMessage('')
+    }, 3000)
+
+    return (): void => clearTimeout(messageTimeout)
   }, [profileUpdated])
 
   const handleChange = (
