@@ -152,7 +152,11 @@ const VehicleFleetPage: React.FC = () => {
               <div className="mt-4 flex justify-center gap-3">
                 <button
                   className="cursor-pointer rounded-lg bg-orange-500 px-4 py-2 font-medium text-white transition hover:bg-orange-600"
-                  onClick={() => console.log('Reservar →', vehicle._id)}
+                  onClick={() => {
+                    navigate('/generar-reserva', {
+                      state: { selectedVehicle: vehicle }
+                    })
+                  }}
                 >
                   Rentar ahora
                 </button>
