@@ -208,13 +208,7 @@ const RegisterForm = (): JSX.Element => {
           className="transition-color col-start-2 col-end-2 w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white duration-300 hover:bg-amber-900 disabled:bg-amber-400"
         >
           Registrarse
-          {/* {loading ? 'Registrando...' : 'Registrarse'} */}
         </button>
-        {/* {message && (
-          <p className="mt-2 text-center font-medium text-green-600">
-            {message}
-          </p>
-        )} */}
       </form>
     </section>
   )
