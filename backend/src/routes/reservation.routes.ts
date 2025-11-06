@@ -1,8 +1,14 @@
 import express from 'express'
-import { setReservation } from '../controllers/reservation.controllers'
+import {
+  setReservation,
+  getReservations
+} from '../controllers/reservation.controllers'
+import { authMiddleware } from '../middlewares/authMiddleware'
 
 const router = express.Router()
 
-router.post('/', setReservation)
+router.post('/', authMiddleware, setReservation)
+
+router.get('/', authMiddleware, getReservations)
 
 export default router

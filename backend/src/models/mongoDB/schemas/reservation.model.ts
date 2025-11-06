@@ -10,7 +10,7 @@ const ReservationSchema = new Schema<IReservation>({
   vehicle_id: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'vehicle'
+    ref: 'Vehicle'
   },
   pickup_date: {
     type: Date,
