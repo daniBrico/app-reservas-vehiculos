@@ -19,7 +19,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
   required = false,
   className = '',
-  disabled = false,
+  disabled = false
 }) => {
   return (
     <div className="relative w-full">
@@ -30,16 +30,16 @@ const InputField: React.FC<InputFieldProps> = ({
         {label}
       </label>
       <input
-        id={name}                    
+        id={name}
         name={name}
         type={type}
         value={value === 0 ? '' : value}
         onChange={onChange}
         required={required}
-        disabled={disabled}          
-        placeholder=" "              
+        disabled={disabled}
+        placeholder=" "
         className={`peer w-full rounded-lg border p-2 focus:ring-2 focus:ring-amber-400 focus:outline-none ${className} ${
-          disabled ? 'bg-gray-200 cursor-not-allowed' : ''
+          disabled ? 'cursor-not-allowed bg-gray-200' : ''
         }`}
       />
     </div>

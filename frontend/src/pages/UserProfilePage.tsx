@@ -33,16 +33,19 @@ export default function UserProfilePage(): JSX.Element {
   const [loading, setLoading] = useState(true)
 
   const discountPercentages: Record<string, number> = {
-    'DESC5': 5,
-    'DESC10': 10,
-    'DESC15': 15,
-    'DESC20': 20
+    DESC5: 5,
+    DESC10: 10,
+    DESC15: 15,
+    DESC20: 20
   }
 
   useEffect(() => {
     const fetchReservations = async (): Promise<void> => {
       try {
-        const data = await httpClient<{ message: string; reservations: Reservation[] }>('/historial', {
+        const data = await httpClient<{
+          message: string
+          reservations: Reservation[]
+        }>('/reservations', {
           method: 'GET'
         })
         setReservations(data.reservations)
@@ -77,35 +80,43 @@ export default function UserProfilePage(): JSX.Element {
           ) : (
             <ul className="space-y-2">
               {reservations.map((r) => {
-
                 const originalPrice = r.vehicle_id?.pricePerDay || 0
-                const discount = r.discount_code ? discountPercentages[r.discount_code] || 0 : 0
+                const discount = r.discount_code
+                  ? discountPercentages[r.discount_code] || 0
+                  : 0
                 const finalPrice = originalPrice * (1 - discount / 100)
 
                 return (
                   <li
                     key={r._id}
-                    className="rounded-md bg-white p-4 shadow-sm border border-amber-100 flex gap-4"
+                    className="flex gap-4 rounded-md border border-amber-100 bg-white p-4 shadow-sm"
                   >
                     <div className="flex flex-col justify-between">
                       <p className="font-semibold text-amber-900">
-                        {r.vehicle_id?.make} {r.vehicle_id?.title} ({r.vehicle_id?.licencePlate})
+                        {r.vehicle_id?.make} {r.vehicle_id?.title} (
+                        {r.vehicle_id?.licencePlate})
                       </p>
-                      <p className="text-amber-900/80 text-sm">
-                        Año {r.vehicle_id?.year} • {r.vehicle_id?.transmissionType} • {r.vehicle_id?.seatingCapacity} pasajeros
+                      <p className="text-sm text-amber-900/80">
+                        Año {r.vehicle_id?.year} •{' '}
+                        {r.vehicle_id?.transmissionType} •{' '}
+                        {r.vehicle_id?.seatingCapacity} pasajeros
                       </p>
                       <p className="text-amber-900/80">
-                        Retiro: {new Date(r.pickup_date).toLocaleDateString()} — {r.pickup_time}
+                        Retiro: {new Date(r.pickup_date).toLocaleDateString()} —{' '}
+                        {r.pickup_time}
                       </p>
                       <p className="text-amber-900/80">
-                        Devolución: {new Date(r.return_date).toLocaleDateString()} — {r.return_time}
+                        Devolución:{' '}
+                        {new Date(r.return_date).toLocaleDateString()} —{' '}
+                        {r.return_time}
                       </p>
-
 
                       <p className="text-amber-900/80">
                         Precio por día: ${finalPrice.toFixed(2)}
                         {discount > 0 && (
-                          <span className="text-green-700 ml-2">({discount}% de descuento aplicado)</span>
+                          <span className="ml-2 text-green-700">
+                            ({discount}% de descuento aplicado)
+                          </span>
                         )}
                       </p>
 
@@ -115,15 +126,23 @@ export default function UserProfilePage(): JSX.Element {
 
                       {r.discount_code ? (
                         discount > 0 ? (
-                          <p className="text-green-700 text-sm">Código de descuento: {r.discount_code}</p>
+                          <p className="text-sm text-green-700">
+                            Código de descuento: {r.discount_code}
+                          </p>
                         ) : (
-                          <p className="text-red-600 text-sm italic">Código inválido: {r.discount_code}</p>
+                          <p className="text-sm text-red-600 italic">
+                            Código inválido: {r.discount_code}
+                          </p>
                         )
                       ) : (
-                        <p className="text-gray-500 text-sm italic">Sin código de descuento</p>
+                        <p className="text-sm text-gray-500 italic">
+                          Sin código de descuento
+                        </p>
                       )}
 
-                      <p className="text-amber-900/70 italic">Estado: {r.status}</p>
+                      <p className="text-amber-900/70 italic">
+                        Estado: {r.status}
+                      </p>
                     </div>
                   </li>
                 )
