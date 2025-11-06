@@ -25,7 +25,7 @@ const InputField: React.FC<InputFieldProps> = ({
     <div className="relative w-full">
       <label
         htmlFor={name}
-        className="pointer-events-none absolute -top-6 left-0 pl-2 text-base text-black/50 transition-all duration-200 peer-placeholder-shown:top-2.5 peer-focus:-top-6"
+        className={`pointer-events-none absolute left-2 text-base text-black/50 transition-all duration-200 ${value ? '-top-6 text-sm' : 'top-2.5 text-base'} `}
       >
         {label}
       </label>
