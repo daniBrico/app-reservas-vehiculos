@@ -2,7 +2,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { DatePicker } from '@/components/DatePicker'
 import TimeSelect from '@/components/TimeSelect'
 import { Button } from '@/components/ui/button'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import useVehicles from '@/hooks/queries/useVehicles'
 import VehicleInformation from '@/components/VehicleInformation'
 import useReservation from '@/hooks/useReservation'
@@ -33,6 +33,7 @@ const filters = [
 
 const ReservationPage: React.FC = () => {
   const vehicleRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const articleRef = useRef<HTMLElement | null>(null)
 
   const {
     selectedCity,
@@ -220,16 +221,36 @@ const ReservationPage: React.FC = () => {
     return true
   })
 
-  useEffect(() => {
-    console.log('Se ejecuta')
+  useLayoutEffect(() => {
+    if (!vehicleID || !vehicleRefs.current[vehicleID]) return
 
-    console.log('🚀 ~ ReservationPage ~ vehicleID: ', vehicleID)
-    if (vehicleID && vehicleRefs.current[vehicleID]) {
-      vehicleRefs.current[vehicleID]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
+    const container = articleRef.current
+    const element = vehicleRefs.current[vehicleID]
+
+    if (!container || !element) return
+
+    // 1) Forzar scroll del documento al tope SIN animación para evitar interferencia
+    // Usamos scrollingElement si existe, fallback a document.documentElement
+    const scrollingEl = document.scrollingElement ?? document.documentElement
+    // comportamiento inmediato
+    scrollingEl.scrollTop = 0
+    // Por si acaso también forzamos el window.scrollTo
+    window.scrollTo({ top: 0, behavior: 'auto' })
+
+    // 2) Luego, en el siguiente frame (layout listo), scrollear el contenedor al elemento
+    // requestAnimationFrame asegura que el browser aplicó el cambio de scroll global
+    requestAnimationFrame(() => {
+      const top =
+        element.offsetTop -
+        container.offsetTop -
+        container.clientHeight / 2 +
+        element.clientHeight / 2
+
+      container.scrollTo({
+        top,
+        behavior: 'smooth' // animado solo dentro del article
       })
-    }
+    })
   }, [vehicleID, filteredVehicles])
 
   return (
@@ -331,7 +352,10 @@ const ReservationPage: React.FC = () => {
           <p>TM: Transmisión Manual</p>
         </div>
       </aside>
-      <article className="flex max-h-[588px] w-full flex-col items-center gap-4 overflow-y-scroll rounded-md border border-gray-200 px-4 py-8 shadow-md">
+      <article
+        ref={articleRef}
+        className="flex max-h-[588px] w-full flex-col items-center gap-4 overflow-y-scroll rounded-md border border-gray-200 px-4 py-8 shadow-md"
+      >
         {filteredVehicles &&
           filteredVehicles.map((vehicle) => {
             return (
