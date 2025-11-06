@@ -77,7 +77,7 @@ export const registerUser = async (
     res.status(201).json({
       message: 'Usuario creado correctamente',
       userLoginInfo: {
-        id: userObj._id,
+        _id: userObj._id,
         full_name: userObj.full_name,
         email: userObj.email
       }

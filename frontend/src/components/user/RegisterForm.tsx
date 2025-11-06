@@ -3,6 +3,7 @@ import type { IUserInput } from '@/types/types'
 import { useEffect, useState, type JSX } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InputField from '../InputField'
+import LoadingSpinner from '../LoadingSpinner'
 
 const RegisterForm = (): JSX.Element => {
   const [formData, setFormData] = useState<IUserInput>({
@@ -19,16 +20,29 @@ const RegisterForm = (): JSX.Element => {
     document_number: 0
   })
   const [message, setMessage] = useState('')
+  const [showMessage, setShowMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const { signUp, user } = useAuthContext()
 
-  useEffect(() => {
-    if (user === null) return
+  // useEffect(() => {
+  //   if (user === null) return
 
-    setMessage(`Bienvenido ${user.full_name}, registro exitoso!`)
-  }, [user])
+  //   setMessage(`Bienvenido ${user.full_name}, registro exitoso!`)
+  // }, [user])
+
+  useEffect(() => {
+    if (!showMessage) return
+
+    const messageTimeout = setTimeout(() => {
+      setMessage('')
+      setShowMessage(false)
+      navigate('/inicio')
+    }, 2000)
+
+    return (): void => clearTimeout(messageTimeout)
+  }, [showMessage])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -63,10 +77,8 @@ const RegisterForm = (): JSX.Element => {
         document_number: 0
       })
 
-      setTimeout(() => {
-        setMessage('')
-        navigate('/inicio')
-      }, 2000)
+      setMessage('Usuario registrado correctamente')
+      setShowMessage(true)
     } catch (err) {
       if (err instanceof Error) {
         setMessage('Error de conexión con el servidor')
@@ -202,13 +214,25 @@ const RegisterForm = (): JSX.Element => {
             required={true}
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="transition-color col-start-2 col-end-2 w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white duration-300 hover:bg-amber-900 disabled:bg-amber-400"
-        >
-          Registrarse
-        </button>
+        <div className="relative col-start-2 col-end-2">
+          <button
+            type="submit"
+            disabled={loading}
+            className="transition-color col-start-2 col-end-2 w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white duration-300 hover:bg-amber-900 disabled:bg-amber-400"
+          >
+            Registrarse
+          </button>
+          <LoadingSpinner
+            isLoading={loading}
+            cssClasses="w-10 absolute top-0 mt-1 -right-12 h-10 border-t-amber-900 border-r-amber-900 border-b-amber-900"
+          />
+        </div>
+
+        {showMessage && (
+          <p className="col-span-3 mt-2 text-center font-medium text-green-600">
+            {message}
+          </p>
+        )}
       </form>
     </section>
   )
