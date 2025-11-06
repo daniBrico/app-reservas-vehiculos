@@ -146,7 +146,11 @@ const ReservationPage: React.FC = () => {
 
     const token = Cookies.get('token')
 
-    if (!token) return
+    if (!token) {
+      setMessage('Necesita iniciar sesión para realizar la reserva')
+      setShowMessage(true)
+      return
+    }
 
     const tokenPayload: TokenPayload = jwtDecode(token)
 

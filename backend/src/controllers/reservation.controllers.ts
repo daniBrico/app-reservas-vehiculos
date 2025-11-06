@@ -11,6 +11,7 @@ export const setReservation = async (
 ): Promise<void> => {
   try {
     const userId = req.user?._id
+    console.log('🚀 ~ setReservation ~ userId: ', userId)
 
     if (!userId) {
       res.status(401).json({ message: 'Credenciales invalidas' })
