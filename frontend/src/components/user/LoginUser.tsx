@@ -13,8 +13,6 @@ interface LoginUserProps {
 const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
   const loginDivContainer = useRef<HTMLDivElement>(null)
 
   useCloseOnClickOutside({
@@ -27,13 +25,17 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
     ref: loginDivContainer
   })
 
-  const { signIn, user } = useAuthContext()
+  const { signIn, error: authError, clearError } = useAuthContext()
 
   useEffect(() => {
-    if (user === null) return
+    if (!authError) return
 
-    setMessage(`Bienvenido ${user.full_name}`)
-  }, [user])
+    const timer = setTimeout(() => {
+      clearError()
+    }, 3000)
+
+    return (): void => clearTimeout(timer)
+  }, [authError, clearError])
 
   useEffect(() => {
     document.body.style.overflow = isLoginOpen ? 'hidden' : ''
@@ -48,22 +50,10 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
 
     try {
       signIn(email, password)
-      setError('')
-
-      setTimeout(() => {
-        setMessage('')
-        onClose()
-      }, 4000)
     } catch (err) {
       if (err instanceof Error) {
         console.log('Ha ocurrido un error al intentar loguearse: ', err.message)
       }
-
-      setMessage('')
-
-      setTimeout(() => {
-        setError('')
-      }, 3000)
     }
   }
 
@@ -126,8 +116,8 @@ const LoginUser: React.FC<LoginUserProps> = ({ onClose, isLoginOpen }) => {
             Iniciar sesión
           </button>
 
-          {error && <p className="text-center text-red-500">{error}</p>}
-          {message && <p className="text-center text-green-500">{message}</p>}
+          {authError && <p className="text-center text-red-500">{authError}</p>}
+          {/* {message && <p className="text-center text-green-500">{message}</p>} */}
         </form>
       </div>
     </div>

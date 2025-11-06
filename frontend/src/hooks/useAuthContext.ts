@@ -14,6 +14,7 @@ export interface AuthContextProps {
   authIsLoading: boolean
   isAuthenticated: boolean
   error: string
+  clearError: () => void
 }
 
 export const AuthContext = createContext<AuthContextProps | null>(null)

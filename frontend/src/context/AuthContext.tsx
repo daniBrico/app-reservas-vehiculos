@@ -42,12 +42,22 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     email: EmailType,
     password: PasswordType
   ): Promise<void> => {
+    setAuthIsLoading(true)
+    setError('')
+
     try {
       const res = await loginUser(email, password)
 
       handleAuthSuccess(res.userLoginInfo)
     } catch (err) {
-      console.log(err)
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('Error desconocido al iniciar sesión')
+      }
+      resetAuthState()
+    } finally {
+      setAuthIsLoading(false)
     }
   }
 
@@ -91,6 +101,8 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     checkLogin()
   }, [])
 
+  const clearError = (): void => setError('')
+
   const value: AuthContextProps = {
     user,
     signUp,
@@ -98,7 +110,8 @@ const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     logout,
     authIsLoading,
     isAuthenticated,
-    error
+    error,
+    clearError
   }
 
   return <AuthContext value={value}>{children}</AuthContext>
