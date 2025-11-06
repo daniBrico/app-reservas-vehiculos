@@ -5,6 +5,8 @@ import type {
   PasswordType,
   ProfileInfoResponse,
   RegisterResponse,
+  UpdateProfile,
+  UpdateProfileFormData,
   VerifyTokenResponse
 } from '@/types/types'
 import httpClient from './httpClient'
@@ -23,3 +25,8 @@ export const verifyTokenRequest = (): Promise<VerifyTokenResponse> =>
 
 export const getProfileInfo = (id: string): Promise<ProfileInfoResponse> =>
   httpClient(`/api/user/${id}`, { method: 'GET' })
+
+export const updateProfile = (
+  formData: UpdateProfileFormData
+): Promise<UpdateProfile> =>
+  httpClient(`/api/update`, { method: 'PUT', body: { formData } })

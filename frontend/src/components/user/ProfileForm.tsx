@@ -2,10 +2,12 @@ import { useState, useEffect, type JSX } from 'react'
 import InputField from '../InputField'
 import useGetProfileInfo from '@/hooks/queries/useGetProfileInfo'
 import { useAuthContext } from '@/hooks/useAuthContext'
-import httpClient from '@/api/httpClient'
+import LoadingSpinner from '../LoadingSpinner'
+import useUpdateProfile from '@/hooks/queries/useUpdateProfile'
+import type { IUserInput, UpdateProfileFormData } from '@/types/types'
 
 const ProfileForm = (): JSX.Element => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IUserInput>({
     full_name: '',
     last_name: '',
     country: '',
@@ -21,6 +23,12 @@ const ProfileForm = (): JSX.Element => {
 
   const { user } = useAuthContext()
   const { userProfileInfo, fetchProfileInfo } = useGetProfileInfo()
+  const {
+    updateProfileInfo,
+    // error: updateProfileInfoErr,
+    loading: updateProfileIsLoading,
+    profileUpdated
+  } = useUpdateProfile()
 
   useEffect(() => {
     if (!userProfileInfo) return
@@ -43,6 +51,13 @@ const ProfileForm = (): JSX.Element => {
     fetchProfileInfo(user._id)
   }, [user])
 
+  useEffect(() => {
+    if (profileUpdated === null) return
+
+    setFormData(profileUpdated)
+    setMessage('Datos actualizados correctamente')
+  }, [profileUpdated])
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
@@ -57,27 +72,16 @@ const ProfileForm = (): JSX.Element => {
     e.preventDefault()
     if (!user) return
 
-    const body = { email: user.email, ...formData }
+    const { country, address, address_number, phone_number, fiscal_condition } =
+      formData
 
-    try {
-      const data = await httpClient<{ user: typeof formData; message: string }>(
-        '/api/update',
-        {
-          method: 'PUT',
-          body
-        }
-      )
-
-      setMessage('Datos actualizados correctamente')
-      localStorage.setItem('user', JSON.stringify(data.user))
-      setFormData(data.user)
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error('Error al actualizar los datos del usuario:', err)
-      } else {
-        console.error('Error desconocido al actualizar los datos del usuario')
-      }
-    }
+    updateProfileInfo({
+      country,
+      address,
+      address_number,
+      phone_number,
+      fiscal_condition
+    } as UpdateProfileFormData)
   }
 
   return (
@@ -90,7 +94,6 @@ const ProfileForm = (): JSX.Element => {
       </h2>
 
       <div className="col-span-3 grid grid-cols-2 gap-6 md:grid-cols-2">
-        {/* Nombre y Apellido (bloqueados) */}
         <div className="col-span-2 grid w-full grid-cols-2 gap-2">
           <InputField
             label="Nombre completo"
@@ -109,8 +112,6 @@ const ProfileForm = (): JSX.Element => {
             className="cursor-not-allowed bg-gray-200"
           />
         </div>
-
-        {/* Dirección y Teléfono (editables) */}
         <div className="col-span-2 grid grid-cols-3 gap-2">
           <InputField
             label="Provincia/Ciudad"
@@ -135,7 +136,6 @@ const ProfileForm = (): JSX.Element => {
             required
           />
         </div>
-
         <InputField
           label="Teléfono"
           name="phone_number"
@@ -144,8 +144,6 @@ const ProfileForm = (): JSX.Element => {
           onChange={handleChange}
           required
         />
-
-        {/* Condición fiscal (editable) */}
         <label htmlFor="fiscal_condition" className="sr-only">
           Condición fiscal
         </label>
@@ -166,8 +164,6 @@ const ProfileForm = (): JSX.Element => {
           <option value="Exento">Exento</option>
           <option value="No alcanzado">No alcanzado</option>
         </select>
-
-        {/* Tipo y Número de Documento (bloqueados) */}
         <label htmlFor="document_type" className="sr-only">
           Tipo de documento
         </label>
@@ -186,7 +182,6 @@ const ProfileForm = (): JSX.Element => {
           <option value="LE">LE</option>
           <option value="LC">LC</option>
         </select>
-
         <InputField
           label="Número de Documento"
           name="document_number"
@@ -197,13 +192,18 @@ const ProfileForm = (): JSX.Element => {
           className="cursor-not-allowed bg-gray-200"
         />
       </div>
-
-      <button
-        type="submit"
-        className="col-start-2 col-end-2 w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white transition-all duration-300 ease-in-out hover:bg-amber-900"
-      >
-        Guardar cambios
-      </button>
+      <div className="relative col-start-2 col-end-2">
+        <button
+          type="submit"
+          className="w-full cursor-pointer rounded-lg bg-amber-800 py-3 font-bold text-white transition-all duration-300 ease-in-out hover:bg-amber-900"
+        >
+          Guardar cambios
+        </button>
+        <LoadingSpinner
+          isLoading={updateProfileIsLoading}
+          cssClasses="w-10 absolute top-0 mt-1 -right-12 h-10 border-t-amber-900 border-r-amber-900 border-b-amber-900"
+        />
+      </div>
 
       {message && (
         <p className="col-span-3 mt-2 text-center font-medium text-green-600">

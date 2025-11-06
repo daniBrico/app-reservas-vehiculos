@@ -52,8 +52,8 @@ export interface IUser extends Document {
 }
 
 export interface IUserInput {
-  email: string
-  password: string
+  _id?: Schema.Types.ObjectId
+  email?: string
   full_name: string
   last_name: string
   country: string
@@ -75,6 +75,14 @@ export interface UserProfileInfo {
   fiscal_condition: string
   document_type: string
   document_number: number
+}
+
+export interface UpdateProfileFormData {
+  country: string
+  address: string
+  address_number: number
+  phone_number: number
+  fiscal_condition: string
 }
 
 // Reservation
@@ -122,6 +130,11 @@ export interface VerifyTokenResponse {
 }
 
 export interface ProfileInfoResponse {
+  message: string
+  userProfileInfo: UserProfileInfo
+}
+
+export interface UpdateProfile {
   message: string
   userProfileInfo: UserProfileInfo
 }

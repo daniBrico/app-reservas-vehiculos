@@ -97,7 +97,6 @@ const ReservationPage: React.FC = () => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault()
-    console.log('🚀 ~ handleSubmit ~ selectedCity: ', selectedCity)
 
     // Validaciones
     if (selectedCity === '') {

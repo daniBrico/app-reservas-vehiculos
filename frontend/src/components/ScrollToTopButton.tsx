@@ -25,7 +25,6 @@ const ScrollToTopButton = (): JSX.Element => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY || window.pageYOffset
-          console.log('🚀 ~ handleScroll ~ scrollY: ', scrollY)
           setShowButton(scrollY > 200)
           ticking = false
         })

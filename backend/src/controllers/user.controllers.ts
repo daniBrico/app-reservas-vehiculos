@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import UserModel from '../models/mongodb/schemas/user.model'
 import type { IUser, JwtPayloadCustom, UserProfileInfo } from '../types/types'
 import { createAccessToken } from '../utils/jwt'
+import type { AuthenticatedRequest } from '../middlewares/authMiddleware'
 
 export const registerUser = async (
   req: Request,
@@ -131,52 +132,42 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const updateUser = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
-  const { email, current_password, new_password, ...updates } = req.body
+  const { formData } = req.body
+  const { user } = req
 
   try {
-    const user = await UserModel.findOne({ email })
-    if (!user) {
+    const userFounded = await UserModel.findOne({ email: user?.email })
+
+    if (!userFounded) {
       res.status(404).json({ message: 'Usuario no encontrado' })
       return
     }
 
-    // Cambio de contraseña
-    if (new_password) {
-      if (!current_password) {
-        res.status(400).json({ message: 'Debe ingresar la contraseña actual' })
-        return
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { email: user?.email },
+      formData,
+      {
+        new: true
       }
-
-      const isMatch = await bcrypt.compare(current_password, user.password)
-      if (!isMatch) {
-        res.status(401).json({ message: 'Contraseña actual incorrecta' })
-        return
-      }
-
-      updates.password = await bcrypt.hash(new_password, 10)
-    }
-
-    const updatedUser = await UserModel.findOneAndUpdate({ email }, updates, {
-      new: true
-    })
+    )
 
     res.json({
       message: 'Usuario actualizado correctamente',
-      user: {
-        id: updatedUser!._id,
-        full_name: updatedUser!.full_name,
-        email: updatedUser!.email,
-        last_name: updatedUser!.last_name,
-        country: updatedUser!.country,
-        address: updatedUser!.address,
-        address_number: updatedUser!.address_number,
-        phone_number: updatedUser!.phone_number,
-        fiscal_condition: updatedUser!.fiscal_condition,
-        document_type: updatedUser!.document_type,
-        document_number: updatedUser!.document_number
+      userProfileInfo: {
+        id: updatedUser._id,
+        full_name: updatedUser.full_name,
+        email: updatedUser.email,
+        last_name: updatedUser.last_name,
+        country: updatedUser.country,
+        address: updatedUser.address,
+        address_number: updatedUser.address_number,
+        phone_number: updatedUser.phone_number,
+        fiscal_condition: updatedUser.fiscal_condition,
+        document_type: updatedUser.document_type,
+        document_number: updatedUser.document_number
       }
     })
   } catch (err) {
