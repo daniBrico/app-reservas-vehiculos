@@ -2,7 +2,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { DatePicker } from '@/components/DatePicker'
 import TimeSelect from '@/components/TimeSelect'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useVehicles from '@/hooks/queries/useVehicles'
 import VehicleInformation from '@/components/VehicleInformation'
 import useReservation from '@/hooks/useReservation'
@@ -32,6 +32,8 @@ const filters = [
 ]
 
 const ReservationPage: React.FC = () => {
+  const vehicleRefs = useRef<Record<string, HTMLDivElement | null>>({})
+
   const {
     selectedCity,
     setSelectedCity,
@@ -218,6 +220,18 @@ const ReservationPage: React.FC = () => {
     return true
   })
 
+  useEffect(() => {
+    console.log('Se ejecuta')
+
+    console.log('🚀 ~ ReservationPage ~ vehicleID: ', vehicleID)
+    if (vehicleID && vehicleRefs.current[vehicleID]) {
+      vehicleRefs.current[vehicleID]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      })
+    }
+  }, [vehicleID, filteredVehicles])
+
   return (
     <section className="my-10 flex justify-center gap-4 px-16">
       <aside className="flex w-[50%] flex-col gap-4">
@@ -321,18 +335,25 @@ const ReservationPage: React.FC = () => {
         {filteredVehicles &&
           filteredVehicles.map((vehicle) => {
             return (
-              <VehicleInformation
+              <div
+                className="w-full"
                 key={vehicle._id}
-                title={vehicle.title}
-                transmissionType={vehicle.transmissionType}
-                trunkCapacity={vehicle.trunkCapacity}
-                pricePerDay={vehicle.pricePerDay}
-                warrantyCost={vehicle.warrantyCost}
-                vehicleID={vehicle._id}
-                handleSelectVehicle={setVehicleID}
-                vehicleIDSelected={vehicleID}
-                imageURL={vehicle.imageURL}
-              />
+                ref={(el) => {
+                  vehicleRefs.current[vehicle._id] = el
+                }}
+              >
+                <VehicleInformation
+                  title={vehicle.title}
+                  transmissionType={vehicle.transmissionType}
+                  trunkCapacity={vehicle.trunkCapacity}
+                  pricePerDay={vehicle.pricePerDay}
+                  warrantyCost={vehicle.warrantyCost}
+                  vehicleID={vehicle._id}
+                  handleSelectVehicle={setVehicleID}
+                  vehicleIDSelected={vehicleID}
+                  imageURL={vehicle.imageURL}
+                />
+              </div>
             )
           })}
       </article>
