@@ -96,6 +96,7 @@ export interface ReservationResponse {
 }
 
 // jwt
+// EmailType no está definido
 export interface TokenPayload {
   _id: string
   email: EmailType

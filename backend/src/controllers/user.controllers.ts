@@ -183,6 +183,7 @@ export const verifyToken = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  // Ya se tiene el middleware, no es necesario esto. Revisar. Lo hizo Leo. Muy mal.
   const token = req.cookies?.token
 
   if (!token) {
